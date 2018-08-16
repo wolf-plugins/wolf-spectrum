@@ -37,6 +37,7 @@ OBJS_UI  = \
 	Common/Widgets/src/NanoKnob.cpp.o \
 	Common/Widgets/src/NanoLabel.cpp.o \
 	Common/Widgets/src/ResizeHandle.cpp.o \
+	Spectrogram.cpp.o \
 	WolfSpectrumUI.cpp.o 
 
 # --------------------------------------------------------------

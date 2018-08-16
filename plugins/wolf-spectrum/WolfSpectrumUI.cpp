@@ -34,11 +34,15 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(300, 200)
     tryRememberSize();
     getParentWindow().saveSizeAtExit(true);
 
+    const float width = getWidth();
+    const float height = getHeight();
+
     fResizeHandle = new ResizeHandle(this, Size<uint>(18, 18));
     fResizeHandle->setCallback(this);
     fResizeHandle->setMinSize(minWidth, minHeight);
 
-    positionWidgets(getWidth(), getHeight());
+    fSpectrogram = new Spectrogram(this, this, Size<uint>(width, height));
+    positionWidgets(width, height);
 }
 
 WolfSpectrumUI::~WolfSpectrumUI()
@@ -100,6 +104,17 @@ void WolfSpectrumUI::onNanoDisplay()
 
 void WolfSpectrumUI::uiIdle()
 {
+    repaint();
+
+    if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)getPluginInstancePointer())
+    {
+        if (dspPtr->fSamples == nullptr)
+            return;
+
+        const MutexLocker csm(dspPtr->fMutex);
+
+        fSpectrogram->setSamples(dspPtr->fSamples);
+    }
 }
 
 bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
@@ -127,7 +142,6 @@ void WolfSpectrumUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
 
 void WolfSpectrumUI::nanoButtonClicked(NanoButton *nanoButton)
 {
-
 }
 
 void WolfSpectrumUI::nanoWheelValueChanged(NanoWheel *nanoWheel, const int value)

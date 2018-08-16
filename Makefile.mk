@@ -15,7 +15,7 @@ export DISTRHO_NAMESPACE ?= WOLF_SPECTRUM_DISTRHO
 export DGL_NAMESPACE ?= WOLF_SPECTRUM_DGL
 
 EXTRA_INCLUDES ?=
-EXTRA_LIBS ?=
+EXTRA_LIBS ?= $(shell pkg-config --libs fftw3) -pthread
 
 # --------------------------------------------------------------
 # Fallback to Linux if no other OS defined
@@ -115,10 +115,8 @@ endif
 ifeq ($(HAVE_DGL),true)
 
 ifeq ($(LINUX),true)
-#DGL_FLAGS = $(shell pkg-config --cflags gl x11 xcursor) -static-libgcc -static-libstdc++ -static -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -shared
-#DGL_LIBS  = $(shell pkg-config --libs gl x11 xcursor) -static-libgcc -static-libstdc++ -static -Wl,--whole-archive -fPIC -lpthread -Wl,--no-whole-archive -shared
-DGL_FLAGS = $(shell pkg-config --cflags gl x11 xcursor) -lpthread
-DGL_LIBS  = $(shell pkg-config --libs gl x11 xcursor) -lpthread
+DGL_FLAGS = $(shell pkg-config --cflags gl x11)
+DGL_LIBS  = $(shell pkg-config --libs gl x11)
 endif
 
 ifeq ($(MACOS),true)

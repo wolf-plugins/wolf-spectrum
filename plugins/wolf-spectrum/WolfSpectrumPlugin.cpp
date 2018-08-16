@@ -23,104 +23,99 @@
 #include <iomanip>
 #include <cmath>
 
-#include "WolfSpectrumParameters.hpp"
+#include "WolfSpectrumPlugin.hpp"
 
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 
-class WolfSpectrum : public Plugin
+WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0)
 {
-  public:
-	WolfSpectrum() : Plugin(paramCount, 0, 0)
+	fSamples = (float **)malloc(sizeof(float *) * 2);
+
+	fSamples[0] = (float *)malloc(1024 * sizeof(float));
+	fSamples[1] = (float *)malloc(1024 * sizeof(float));
+}
+
+const char *WolfSpectrumPlugin::getLabel() const noexcept
+{
+	return "Wolf Spectrum";
+}
+
+const char *WolfSpectrumPlugin::getDescription() const noexcept
+{
+	return "Spectrogram plugin.";
+}
+
+const char *WolfSpectrumPlugin::getMaker() const noexcept
+{
+	return "Patrick Desaulniers";
+}
+
+const char *WolfSpectrumPlugin::getHomePage() const noexcept
+{
+	return "https://github.com/pdesaulniers/wolf-spectrum";
+}
+
+const char *WolfSpectrumPlugin::getLicense() const noexcept
+{
+	return "GPL v3+";
+}
+
+uint32_t WolfSpectrumPlugin::getVersion() const noexcept
+{
+	return d_version(0, 0, 1);
+}
+
+int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
+{
+	return d_cconst('w', 'S', 'c', 'g');
+}
+
+void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
+{
+	switch (index)
 	{
-		
+	case paramOutLeft:
+		parameter.name = "Out Left";
+		parameter.symbol = "outleft";
+		parameter.hints = kParameterIsOutput;
+		break;
+	case paramOutRight:
+		parameter.name = "Out Right";
+		parameter.symbol = "outright";
+		parameter.hints = kParameterIsOutput;
+		break;
 	}
+}
 
-  protected:
-	const char *getLabel() const noexcept override
+float WolfSpectrumPlugin::getParameterValue(uint32_t index) const
+{
+	return parameters[index];
+}
+
+void WolfSpectrumPlugin::setParameterValue(uint32_t index, float value)
+{
+	parameters[index] = value;
+}
+
+void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t frames)
+{
+	const MutexLocker csm(fMutex);
+
+	for (uint32_t i = 0; i < frames; ++i)
 	{
-		return "Wolf Spectrum";
+		fSamples[0][i] = inputs[0][i];
+		fSamples[1][i] = inputs[1][i];
+
+		outputs[0][i] = inputs[0][i];
+		outputs[1][i] = inputs[1][i];
 	}
-
-	const char *getDescription() const noexcept override
-	{
-		return "Spectrogram plugin.";
-	}
-
-	const char *getMaker() const noexcept override
-	{
-		return "Patrick Desaulniers";
-	}
-
-	const char *getHomePage() const noexcept override
-	{
-		return "https://github.com/pdesaulniers/wolf-spectrum";
-	}
-
-	const char *getLicense() const noexcept override
-	{
-		return "GPL v3+";
-	}
-
-	uint32_t getVersion() const noexcept override
-	{
-		return d_version(0, 0, 1);
-	}
-
-	int64_t getUniqueId() const noexcept override
-	{
-		return d_cconst('w', 'S', 'c', 'g');
-	}
-
-	void initParameter(uint32_t index, Parameter &parameter) override
-	{
-		switch (index)
-		{
-		case paramOutLeft:
-			parameter.name = "Out Left";
-			parameter.symbol = "outleft";
-			parameter.hints = kParameterIsOutput;
-			break;
-		case paramOutRight:
-			parameter.name = "Out Right";
-			parameter.symbol = "outright";
-			parameter.hints = kParameterIsOutput;
-			break;
-		}
-	}
-
-	float getParameterValue(uint32_t index) const override
-	{
-		return parameters[index];
-	}
-
-	void setParameterValue(uint32_t index, float value) override
-	{
-		parameters[index] = value;
-	}
-
-	void run(const float **inputs, float **outputs, uint32_t frames) override
-	{		
-		for(uint32_t i = 0; i < frames; ++i)
-		{
-			outputs[0][i] = inputs[0][i];
-			outputs[1][i] = inputs[1][i];
-
-			setParameterValue(paramOutLeft, outputs[0][i]);
-			setParameterValue(paramOutRight, outputs[1][i]);
-		}
-	}
-
-  private:
-	float parameters[paramCount];
-
-	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrum)
-};
+}
 
 Plugin *createPlugin()
 {
-	return new WolfSpectrum();
+	return new WolfSpectrumPlugin();
 }
 
 // -----------------------------------------------------------------------------------------------------------

@@ -14,6 +14,10 @@
 #include "ArrowButton.hpp"
 #include "LabelBoxList.hpp"
 
+#include "WolfSpectrumPlugin.hpp"
+
+#include "Spectrogram.hpp"
+
 START_NAMESPACE_DISTRHO
 
 class WolfSpectrumUI : public UI,
@@ -49,10 +53,8 @@ protected:
 
 private:
   ScopedPointer<ResizeHandle> fResizeHandle;
+  ScopedPointer<Spectrogram> fSpectrogram;
 
-  float fSamplesLeft[16384];
-  float fSamplesRight[16384];
-  
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumUI)
 };
 

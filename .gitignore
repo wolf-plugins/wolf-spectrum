@@ -16,5 +16,7 @@ CTestTestfile.cmake
 /build_windows32
 *.cpp.d
 *.cpp.o
+*.c.d
+*.c.o
 *.so
 /bin/
