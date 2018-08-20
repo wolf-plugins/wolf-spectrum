@@ -3,8 +3,8 @@
 
 #include "DistrhoPluginInfo.h"
 #include "NanoVG.hpp"
+#include "WolfSpectrumPlugin.hpp"
 
-#include "fft.hpp"
 
 START_NAMESPACE_DISTRHO
 
