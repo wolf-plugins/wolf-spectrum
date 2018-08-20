@@ -8,8 +8,7 @@
 
 START_NAMESPACE_DISTRHO
 
-class Spectrogram : public NanoWidget,
-                    public IdleCallback
+class Spectrogram : public NanoWidget
 {
 public:
   Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size);
@@ -17,11 +16,9 @@ public:
 
   void process(float **samples, uint32_t numSamples);
 
-  void setSamples(float **samples);
   void setParameterValue(uint32_t i, float v);
   void onNanoDisplay();
   void setLogFrequencyScaling(bool yesno);
-  void idleCallback() override; 
 
 private:
   UI *fUI;

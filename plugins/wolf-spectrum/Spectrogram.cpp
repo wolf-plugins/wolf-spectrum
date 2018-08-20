@@ -114,10 +114,6 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     fftw_free(out);
 }
 
-void Spectrogram::setSamples(float **samples)
-{
-}
-
 void Spectrogram::onNanoDisplay()
 {
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
@@ -134,10 +130,6 @@ void Spectrogram::onNanoDisplay()
             process(fSamples, 256);
         }
     }
-}
-
-void Spectrogram::idleCallback()
-{
 }
 
 END_NAMESPACE_DISTRHO

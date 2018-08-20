@@ -33,6 +33,9 @@ START_NAMESPACE_DISTRHO
 WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
 										   fRingbuffer(16384 * 2)
 {
+	parameters[paramFrequencyScaling] = 0.0f;
+	parameters[paramScrollDirection] = 0.0f;
+	parameters[paramBlockSize] = 0.0f;
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -111,9 +114,9 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		}
 		break;
 	case paramBlockSize:
-		parameter.ranges.min = 512;
-		parameter.ranges.max = 16384;
-		parameter.ranges.def = 512;
+		parameter.ranges.min = 0;
+		parameter.ranges.max = 5;
+		parameter.ranges.def = 0;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Block Size";
 		parameter.symbol = "blocksize";
@@ -123,17 +126,17 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
 			parameter.enumValues.values = values;
 			values[0].label = "512 samples";
-			values[0].value = 512;
+			values[0].value = BlockSize512;
 			values[1].label = "1024 samples";
-			values[1].value = 1024;
+			values[1].value = BlockSize1024;
 			values[2].label = "2048 samples";
-			values[2].value = 2048;
+			values[2].value = BlockSize2048;
 			values[3].label = "4096 samples";
-			values[3].value = 4096;
+			values[3].value = BlockSize4096;
 			values[4].label = "8192 samples";
-			values[4].value = 8192;
+			values[4].value = BlockSize8192;
 			values[5].label = "16384 samples";
-			values[5].value = 16384;
+			values[5].value = BlockSize16384;
 		}
 		break;
 	}
