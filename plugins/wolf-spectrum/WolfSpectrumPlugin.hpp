@@ -51,6 +51,16 @@ class WolfSpectrumPlugin : public Plugin
 		FrequencyScalingLinear
 	};
 
+	enum BlockSize
+	{
+		BlockSize512 = 0,
+		BlockSize1024,
+		BlockSize2048,
+		BlockSize4096,
+		BlockSize8192,
+		BlockSize16384
+	};
+
   protected:
 	const char *getLabel() const noexcept override;
 
