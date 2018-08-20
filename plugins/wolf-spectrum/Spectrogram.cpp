@@ -13,8 +13,7 @@
 START_NAMESPACE_DISTRHO
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
-                                                                        fUI(ui),
-                                                                        fSamples(nullptr)
+                                                                        fUI(ui)
 {
     setSize(size);
 
@@ -117,13 +116,28 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
 void Spectrogram::setSamples(float **samples)
 {
-    memcpy(fSamples[0], samples[0], sizeof(float) * 1024);
-    memcpy(fSamples[1], samples[1], sizeof(float) * 1024);
 }
 
 void Spectrogram::onNanoDisplay()
 {
-    process(fSamples, 256);
+    if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
+    {
+        const MutexLocker csm(dspPtr->fMutex);
+
+        while (dspPtr->fRingbuffer.count() >= 256)
+        {
+            for (int i = 0; i < 512; ++i)
+            {
+                fSamples[0][i] = dspPtr->fRingbuffer.get();
+            }
+
+            process(fSamples, 256);
+        }
+    }
+}
+
+void Spectrogram::idleCallback()
+{
 }
 
 END_NAMESPACE_DISTRHO

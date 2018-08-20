@@ -85,7 +85,7 @@ void WolfSpectrumUI::positionWidgets(uint width, uint height)
 }
 
 void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
-{
+{    
     switch (index)
     {
     case paramFrequencyScaling:
@@ -104,16 +104,6 @@ void WolfSpectrumUI::onNanoDisplay()
 void WolfSpectrumUI::uiIdle()
 {
     repaint();
-
-    if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)getPluginInstancePointer())
-    {
-        if (dspPtr->fSamples == nullptr)
-            return;
-
-        const MutexLocker csm(dspPtr->fMutex);
-
-        fSpectrogram->setSamples(dspPtr->fSamples);
-    }
 }
 
 bool WolfSpectrumUI::onMouse(const MouseEvent &ev)

@@ -27,6 +27,7 @@
 #include <cmath>
 
 #include "WolfSpectrumParameters.hpp"
+#include "Ringbuffer.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -34,7 +35,7 @@ START_NAMESPACE_DISTRHO
 
 class WolfSpectrumPlugin : public Plugin
 {
-	friend class WolfSpectrumUI;
+	friend class Spectrogram;
 
   public:
 	WolfSpectrumPlugin();
@@ -88,7 +89,7 @@ class WolfSpectrumPlugin : public Plugin
 	float parameters[paramCount];
 
 	Mutex fMutex;
-	float **fSamples;
+	wolf::Ringbuffer<float> fRingbuffer;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };
