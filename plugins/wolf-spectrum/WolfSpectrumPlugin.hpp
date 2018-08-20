@@ -35,10 +35,22 @@ START_NAMESPACE_DISTRHO
 
 class WolfSpectrumPlugin : public Plugin
 {
-    friend class WolfSpectrumUI;
-    
+	friend class WolfSpectrumUI;
+
   public:
 	WolfSpectrumPlugin();
+
+	enum ScrollDirection
+	{
+		ScrollDirectionVertical = 0,
+		ScrollDirectionHorizontal
+	};
+
+	enum FrequencyScaling
+	{
+		FrequencyScalingLogarithmic = 0,
+		FrequencyScalingLinear
+	};
 
   protected:
 	const char *getLabel() const noexcept override;
@@ -66,8 +78,8 @@ class WolfSpectrumPlugin : public Plugin
   private:
 	float parameters[paramCount];
 
-    Mutex fMutex;
-    float **fSamples;
+	Mutex fMutex;
+	float **fSamples;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };

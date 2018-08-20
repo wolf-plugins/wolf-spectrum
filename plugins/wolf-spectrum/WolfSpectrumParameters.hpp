@@ -7,8 +7,9 @@ START_NAMESPACE_DISTRHO
 
 enum Parameters
 {
-    paramOutLeft,
-    paramOutRight,
+    paramFrequencyScaling = 0,
+    paramScrollDirection,
+    paramBlockSize,
     paramCount
 };
 

@@ -69,22 +69,65 @@ uint32_t WolfSpectrumPlugin::getVersion() const noexcept
 
 int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
 {
-	return d_cconst('w', 'S', 'c', 'g');
+	return d_cconst('W', 'S', 'p', 't');
 }
 
 void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 {
 	switch (index)
 	{
-	case paramOutLeft:
-		parameter.name = "Out Left";
-		parameter.symbol = "outleft";
-		parameter.hints = kParameterIsOutput;
+	case paramFrequencyScaling:
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Frequency Scaling";
+		parameter.symbol = "frequencyscaling";
+		parameter.enumValues.count = 2;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "Logarithmic";
+			values[0].value = FrequencyScalingLogarithmic;
+			values[1].label = "Linear";
+			values[1].value = FrequencyScalingLinear;
+		}
 		break;
-	case paramOutRight:
-		parameter.name = "Out Right";
-		parameter.symbol = "outright";
-		parameter.hints = kParameterIsOutput;
+	case paramScrollDirection:
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Scroll Direction";
+		parameter.symbol = "scrolldirection";
+		parameter.enumValues.count = 2;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "Vertical";
+			values[0].value = ScrollDirectionVertical;
+			values[1].label = "Horizontal";
+			values[1].value = ScrollDirectionHorizontal;
+		}
+		break;
+	case paramBlockSize:
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Block Size";
+		parameter.symbol = "blocksize";
+		parameter.enumValues.count = 6;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "512 samples";
+			values[0].value = 512;
+			values[1].label = "1024 samples";
+			values[1].value = 1024;
+			values[2].label = "2048 samples";
+			values[2].value = 2048;
+			values[3].label = "4086 samples";
+			values[3].value = 4096;
+			values[4].label = "8192 samples";
+			values[4].value = 8192;
+			values[5].label = "16384 samples";
+			values[5].value = 16384;
+		}
 		break;
 	}
 }

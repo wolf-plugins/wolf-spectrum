@@ -87,10 +87,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-    case paramOutLeft:
-        break;
-    case paramOutRight:
-        break;
+
     default:
         break;
     }
