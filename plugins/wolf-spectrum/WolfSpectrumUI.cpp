@@ -17,7 +17,7 @@ START_NAMESPACE_DISTRHO
 
 WolfSpectrumUI::WolfSpectrumUI() : UI(300, 200)
 {
-    const uint minWidth = 300;
+    const uint minWidth = 256;
     const uint minHeight = 200;
 
     const uint knobsLabelBoxWidth = 66;
@@ -81,13 +81,15 @@ void WolfSpectrumUI::tryRememberSize()
 void WolfSpectrumUI::positionWidgets(uint width, uint height)
 {
     fResizeHandle->setAbsolutePos(width - fResizeHandle->getWidth(), height - fResizeHandle->getHeight());
+    fSpectrogram->setSize(width, height);
 }
 
 void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 {
     switch (index)
     {
-
+    case paramFrequencyScaling:
+        fSpectrogram->setLogFrequencyScaling(value == WolfSpectrumPlugin::FrequencyScaling::FrequencyScalingLogarithmic);
     default:
         break;
     }

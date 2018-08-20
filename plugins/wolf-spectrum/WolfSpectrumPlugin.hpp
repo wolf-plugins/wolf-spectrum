@@ -27,7 +27,6 @@
 #include <cmath>
 
 #include "WolfSpectrumParameters.hpp"
-#include "WolfSpectrumUI.hpp"
 
 START_NAMESPACE_DISTRHO
 

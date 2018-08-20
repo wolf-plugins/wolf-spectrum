@@ -2,6 +2,7 @@
 #include "Spectrogram.hpp"
 #include "DistrhoUI.hpp"
 #include "Window.hpp"
+#include "Mathf.hpp"
 
 #include <stdlib.h>
 #include <math.h>
@@ -32,10 +33,17 @@ double windowHanning(int i, int transformSize)
     return (0.5 * (1.0 - cos(2.0 * M_PI * (double)i / (double)(transformSize - 1))));
 }
 
+void Spectrogram::setLogFrequencyScaling(bool yesno)
+{
+    fLogFrequencyScaling = yesno;
+}
+
 void Spectrogram::process(float **samples, uint32_t numSamples)
 {
     if (samples == nullptr)
         return;
+
+    const float width = getWidth();
 
     int transform_size = 512;
     int half = transform_size / 2;
@@ -49,6 +57,9 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
     out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * transform_size);
 
+    const float zoomX = width / numSamples;
+    scale(zoomX, 1);
+
     for (uint32_t x = 0; x < numSamples / step_size; ++x)
     {
         // Fill the transformation array with a sample frame and apply the window function.
@@ -61,7 +72,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
         p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
 
         fftw_execute(p);
-        
+
         for (int i = 0; i < half; ++i)
         {
             out[i][0] *= (2.0 / transform_size);                          // real values
@@ -84,9 +95,15 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
             fillColor(Color::fromHSL((175 + (int)(120 * processed[i]) % 255) / 255.f, 1, 0.58, processed[i]));
 
-            const int freqSize = 9;
+            const int freqSize = 1;
+            float freqPosX = i * freqSize;
 
-            rect(i * freqSize, 100, freqSize, freqSize);
+            if (fLogFrequencyScaling)
+            {
+                freqPosX = wolf::invLogScale(freqPosX + 1, 1, half) - 1;
+            }
+
+            rect(freqPosX, 100, freqSize, freqSize);
             fill();
 
             closePath();

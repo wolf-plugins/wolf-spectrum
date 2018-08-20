@@ -15,15 +15,17 @@ public:
   ~Spectrogram();
 
   void process(float **samples, uint32_t numSamples);
-  
+
   void setSamples(float **samples);
   void setParameterValue(uint32_t i, float v);
   void onNanoDisplay();
+  void setLogFrequencyScaling(bool yesno);
 
 private:
   UI *fUI;
   float **fSamples;
-  
+  bool fLogFrequencyScaling;
+
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };
 
