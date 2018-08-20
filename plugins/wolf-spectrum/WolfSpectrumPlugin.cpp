@@ -77,6 +77,9 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 	switch (index)
 	{
 	case paramFrequencyScaling:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = 1;
+		parameter.ranges.def = 0;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Frequency Scaling";
 		parameter.symbol = "frequencyscaling";
@@ -92,6 +95,9 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		}
 		break;
 	case paramScrollDirection:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = 1;
+		parameter.ranges.def = 0;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Scroll Direction";
 		parameter.symbol = "scrolldirection";
