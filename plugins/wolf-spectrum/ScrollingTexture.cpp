@@ -1,7 +1,6 @@
 
 #include "Spectrogram.hpp"
 #include "DistrhoUI.hpp"
-#include "src/nanovg/nanovg.h"
 
 #include "Window.hpp"
 #include "Mathf.hpp"
@@ -13,9 +12,9 @@
 
 START_NAMESPACE_DISTRHO
 
-PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
-                                                                                fDirty(true),
-                                                                                fScaleX(1.0f)
+PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags) : NanoWidget(widget),
+                                                                                                fDirty(true),
+                                                                                                fScaleX(1.0f)
 {
     setSize(size);
 
@@ -24,7 +23,7 @@ PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size) : 
     NVGcontext *context = getContext();
 
     fImageData = (unsigned char *)malloc(width * height * 4);
-    fFileId = nvgCreateImageRGBA(context, width, height, 0, fImageData);
+    fFileId = nvgCreateImageRGBA(context, width, height, imageFlags, fImageData);
 }
 
 void PixelDrawingSurface::setScaleX(float scale)

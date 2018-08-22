@@ -2,13 +2,14 @@
 #define TEXTURE_ROLL_HPP_INCLUDED
 
 #include "NanoVG.hpp"
+#include "src/nanovg/nanovg.h"
 
 START_NAMESPACE_DISTRHO
 
 class PixelDrawingSurface : public NanoWidget
 {
   public:
-    PixelDrawingSurface(NanoWidget *widget, Size<uint> size);
+    PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = NVG_IMAGE_NEAREST);
 
     void drawPixel(int posX, int posY, Color pixelColor);
     void setScaleX(float scale);
