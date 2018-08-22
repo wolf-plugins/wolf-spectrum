@@ -4,7 +4,7 @@
 #include "DistrhoPluginInfo.h"
 #include "NanoVG.hpp"
 #include "WolfSpectrumPlugin.hpp"
-
+#include "ScrollingTexture.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -24,6 +24,7 @@ private:
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
+  ScrollingTexture fScrollingTexture;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };

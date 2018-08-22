@@ -13,7 +13,8 @@
 START_NAMESPACE_DISTRHO
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
-                                                                        fUI(ui)
+                                                                        fUI(ui),
+                                                                        fScrollingTexture(this, size)
 {
     setSize(size);
 
@@ -56,13 +57,11 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
     out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * transform_size);
 
-    const float zoomX = width / numSamples;
-    scale(zoomX, 1);
+    const float scaleX = width / numSamples;
+    fScrollingTexture.setScaleX(scaleX);
 
     for (uint32_t x = 0; x < numSamples / step_size; ++x)
     {
-        // Fill the transformation array with a sample frame and apply the window function.
-        // Normalization is performed later
         for (uint32_t j = 0, i = x * step_size; i < x * step_size + transform_size; ++i, ++j)
         {
             in[j] = samples[0][i] * windowHanning(j, transform_size);
@@ -79,20 +78,15 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
             processed[i] = out[i][0] * out[i][0] + out[i][1] * out[i][1]; // power spectrum
             processed[i] = 10.0 / log(10.0) * log(processed[i] + 1e-9);   // dB
 
-            // The resulting spectral values in 'processed' are in dB and related to a maximum
-            // value of about 90dB.
-
-            // Transform all dB values to a range between 0 and 1:
-            processed[i] = 1.0 - processed[i] / -90.0; // Reduce the divisor if you prefer darker peaks
+            // Normalize values
+            processed[i] = 1.0 - processed[i] / -90.0;
 
             if (processed[i] > 1)
             {
                 processed[i] = 1;
             }
 
-            beginPath();
-
-            fillColor(Color::fromHSL((175 + (int)(120 * processed[i]) % 255) / 255.f, 1, 0.58, processed[i]));
+            Color pixelColor = Color::fromHSL((175 + (int)(120 * processed[i]) % 255) / 255.f, 1, 0.58, processed[i]);
 
             const int freqSize = 1;
             float freqPosX = i * freqSize;
@@ -102,10 +96,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
                 freqPosX = wolf::invLogScale(freqPosX + 1, 1, half) - 1;
             }
 
-            rect(freqPosX, 100, freqSize, freqSize);
-            fill();
-
-            closePath();
+            fScrollingTexture.drawPixelOnCurrentLine(freqPosX, pixelColor);
         }
 
         fftw_destroy_plan(p);
@@ -120,7 +111,7 @@ void Spectrogram::onNanoDisplay()
     {
         const MutexLocker csm(dspPtr->fMutex);
 
-        while (dspPtr->fRingbuffer.count() >= 256)
+        while (dspPtr->fRingbuffer.count() >= 512)
         {
             for (int i = 0; i < 512; ++i)
             {
