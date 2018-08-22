@@ -36,9 +36,11 @@ class ScrollingTexture : public NanoWidget
   protected:
     void onNanoDisplay() override;
 
-  private:
+  private:    
     PixelDrawingSurface textureA;
     PixelDrawingSurface textureB;
+
+    int scrollTicks;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScrollingTexture)
 };

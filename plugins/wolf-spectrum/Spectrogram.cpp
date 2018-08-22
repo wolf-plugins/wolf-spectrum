@@ -97,6 +97,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
             }
 
             fScrollingTexture.drawPixelOnCurrentLine(freqPosX, pixelColor);
+            fScrollingTexture.scroll();
         }
 
         fftw_destroy_plan(p);
