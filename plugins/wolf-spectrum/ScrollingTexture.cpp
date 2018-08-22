@@ -99,7 +99,7 @@ void ScrollingTexture::drawPixelOnCurrentLine(float posX, Color color)
     const float posYA = textureA.getAbsoluteY();
     const float posYB = textureB.getAbsoluteY();
 
-    if(posYA <= getAbsoluteY())
+    if (posYA <= getAbsoluteY())
     {
         textureA.drawPixel(posX, std::abs(posYA), color);
     }
@@ -109,11 +109,16 @@ void ScrollingTexture::drawPixelOnCurrentLine(float posX, Color color)
     }
 }
 
+void ScrollingTexture::setBlockSize(int blockSize)
+{
+    this->blockSize = blockSize;
+}
+
 void ScrollingTexture::scroll()
 {
     ++scrollTicks;
 
-    if(scrollTicks < 256)
+    if (scrollTicks < blockSize)
         return;
 
     scrollTicks = 0;
@@ -124,8 +129,8 @@ void ScrollingTexture::scroll()
     const float textureBDest = posYParent - textureB.getHeight() + 1;
     const float posYA = textureA.getAbsoluteY() + 1;
     const float posYB = textureB.getAbsoluteY() + 1;
-    
-    if(posYA > bottomParent)
+
+    if (posYA > bottomParent)
     {
         textureA.setAbsoluteY(textureADest);
     }
@@ -134,7 +139,7 @@ void ScrollingTexture::scroll()
         textureA.setAbsoluteY(posYA);
     }
 
-    if(posYB > bottomParent)
+    if (posYB > bottomParent)
     {
         textureB.setAbsoluteY(textureBDest);
     }

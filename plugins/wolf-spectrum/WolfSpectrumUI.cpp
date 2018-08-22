@@ -121,32 +121,6 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
     return false;
 }
 
-void WolfSpectrumUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
-{
-    const uint switchId = nanoSwitch->getId();
-    const int value = nanoSwitch->isDown() ? 1 : 0;
-
-    setParameterValue(switchId, value);
-}
-
-void WolfSpectrumUI::nanoButtonClicked(NanoButton *nanoButton)
-{
-}
-
-void WolfSpectrumUI::nanoWheelValueChanged(NanoWheel *nanoWheel, const int value)
-{
-    const uint id = nanoWheel->getId();
-
-    setParameterValue(id, value);
-}
-
-void WolfSpectrumUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
-{
-    const uint id = nanoKnob->getId();
-
-    setParameterValue(id, value);
-}
-
 void WolfSpectrumUI::resizeHandleMoved(int width, int height)
 {
     setSize(width, height);

@@ -2,17 +2,8 @@
 #define WOLF_SPECTRUM_UI_HPP_INCLUDED
 
 #include "DistrhoUI.hpp"
-#include "RemoveDCSwitch.hpp"
-#include "OversampleWheel.hpp"
-#include "VolumeKnob.hpp"
 #include "ResizeHandle.hpp"
-#include "LabelBox.hpp"
-#include "BipolarModeSwitch.hpp"
-#include "GlowingLabelsBox.hpp"
 #include "NanoLabel.hpp"
-#include "WidgetBar.hpp"
-#include "ArrowButton.hpp"
-#include "LabelBoxList.hpp"
 
 #include "WolfSpectrumPlugin.hpp"
 
@@ -21,10 +12,6 @@
 START_NAMESPACE_DISTRHO
 
 class WolfSpectrumUI : public UI,
-                     public NanoSwitch::Callback,
-                     public NanoButton::Callback,
-                     public NanoWheel::Callback,
-                     public NanoKnob::Callback,
                      public ResizeHandle::Callback
 {
 public:
@@ -37,11 +24,6 @@ protected:
   void parameterChanged(uint32_t, float value) override;
   void tryRememberSize();
   void positionWidgets(uint width, uint height);
-
-  void nanoSwitchClicked(NanoSwitch *nanoSwitch);
-  void nanoButtonClicked(NanoButton *nanoButton);
-  void nanoWheelValueChanged(NanoWheel *nanoWheel, const int value);
-  void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value);
 
   void resizeHandleMoved(int width, int height);
 

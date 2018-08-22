@@ -30,10 +30,6 @@ OBJS_UI  = \
 	Resources/Fonts/roboto_light.cpp.o \
 	Resources/Fonts/chivo_bold.cpp.o \
 	Resources/Fonts/chivo_italic.cpp.o \
-	Common/Widgets/src/NanoSwitch.cpp.o \
-	Common/Widgets/src/NanoButton.cpp.o \
-	Common/Widgets/src/NanoWheel.cpp.o \
-	Common/Widgets/src/NanoKnob.cpp.o \
 	Common/Widgets/src/NanoLabel.cpp.o \
 	Common/Widgets/src/ResizeHandle.cpp.o \
 	ScrollingTexture.cpp.o \
