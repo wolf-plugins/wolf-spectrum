@@ -14,18 +14,22 @@ START_NAMESPACE_DISTRHO
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
-                                                                        fScrollingTexture(this, size)
+                                                                        fScrollingTexture(this, size),
+                                                                        fBlockSize(512)
 {
     setSize(size);
 
     fSamples = (float **)malloc(sizeof(float *) * 2);
 
-    fSamples[0] = (float *)malloc(1024 * sizeof(float));
-    fSamples[1] = (float *)malloc(1024 * sizeof(float));
+    fSamples[0] = (float *)malloc(16384 * sizeof(float));
+    fSamples[1] = (float *)malloc(16384 * sizeof(float));
 }
 
 Spectrogram::~Spectrogram()
 {
+    free(fSamples[1]);
+    free(fSamples[0]);
+    free(fSamples);
 }
 
 double windowHanning(int i, int transformSize)
@@ -45,7 +49,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
     const float width = getWidth();
 
-    int transform_size = 512;
+    int transform_size = fBlockSize;
     int half = transform_size / 2;
     int step_size = transform_size / 2;
 
@@ -106,20 +110,26 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     fftw_free(out);
 }
 
+void Spectrogram::setBlockSize(int blockSize)
+{
+    fBlockSize = blockSize;
+    fScrollingTexture.setBlockSize(blockSize);
+}
+
 void Spectrogram::onNanoDisplay()
 {
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         const MutexLocker csm(dspPtr->fMutex);
 
-        while (dspPtr->fRingbuffer.count() >= 512)
+        while (dspPtr->fRingbuffer.count() >= fBlockSize)
         {
-            for (int i = 0; i < 512; ++i)
+            for (int i = 0; i < fBlockSize; ++i)
             {
                 fSamples[0][i] = dspPtr->fRingbuffer.get();
             }
 
-            process(fSamples, 256);
+            process(fSamples, fBlockSize / 2);
         }
     }
 }

@@ -19,13 +19,15 @@ public:
   void setParameterValue(uint32_t i, float v);
   void onNanoDisplay();
   void setLogFrequencyScaling(bool yesno);
+  void setBlockSize(int blockSize);
 
 private:
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
   ScrollingTexture fScrollingTexture;
-
+  int fBlockSize;
+  
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };
 

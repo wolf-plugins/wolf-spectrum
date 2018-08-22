@@ -90,7 +90,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     {
     case paramFrequencyScaling:
         fSpectrogram->setLogFrequencyScaling(value == WolfSpectrumPlugin::FrequencyScaling::FrequencyScalingLogarithmic);
-    default:
+        break;
+    case paramBlockSize:
+        fSpectrogram->setBlockSize(std::pow(2, 9 + (int)value));
         break;
     }
 }

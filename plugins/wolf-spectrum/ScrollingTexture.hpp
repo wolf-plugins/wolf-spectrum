@@ -33,7 +33,8 @@ class ScrollingTexture : public NanoWidget
   void drawPixelOnCurrentLine(float posX, Color color);
   void scroll();
   void setScaleX(float scale);
-
+  void setBlockSize(int blockSize);
+  
   protected:
     void onNanoDisplay() override;
 
@@ -42,6 +43,7 @@ class ScrollingTexture : public NanoWidget
     PixelDrawingSurface textureB;
 
     int scrollTicks;
+    int blockSize;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScrollingTexture)
 };
