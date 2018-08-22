@@ -54,7 +54,6 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     int step_size = transform_size / 2;
 
     double in[transform_size];
-    double processed[half];
 
     fftw_complex *out;
     fftw_plan p;
@@ -79,18 +78,19 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
         {
             out[i][0] *= (2.0 / transform_size);                          // real values
             out[i][1] *= (2.0 / transform_size);                          // complex values
-            processed[i] = out[i][0] * out[i][0] + out[i][1] * out[i][1]; // power spectrum
-            processed[i] = 10.0 / log(10.0) * log(processed[i] + 1e-9);   // dB
+
+            const float powerSpectrum = out[i][0] * out[i][0] + out[i][1] * out[i][1];
+            float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);
 
             // Normalize values
-            processed[i] = 1.0 - processed[i] / -90.0;
+            powerSpectrumdB = 1.0 - powerSpectrumdB / -90.0;
 
-            if (processed[i] > 1)
+            if (powerSpectrumdB > 1)
             {
-                processed[i] = 1;
+                powerSpectrumdB = 1;
             }
 
-            Color pixelColor = Color::fromHSL((175 + (int)(120 * processed[i]) % 255) / 255.f, 1, 0.58, processed[i]);
+            Color pixelColor = Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
 
             const int freqSize = 1;
             float freqPosX = i * freqSize;
