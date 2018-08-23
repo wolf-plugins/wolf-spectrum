@@ -22,6 +22,8 @@ public:
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
 
+  void clear();
+  
 protected:
   void onResize(const ResizeEvent &ev) override;
 

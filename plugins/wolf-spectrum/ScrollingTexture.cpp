@@ -31,11 +31,16 @@ void PixelDrawingSurface::setScaleX(float scale)
     fScaleX = scale;
 }
 
+void PixelDrawingSurface::clear()
+{
+    memset(fImageData, 0, fBufferWidth * fBufferHeight * 4);
+}
+
 void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
 {
     const int width = fBufferWidth;
     const int height = fBufferHeight;
-    
+
     if (posX < 0 || posX >= width || posY < 0 || posY >= height)
         return;
 
@@ -91,6 +96,12 @@ ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWi
 
 ScrollingTexture::~ScrollingTexture()
 {
+}
+
+void ScrollingTexture::clear()
+{
+    textureA.clear();
+    textureB.clear();
 }
 
 void ScrollingTexture::onResize(const ResizeEvent &ev)

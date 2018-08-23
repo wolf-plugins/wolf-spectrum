@@ -13,6 +13,7 @@ public:
 
   void drawPixel(int posX, int posY, Color pixelColor);
   void setScaleX(float scale);
+  void clear();
 
 protected:
   void onNanoDisplay() override;
@@ -37,6 +38,7 @@ public:
   void setScaleX(float scale);
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
+  void clear();
 
 protected:
   void onNanoDisplay() override;

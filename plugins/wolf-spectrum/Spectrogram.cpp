@@ -37,9 +37,15 @@ double windowHanning(int i, int transformSize)
     return (0.5 * (1.0 - cos(2.0 * M_PI * (double)i / (double)(transformSize - 1))));
 }
 
+void Spectrogram::clear()
+{
+    fScrollingTexture.clear();
+}
+
 void Spectrogram::setLogFrequencyScaling(bool yesno)
 {
     fLogFrequencyScaling = yesno;
+    clear();
 }
 
 void Spectrogram::setHorizontalScrolling(bool yesno)
