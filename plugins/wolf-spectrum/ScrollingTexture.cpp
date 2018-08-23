@@ -14,16 +14,16 @@ START_NAMESPACE_DISTRHO
 
 PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags) : NanoWidget(widget),
                                                                                                 fDirty(true),
-                                                                                                fScaleX(1.0f)
+                                                                                                fScaleX(1.0f),
+                                                                                                fBufferWidth(256),
+                                                                                                fBufferHeight(3012)
 {
     setSize(size);
 
-    const float width = size.getWidth();
-    const float height = size.getHeight();
     NVGcontext *context = getContext();
 
-    fImageData = (unsigned char *)malloc(width * height * 4);
-    fFileId = nvgCreateImageRGBA(context, width, height, imageFlags, fImageData);
+    fImageData = (unsigned char *)malloc(fBufferWidth * fBufferHeight * 4);
+    fFileId = nvgCreateImageRGBA(context, fBufferWidth, fBufferHeight, imageFlags, fImageData);
 }
 
 void PixelDrawingSurface::setScaleX(float scale)
@@ -33,9 +33,9 @@ void PixelDrawingSurface::setScaleX(float scale)
 
 void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
 {
-    const int width = getWidth();
-    const int height = getHeight();
-
+    const int width = fBufferWidth;
+    const int height = fBufferHeight;
+    
     if (posX < 0 || posX >= width || posY < 0 || posY >= height)
         return;
 
@@ -62,7 +62,7 @@ void PixelDrawingSurface::onNanoDisplay()
         fDirty = false;
     }
 
-    NVGpaint paint = nvgImagePattern(context, 0, 0, width, height, 0, fFileId, 1.0f);
+    NVGpaint paint = nvgImagePattern(context, 0, 0, fBufferWidth, fBufferHeight, 0, fFileId, 1.0f);
 
     beginPath();
 
@@ -93,10 +93,16 @@ ScrollingTexture::~ScrollingTexture()
 {
 }
 
-void ScrollingTexture::setHorizontalScrolling(bool yesno)
+void ScrollingTexture::onResize(const ResizeEvent &ev)
 {
-    horizontalScrolling = yesno;
+    textureA.setSize(ev.size);
+    textureB.setSize(ev.size);
 
+    positionTextures();
+}
+
+void ScrollingTexture::positionTextures()
+{
     if (horizontalScrolling)
     {
         textureA.setAbsoluteX(getAbsoluteX() - getWidth());
@@ -113,6 +119,13 @@ void ScrollingTexture::setHorizontalScrolling(bool yesno)
         textureA.setAbsoluteY(getAbsoluteY() - getHeight());
         textureB.setAbsoluteY(getAbsoluteY());
     }
+}
+
+void ScrollingTexture::setHorizontalScrolling(bool yesno)
+{
+    horizontalScrolling = yesno;
+
+    positionTextures();
 }
 
 void ScrollingTexture::drawPixelOnCurrentLine(float pos, Color color)

@@ -22,6 +22,9 @@ public:
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
 
+protected:
+  void onResize(const ResizeEvent &ev) override;
+
 private:
   UI *fUI;
   float **fSamples;

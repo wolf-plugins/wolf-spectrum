@@ -48,6 +48,11 @@ void Spectrogram::setHorizontalScrolling(bool yesno)
     fScrollingTexture.setHorizontalScrolling(yesno);
 }
 
+void Spectrogram::onResize(const ResizeEvent &ev)
+{
+    fScrollingTexture.setSize(ev.size);
+}
+
 void Spectrogram::process(float **samples, uint32_t numSamples)
 {
     if (samples == nullptr)

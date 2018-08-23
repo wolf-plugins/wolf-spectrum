@@ -8,27 +8,29 @@ START_NAMESPACE_DISTRHO
 
 class PixelDrawingSurface : public NanoWidget
 {
-  public:
-    PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = NVG_IMAGE_NEAREST);
+public:
+  PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = NVG_IMAGE_NEAREST);
 
-    void drawPixel(int posX, int posY, Color pixelColor);
-    void setScaleX(float scale);
-    
-  protected:
-    void onNanoDisplay() override;
+  void drawPixel(int posX, int posY, Color pixelColor);
+  void setScaleX(float scale);
 
-  private:
-    int fFileId;
-    unsigned char *fImageData;
-    bool fDirty;
-    float fScaleX;
+protected:
+  void onNanoDisplay() override;
+
+private:
+  int fFileId;
+  unsigned char *fImageData;
+  bool fDirty;
+  float fScaleX;
+  int fBufferWidth;
+  int fBufferHeight;
 };
 
 class ScrollingTexture : public NanoWidget
 {
-  public:
-    ScrollingTexture(NanoWidget *widget, Size<uint> size);
-    ~ScrollingTexture();
+public:
+  ScrollingTexture(NanoWidget *widget, Size<uint> size);
+  ~ScrollingTexture();
 
   void drawPixelOnCurrentLine(float pos, Color color);
   void scroll();
@@ -36,22 +38,24 @@ class ScrollingTexture : public NanoWidget
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
 
-  protected:
-    void onNanoDisplay() override;
+protected:
+  void onNanoDisplay() override;
+  void onResize(const ResizeEvent &ev) override;
 
-  private:  
-    void verticalScroll();
-    void horizontalScroll();
+private:
+  void verticalScroll();
+  void horizontalScroll();
+  void positionTextures();
+  
+  PixelDrawingSurface textureA;
+  PixelDrawingSurface textureB;
 
-    PixelDrawingSurface textureA;
-    PixelDrawingSurface textureB;
+  int scrollTicks;
+  int blockSize;
 
-    int scrollTicks;
-    int blockSize;
+  bool horizontalScrolling;
 
-    bool horizontalScrolling;
-
-    DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScrollingTexture)
+  DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScrollingTexture)
 };
 
 END_NAMESPACE_DISTRHO
