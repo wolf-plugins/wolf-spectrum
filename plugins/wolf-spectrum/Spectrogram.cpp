@@ -42,6 +42,12 @@ void Spectrogram::setLogFrequencyScaling(bool yesno)
     fLogFrequencyScaling = yesno;
 }
 
+void Spectrogram::setHorizontalScrolling(bool yesno)
+{
+    fHorizontalScrolling = yesno;
+    fScrollingTexture.setHorizontalScrolling(yesno);
+}
+
 void Spectrogram::process(float **samples, uint32_t numSamples)
 {
     if (samples == nullptr)
@@ -76,8 +82,8 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
         for (int i = 0; i < half; ++i)
         {
-            out[i][0] *= (2.0 / transform_size);                          // real values
-            out[i][1] *= (2.0 / transform_size);                          // complex values
+            out[i][0] *= (2.0 / transform_size); // real values
+            out[i][1] *= (2.0 / transform_size); // complex values
 
             const float powerSpectrum = out[i][0] * out[i][0] + out[i][1] * out[i][1];
             float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);

@@ -20,6 +20,7 @@ public:
   void onNanoDisplay();
   void setLogFrequencyScaling(bool yesno);
   void setBlockSize(int blockSize);
+  void setHorizontalScrolling(bool yesno);
 
 private:
   UI *fUI;
@@ -27,7 +28,8 @@ private:
   bool fLogFrequencyScaling;
   ScrollingTexture fScrollingTexture;
   int fBlockSize;
-  
+  bool fHorizontalScrolling;
+
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };
 

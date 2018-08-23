@@ -93,18 +93,60 @@ ScrollingTexture::~ScrollingTexture()
 {
 }
 
-void ScrollingTexture::drawPixelOnCurrentLine(float posX, Color color)
+void ScrollingTexture::setHorizontalScrolling(bool yesno)
 {
-    const float posYA = textureA.getAbsoluteY();
-    const float posYB = textureB.getAbsoluteY();
+    horizontalScrolling = yesno;
 
-    if (posYA <= getAbsoluteY())
+    if (horizontalScrolling)
     {
-        textureA.drawPixel(posX, std::abs(posYA), color);
+        textureA.setAbsoluteX(getAbsoluteX() - getWidth());
+        textureB.setAbsoluteX(getAbsoluteX());
+
+        textureA.setAbsoluteY(getAbsoluteY());
+        textureB.setAbsoluteY(getAbsoluteY());
     }
     else
     {
-        textureB.drawPixel(posX, std::abs(posYB), color);
+        textureA.setAbsoluteX(getAbsoluteX());
+        textureB.setAbsoluteX(getAbsoluteX());
+
+        textureA.setAbsoluteY(getAbsoluteY() - getHeight());
+        textureB.setAbsoluteY(getAbsoluteY());
+    }
+}
+
+void ScrollingTexture::drawPixelOnCurrentLine(float pos, Color color)
+{
+    if (horizontalScrolling)
+    {
+        //flip drawing pos
+        pos = getHeight() - pos;
+
+        const float posXA = textureA.getAbsoluteX();
+        const float posXB = textureB.getAbsoluteX();
+
+        if (posXA <= getAbsoluteX())
+        {
+            textureA.drawPixel(std::abs(posXA), pos, color);
+        }
+        else
+        {
+            textureB.drawPixel(std::abs(posXB), pos, color);
+        }
+    }
+    else
+    {
+        const float posYA = textureA.getAbsoluteY();
+        const float posYB = textureB.getAbsoluteY();
+
+        if (posYA <= getAbsoluteY())
+        {
+            textureA.drawPixel(pos, std::abs(posYA), color);
+        }
+        else
+        {
+            textureB.drawPixel(pos, std::abs(posYB), color);
+        }
     }
 }
 
@@ -113,15 +155,36 @@ void ScrollingTexture::setBlockSize(int blockSize)
     this->blockSize = blockSize;
 }
 
-void ScrollingTexture::scroll()
+void ScrollingTexture::horizontalScroll()
 {
-    ++scrollTicks;
+    const float posXParent = getAbsoluteX();
+    const float rightParent = posXParent + getWidth();
+    const float textureADest = posXParent - textureA.getWidth() + 1;
+    const float textureBDest = posXParent - textureB.getWidth() + 1;
+    const float posXA = textureA.getAbsoluteX() + 1;
+    const float posXB = textureB.getAbsoluteX() + 1;
 
-    if (scrollTicks < blockSize)
-        return;
+    if (posXA > rightParent)
+    {
+        textureA.setAbsoluteX(textureADest);
+    }
+    else
+    {
+        textureA.setAbsoluteX(posXA);
+    }
 
-    scrollTicks = 0;
+    if (posXB > rightParent)
+    {
+        textureB.setAbsoluteX(textureBDest);
+    }
+    else
+    {
+        textureB.setAbsoluteX(posXB);
+    }
+}
 
+void ScrollingTexture::verticalScroll()
+{
     const float posYParent = getAbsoluteY();
     const float bottomParent = posYParent + getHeight();
     const float textureADest = posYParent - textureA.getHeight() + 1;
@@ -145,6 +208,25 @@ void ScrollingTexture::scroll()
     else
     {
         textureB.setAbsoluteY(posYB);
+    }
+}
+
+void ScrollingTexture::scroll()
+{
+    ++scrollTicks;
+
+    if (scrollTicks < blockSize)
+        return;
+
+    scrollTicks = 0;
+
+    if (horizontalScrolling)
+    {
+        horizontalScroll();
+    }
+    else
+    {
+        verticalScroll();
     }
 }
 

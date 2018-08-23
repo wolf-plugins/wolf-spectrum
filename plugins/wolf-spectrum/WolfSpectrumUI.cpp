@@ -94,6 +94,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramBlockSize:
         fSpectrogram->setBlockSize(std::pow(2, 9 + (int)value));
         break;
+    case paramScrollDirection:
+        fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
+        break;
     }
 }
 
