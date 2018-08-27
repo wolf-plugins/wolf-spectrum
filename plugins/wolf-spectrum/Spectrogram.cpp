@@ -59,6 +59,36 @@ void Spectrogram::onResize(const ResizeEvent &ev)
     fScrollingTexture.setSize(ev.size);
 }
 
+float getPowerSpectrumdB(const fftw_complex *out, const int index, const int transformSize)
+{
+    const float real = out[index][0] * (2.0 / transformSize);
+    const float complex = out[index][1] * (2.0 / transformSize);
+
+    const float powerSpectrum = real * real + complex * complex;
+    float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);
+
+    // Normalize values
+    powerSpectrumdB = 1.0 - powerSpectrumdB / -90.0;
+
+    if (powerSpectrumdB > 1)
+    {
+        powerSpectrumdB = 1;
+    }
+
+    // Threshold
+    /* if (powerSpectrumdB < 0.5)
+            {
+                powerSpectrumdB = 0;
+            } */
+
+    return powerSpectrumdB;
+}
+
+Color getBinPixelColor(const float powerSpectrumdB)
+{
+    return Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
+}
+
 void Spectrogram::process(float **samples, uint32_t numSamples)
 {
     if (samples == nullptr)
@@ -93,34 +123,27 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
         for (int i = 0; i < half; ++i)
         {
-            out[i][0] *= (2.0 / transform_size); // real values
-            out[i][1] *= (2.0 / transform_size); // complex values
+            const float powerSpectrumdB = getPowerSpectrumdB(out, i, transform_size);
 
-            const float powerSpectrum = out[i][0] * out[i][0] + out[i][1] * out[i][1];
-            float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);
-
-            // Normalize values
-            powerSpectrumdB = 1.0 - powerSpectrumdB / -90.0;
-
-            if (powerSpectrumdB > 1)
-            {
-                powerSpectrumdB = 1;
-            }
-
-            // Threshold
-            /* if (powerSpectrumdB < 0.5)
-            {
-                powerSpectrumdB = 0;
-            } */
-
-            Color pixelColor = Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
+            Color pixelColor = getBinPixelColor(powerSpectrumdB);
 
             const int freqSize = 1;
             float freqPosX = i * freqSize;
 
-            if (fLogFrequencyScaling)
+            if (fLogFrequencyScaling && i != half - 1) //must lerp to fill the gaps
             {
+                const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
+                Color nextPixelColor = getBinPixelColor(nextPowerSpectrumdB);
+                
                 freqPosX = wolf::invLogScale(freqPosX + 1, 1, half) - 1;
+                const int nextFreqPos = wolf::invLogScale((i * freqSize + 2), 1, half) - 1;
+                const int freqDelta = nextFreqPos - freqPosX;
+
+                for (int j = freqPosX; j < nextFreqPos; ++j)
+                {
+                    Color lerpedColor = Color(pixelColor, nextPixelColor, (j - freqPosX) / freqDelta);
+                    fScrollingTexture.drawPixelOnCurrentLine(j, lerpedColor);
+                }
             }
 
             fScrollingTexture.drawPixelOnCurrentLine(freqPosX, pixelColor);
