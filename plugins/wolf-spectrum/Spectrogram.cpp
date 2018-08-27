@@ -80,14 +80,14 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     const float scaleX = width / numSamples;
     fScrollingTexture.setScaleX(scaleX);
 
+    p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
+
     for (uint32_t x = 0; x < numSamples / step_size; ++x)
     {
         for (uint32_t j = 0, i = x * step_size; i < x * step_size + transform_size; ++i, ++j)
         {
             in[j] = samples[0][i] * windowHanning(j, transform_size);
         }
-
-        p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
 
         fftw_execute(p);
 
@@ -107,6 +107,12 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
                 powerSpectrumdB = 1;
             }
 
+            // Threshold
+            /* if (powerSpectrumdB < 0.5)
+            {
+                powerSpectrumdB = 0;
+            } */
+
             Color pixelColor = Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
 
             const int freqSize = 1;
@@ -118,12 +124,12 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
             }
 
             fScrollingTexture.drawPixelOnCurrentLine(freqPosX, pixelColor);
-            fScrollingTexture.scroll();
         }
 
-        fftw_destroy_plan(p);
+        fScrollingTexture.scroll();
     }
 
+    fftw_destroy_plan(p);
     fftw_free(out);
 }
 

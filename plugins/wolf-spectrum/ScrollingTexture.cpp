@@ -237,13 +237,6 @@ void ScrollingTexture::verticalScroll()
 
 void ScrollingTexture::scroll()
 {
-    ++scrollTicks;
-
-    if (scrollTicks < blockSize)
-        return;
-
-    scrollTicks = 0;
-
     if (horizontalScrolling)
     {
         horizontalScroll();
