@@ -162,8 +162,35 @@ void Spectrogram::setBlockSize(int blockSize)
     fScrollingTexture.setBlockSize(blockSize);
 }
 
+void Spectrogram::drawLinearScaleGrid()
+{
+    const int max = 22000;
+
+    translate(0.5f, 0.5f);
+
+    for (int i = 2000; i < max; i += 2000)
+    {
+        beginPath();
+
+        const int x = getWidth() * i / max;
+
+        moveTo(x, 0);
+        lineTo(x, getHeight());
+        strokeColor(Color(25,25,28));
+        strokeWidth(1.0f);
+        stroke();
+
+        closePath();
+    }
+
+    translate(-0.5f, -0.5f);
+}
+
 void Spectrogram::onNanoDisplay()
 {
+    if(!fLogFrequencyScaling)
+        drawLinearScaleGrid();
+
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         const MutexLocker csm(dspPtr->fMutex);

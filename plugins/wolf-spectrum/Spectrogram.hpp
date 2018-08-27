@@ -17,7 +17,6 @@ public:
   void process(float **samples, uint32_t numSamples);
 
   void setParameterValue(uint32_t i, float v);
-  void onNanoDisplay();
   void setLogFrequencyScaling(bool yesno);
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
@@ -26,8 +25,11 @@ public:
   
 protected:
   void onResize(const ResizeEvent &ev) override;
+  void onNanoDisplay();
 
 private:
+  void drawLinearScaleGrid();
+
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
