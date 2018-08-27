@@ -172,11 +172,23 @@ void Spectrogram::drawLinearScaleGrid()
     {
         beginPath();
 
-        const int x = getWidth() * i / max;
+        if (fHorizontalScrolling)
+        {
+            const int y = getHeight() * i / max;
 
-        moveTo(x, 0);
-        lineTo(x, getHeight());
-        strokeColor(Color(25,25,28));
+            moveTo(0, y);
+            lineTo(getWidth(), y);
+        }
+
+        else
+        {
+            const int x = getWidth() * i / max;
+
+            moveTo(x, 0);
+            lineTo(x, getHeight());
+        }
+
+        strokeColor(Color(25, 25, 28));
         strokeWidth(1.0f);
         stroke();
 
@@ -188,7 +200,7 @@ void Spectrogram::drawLinearScaleGrid()
 
 void Spectrogram::onNanoDisplay()
 {
-    if(!fLogFrequencyScaling)
+    if (!fLogFrequencyScaling)
         drawLinearScaleGrid();
 
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
