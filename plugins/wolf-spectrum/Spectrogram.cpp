@@ -172,39 +172,49 @@ void Spectrogram::drawLinearScaleGrid()
     {
         beginPath();
 
-        strokeColor(Color(25, 25, 28,255));
+        strokeColor(Color(25, 25, 28, 255));
         strokeWidth(1.0f);
         fontSize(12.0f);
-        fillColor(Color(200,200,200,255));
+        fillColor(Color(200, 200, 200, 255));
 
         const String frequencyCaption = String(i / 1000) + String("K");
+        const int x = getWidth() * i / max;
+        const int y = getHeight() * i / max;
 
         if (fHorizontalScrolling)
         {
-            const int y = getHeight() * i / max;
-
             moveTo(0, y);
             lineTo(getWidth(), y);
-            stroke();
+        }
+        else
+        {
+            moveTo(x, 0);
+            lineTo(x, getHeight());
+        }
 
+        stroke();
+        closePath();
+
+        translate(-0.5f, -0.5f);
+
+        beginPath();
+
+        if (fHorizontalScrolling)
+        {
             textAlign(ALIGN_MIDDLE);
             const int leftPadding = 5;
             text(leftPadding, y, frequencyCaption, NULL);
         }
         else
         {
-            const int x = getWidth() * i / max;
-
-            moveTo(x, 0);
-            lineTo(x, getHeight());
-            stroke();
-
             textAlign(ALIGN_CENTER | ALIGN_TOP);
             const int topPadding = 5;
             text(x, topPadding, frequencyCaption, NULL);
         }
 
         closePath();
+
+        translate(0.5f, 0.5f);
     }
 
     translate(-0.5f, -0.5f);
