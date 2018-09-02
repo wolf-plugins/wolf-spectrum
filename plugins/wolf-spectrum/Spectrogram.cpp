@@ -378,18 +378,6 @@ void Spectrogram::setGridVisibility(bool visible)
 
 void Spectrogram::onNanoDisplay()
 {
-    if (fMustShowGrid)
-    {
-        if (fLogFrequencyScaling)
-        {
-            drawLogScaleGrid();
-        }
-        else
-        {
-            drawLinearScaleGrid();
-        }
-    }
-
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         const MutexLocker csm(dspPtr->fMutex);
