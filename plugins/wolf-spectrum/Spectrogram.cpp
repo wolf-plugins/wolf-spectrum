@@ -162,6 +162,74 @@ void Spectrogram::setBlockSize(int blockSize)
     fScrollingTexture.setBlockSize(blockSize);
 }
 
+void Spectrogram::drawLogScaleGrid()
+{
+    const int max = 22050;
+
+    translate(0.5f, 0.5f);
+
+    for (int i = 1; i < 5; ++i)
+    {
+        for (int j = 1; j < 10; ++j)
+        {
+            beginPath();
+
+            strokeColor(Color(25, 25, 28, 255));
+            strokeWidth(1.0f);
+            fontSize(12.0f);
+            fillColor(Color(200, 200, 200, 255));
+
+            const int frequency = std::pow(10, i) * j;
+
+            if(frequency > max)
+                break;
+
+            const String frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
+
+            const int position = wolf::invLogScale(frequency, 20, max);
+            const int x = getWidth() * position / max;
+            const int y = getHeight() * position / max;
+
+            if (fHorizontalScrolling)
+            {
+                moveTo(0, y);
+                lineTo(getWidth(), y);
+            }
+            else
+            {
+                moveTo(x, 0);
+                lineTo(x, getHeight());
+            }
+
+            stroke();
+            closePath();
+
+            translate(-0.5f, -0.5f);
+
+            beginPath();
+
+            if (fHorizontalScrolling)
+            {
+                textAlign(ALIGN_MIDDLE);
+                const int leftPadding = 5;
+                text(leftPadding, y, frequencyCaption, NULL);
+            }
+            else
+            {
+                textAlign(ALIGN_CENTER | ALIGN_TOP);
+                const int topPadding = 5;
+                text(x, topPadding, frequencyCaption, NULL);
+            }
+
+            closePath();
+
+            translate(0.5f, 0.5f);
+        }
+    }
+
+    translate(-0.5f, -0.5f);
+}
+
 void Spectrogram::drawLinearScaleGrid()
 {
     const int max = 22000;
@@ -222,8 +290,14 @@ void Spectrogram::drawLinearScaleGrid()
 
 void Spectrogram::onNanoDisplay()
 {
-    if (!fLogFrequencyScaling)
+    if (fLogFrequencyScaling)
+    {
+        drawLogScaleGrid();
+    }
+    else
+    {
         drawLinearScaleGrid();
+    }
 
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {

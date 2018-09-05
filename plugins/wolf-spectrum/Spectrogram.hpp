@@ -29,6 +29,7 @@ protected:
 
 private:
   void drawLinearScaleGrid();
+  void drawLogScaleGrid();
 
   UI *fUI;
   float **fSamples;
