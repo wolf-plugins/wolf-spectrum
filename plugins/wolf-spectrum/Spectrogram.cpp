@@ -89,6 +89,17 @@ Color getBinPixelColor(const float powerSpectrumdB)
     return Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
 }
 
+float getBinPos(const int bin, const int numBins, const double sampleRate)
+{
+    const float maxFreq = sampleRate / 2;
+    const float hzPerBin = maxFreq / numBins;
+
+    const float freq = hzPerBin * bin;
+    const float scaledFreq = wolf::invLogScale(freq + 1, 20, maxFreq) - 1;
+
+    return numBins * scaledFreq / maxFreq;
+}
+
 void Spectrogram::process(float **samples, uint32_t numSamples)
 {
     if (samples == nullptr)
@@ -99,6 +110,8 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     int transform_size = fBlockSize;
     int half = transform_size / 2;
     int step_size = transform_size / 2;
+
+    const double sampleRate = 44100; //FIXME
 
     double in[transform_size];
 
@@ -134,9 +147,10 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
             {
                 const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
                 Color nextPixelColor = getBinPixelColor(nextPowerSpectrumdB);
-                
-                freqPosX = wolf::invLogScale(freqPosX + 1, 1, half) - 1;
-                const int nextFreqPos = wolf::invLogScale((i * freqSize + 2), 1, half) - 1;
+
+                freqPosX = getBinPos(i, half, sampleRate);
+                const int nextFreqPos = getBinPos(i + 1, half, sampleRate);
+
                 const int freqDelta = nextFreqPos - freqPosX;
 
                 for (int j = freqPosX; j < nextFreqPos; ++j)
@@ -181,7 +195,7 @@ void Spectrogram::drawLogScaleGrid()
 
             const int frequency = std::pow(10, i) * j;
 
-            if(frequency > max)
+            if (frequency > max)
                 break;
 
             const String frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
