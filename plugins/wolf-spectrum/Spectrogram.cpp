@@ -116,19 +116,15 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
     int transform_size = fBlockSize;
     int half = transform_size / 2;
-    int step_size = transform_size / 2;
+    int step_size = half / 2;
 
     double in[transform_size];
 
-    fftw_complex *out;
-    fftw_plan p;
-
-    out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * transform_size);
+    fftw_complex *out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * transform_size);
+    fftw_plan p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
 
     const float scaleX = width / numSamples;
     fScrollingTexture.setScaleX(scaleX);
-
-    p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
 
     for (uint32_t x = 0; x < numSamples / step_size; ++x)
     {
@@ -222,6 +218,19 @@ void Spectrogram::drawLogScaleGrid()
 
             stroke();
             closePath();
+
+            // TODO: make that less ridiculous
+            const bool mustShowCaption = frequency == 50 ||
+                                         frequency == 100 ||
+                                         frequency == 200 ||
+                                         frequency == 500 ||
+                                         frequency == 1000 ||
+                                         frequency == 2000 ||
+                                         frequency == 5000 ||
+                                         frequency == 10000;
+
+            if (!mustShowCaption)
+                continue;
 
             translate(-0.5f, -0.5f);
 
