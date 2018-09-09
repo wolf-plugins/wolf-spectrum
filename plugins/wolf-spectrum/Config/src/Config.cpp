@@ -76,7 +76,7 @@ static std::string getSystemWideConfigPath()
 
 static std::string getLocalConfigPath()
 {
-    const std::string configName = "wolf-shaper.conf";
+    const std::string configName = "wolf-spectrum.conf";
 
 #if defined(DISTRHO_OS_WINDOWS)
     CHAR my_documents[MAX_PATH];
