@@ -42,6 +42,8 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(300, 200)
     fResizeHandle->setMinSize(minWidth, minHeight);
 
     fSpectrogram = new Spectrogram(this, this, Size<uint>(width, height));
+    fSpectrogram->setSampleRate(getSampleRate());
+    
     positionWidgets(width, height);
 }
 
@@ -85,7 +87,7 @@ void WolfSpectrumUI::positionWidgets(uint width, uint height)
 }
 
 void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
-{    
+{
     switch (index)
     {
     case paramFrequencyScaling:
@@ -129,6 +131,11 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 void WolfSpectrumUI::resizeHandleMoved(int width, int height)
 {
     setSize(width, height);
+}
+
+void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
+{
+    fSpectrogram->setSampleRate(sampleRate);
 }
 
 UI *createUI()

@@ -15,7 +15,8 @@ START_NAMESPACE_DISTRHO
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
                                                                         fScrollingTexture(this, size),
-                                                                        fBlockSize(512)
+                                                                        fBlockSize(512),
+                                                                        fSampleRate(44100)
 {
     setSize(size);
 
@@ -45,6 +46,7 @@ void Spectrogram::clear()
 void Spectrogram::setLogFrequencyScaling(bool yesno)
 {
     fLogFrequencyScaling = yesno;
+
     clear();
 }
 
@@ -52,6 +54,11 @@ void Spectrogram::setHorizontalScrolling(bool yesno)
 {
     fHorizontalScrolling = yesno;
     fScrollingTexture.setHorizontalScrolling(yesno);
+}
+
+void Spectrogram::setSampleRate(const double sampleRate)
+{
+    fSampleRate = sampleRate;
 }
 
 void Spectrogram::onResize(const ResizeEvent &ev)
@@ -111,8 +118,6 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     int half = transform_size / 2;
     int step_size = transform_size / 2;
 
-    const double sampleRate = 44100; //FIXME
-
     double in[transform_size];
 
     fftw_complex *out;
@@ -148,8 +153,8 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
                 const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
                 Color nextPixelColor = getBinPixelColor(nextPowerSpectrumdB);
 
-                freqPosX = getBinPos(i, half, sampleRate);
-                const int nextFreqPos = getBinPos(i + 1, half, sampleRate);
+                freqPosX = getBinPos(i, half, fSampleRate);
+                const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
 
                 const int freqDelta = nextFreqPos - freqPosX;
 

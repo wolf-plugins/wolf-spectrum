@@ -12,7 +12,7 @@
 START_NAMESPACE_DISTRHO
 
 class WolfSpectrumUI : public UI,
-                     public ResizeHandle::Callback
+                       public ResizeHandle::Callback
 {
 public:
   WolfSpectrumUI();
@@ -32,6 +32,7 @@ protected:
   void uiReshape(uint width, uint height) override;
   bool onKeyboard(const KeyboardEvent &ev) override;
   bool onMouse(const MouseEvent &ev) override;
+  void sampleRateChanged(const double sampleRate) override;
 
 private:
   ScopedPointer<ResizeHandle> fResizeHandle;

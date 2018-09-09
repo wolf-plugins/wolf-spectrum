@@ -20,6 +20,7 @@ public:
   void setLogFrequencyScaling(bool yesno);
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
+  void setSampleRate(const double sampleRate);
 
   void clear();
   
@@ -30,13 +31,14 @@ protected:
 private:
   void drawLinearScaleGrid();
   void drawLogScaleGrid();
-
+  
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
   ScrollingTexture fScrollingTexture;
   int fBlockSize;
   bool fHorizontalScrolling;
+  double fSampleRate;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };
