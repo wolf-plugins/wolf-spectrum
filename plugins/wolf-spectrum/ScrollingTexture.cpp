@@ -83,7 +83,8 @@ void PixelDrawingSurface::onNanoDisplay()
 ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                           textureA(this, size),
                                                                           textureB(this, size),
-                                                                          scrollTicks(0)
+                                                                          scrollTicks(0),
+                                                                          horizontalScrolling(false)
 {
     setSize(size);
 
