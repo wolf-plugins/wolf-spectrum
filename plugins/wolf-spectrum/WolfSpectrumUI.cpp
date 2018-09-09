@@ -43,7 +43,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(300, 200)
 
     fSpectrogram = new Spectrogram(this, this, Size<uint>(width, height));
     fSpectrogram->setSampleRate(getSampleRate());
-    
+
     positionWidgets(width, height);
 }
 
@@ -98,6 +98,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
         break;
     case paramScrollDirection:
         fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
+        break;
+    case paramShowGrid:
+        fSpectrogram->setGridVisibility(std::round(value));
         break;
     }
 }

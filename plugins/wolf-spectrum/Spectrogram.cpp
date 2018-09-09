@@ -16,7 +16,8 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fUI(ui),
                                                                         fScrollingTexture(this, size),
                                                                         fBlockSize(512),
-                                                                        fSampleRate(44100)
+                                                                        fSampleRate(44100),
+                                                                        fMustShowGrid(true)
 {
     setSize(size);
 
@@ -116,7 +117,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
 
     int transform_size = fBlockSize;
     int half = transform_size / 2;
-    int step_size = half / 2;
+    int step_size = transform_size / 2;
 
     double in[transform_size];
 
@@ -316,15 +317,23 @@ void Spectrogram::drawLinearScaleGrid()
     translate(-0.5f, -0.5f);
 }
 
+void Spectrogram::setGridVisibility(bool visible)
+{
+    fMustShowGrid = visible;
+}
+
 void Spectrogram::onNanoDisplay()
 {
-    if (fLogFrequencyScaling)
+    if (fMustShowGrid)
     {
-        drawLogScaleGrid();
-    }
-    else
-    {
-        drawLinearScaleGrid();
+        if (fLogFrequencyScaling)
+        {
+            drawLogScaleGrid();
+        }
+        else
+        {
+            drawLinearScaleGrid();
+        }
     }
 
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())

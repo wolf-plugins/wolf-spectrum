@@ -35,7 +35,8 @@ WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
 {
 	parameters[paramFrequencyScaling] = 0.0f;
 	parameters[paramScrollDirection] = 0.0f;
-	parameters[paramBlockSize] = 0.0f;
+	parameters[paramBlockSize] = BlockSize2048;
+	parameters[paramShowGrid] = 1.0f;
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -116,7 +117,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 	case paramBlockSize:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 5;
-		parameter.ranges.def = 0;
+		parameter.ranges.def = BlockSize2048;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Block Size";
 		parameter.symbol = "blocksize";
@@ -138,6 +139,14 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[5].label = "16384 samples";
 			values[5].value = BlockSize16384;
 		}
+		break;
+	case paramShowGrid:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = 1;
+		parameter.ranges.def = 1;
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+		parameter.name = "Show Grid";
+		parameter.symbol = "showgrid";
 		break;
 	}
 }

@@ -21,6 +21,7 @@ public:
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
   void setSampleRate(const double sampleRate);
+  void setGridVisibility(bool visible);
 
   void clear();
   
@@ -39,6 +40,7 @@ private:
   int fBlockSize;
   bool fHorizontalScrolling;
   double fSampleRate;
+  bool fMustShowGrid;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };
