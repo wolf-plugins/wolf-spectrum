@@ -9,10 +9,11 @@ START_NAMESPACE_DISTRHO
 class PixelDrawingSurface : public NanoWidget
 {
 public:
-  PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = NVG_IMAGE_NEAREST);
+  PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = 0);
 
   void drawPixel(int posX, int posY, Color pixelColor);
   void setScaleX(float scale);
+  void setBufferSize(int width, int height);
   void clear();
 
 protected:
@@ -25,6 +26,7 @@ private:
   float fScaleX;
   int fBufferWidth;
   int fBufferHeight;
+  int fImageFlags;
 };
 
 class ScrollingTexture : public NanoWidget
@@ -48,7 +50,7 @@ private:
   void verticalScroll();
   void horizontalScroll();
   void positionTextures();
-  
+
   PixelDrawingSurface textureA;
   PixelDrawingSurface textureB;
 

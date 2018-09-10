@@ -16,14 +16,15 @@ PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, in
                                                                                                 fDirty(true),
                                                                                                 fScaleX(1.0f),
                                                                                                 fBufferWidth(256),
-                                                                                                fBufferHeight(3012)
+                                                                                                fBufferHeight(size.getHeight()),
+                                                                                                fImageFlags(imageFlags)
 {
     setSize(size);
 
     NVGcontext *context = getContext();
 
     fImageData = (unsigned char *)malloc(fBufferWidth * fBufferHeight * 4);
-    fFileId = nvgCreateImageRGBA(context, fBufferWidth, fBufferHeight, imageFlags, fImageData);
+    fFileId = nvgCreateImageRGBA(context, fBufferWidth, fBufferHeight, fImageFlags, fImageData);
 }
 
 void PixelDrawingSurface::setScaleX(float scale)
@@ -34,6 +35,22 @@ void PixelDrawingSurface::setScaleX(float scale)
 void PixelDrawingSurface::clear()
 {
     memset(fImageData, 0, fBufferWidth * fBufferHeight * 4);
+    fDirty = true;
+}
+
+void PixelDrawingSurface::setBufferSize(int width, int height)
+{
+    NVGcontext *context = getContext();
+
+    if (fBufferWidth != width || fBufferHeight != height)
+    {
+        fBufferWidth = width;
+        fBufferHeight = height;
+
+        fImageData = (unsigned char *)realloc(fImageData, fBufferWidth * fBufferHeight * 4);
+        nvgDeleteImage(context, fFileId);
+        fFileId = nvgCreateImageRGBA(context, fBufferWidth, fBufferHeight, fImageFlags, fImageData);
+    }
 }
 
 void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
@@ -178,6 +195,9 @@ void ScrollingTexture::drawPixelOnCurrentLine(float pos, Color color)
 void ScrollingTexture::setBlockSize(int blockSize)
 {
     this->blockSize = blockSize;
+
+    textureA.setBufferSize(blockSize, 3024);
+    textureB.setBufferSize(blockSize, 3024);
 }
 
 void ScrollingTexture::horizontalScroll()
@@ -250,6 +270,7 @@ void ScrollingTexture::scroll()
 
 void ScrollingTexture::onNanoDisplay()
 {
+    
 }
 
 void ScrollingTexture::setScaleX(float scale)
