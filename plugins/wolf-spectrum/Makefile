@@ -63,11 +63,7 @@ endif
 endif
 
 ifeq ($(BUILD_LV2),true)
-ifeq ($(HAVE_DGL),true)
-TARGETS += lv2_sep
-else
-TARGETS += lv2_dsp
-endif
+TARGETS += lv2
 endif
 
 ifeq ($(BUILD_VST2),true)

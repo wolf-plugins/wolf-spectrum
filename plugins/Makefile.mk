@@ -40,8 +40,6 @@ jack       = $(TARGET_DIR)/$(NAME)$(APP_EXT)
 dssi_dsp   = $(TARGET_DIR)/$(NAME)-dssi$(LIB_EXT)
 dssi_ui    = $(TARGET_DIR)/$(NAME)-dssi/$(NAME)-dssi_ui$(APP_EXT)
 lv2        = $(TARGET_DIR)/$(NAME).lv2/$(NAME)$(LIB_EXT)
-lv2_dsp    = $(TARGET_DIR)/$(NAME).lv2/$(NAME)_dsp$(LIB_EXT)
-lv2_ui     = $(TARGET_DIR)/$(NAME).lv2/$(NAME)_ui$(LIB_EXT)
 vst        = $(TARGET_DIR)/$(NAME)-vst$(LIB_EXT)
 
 # --------------------------------------------------------------
@@ -127,21 +125,11 @@ $(dssi_ui): $(OBJS_UI) $(DISTRHO_UI_FILES)
 # --------------------------------------------------------------
 # LV2
 
-lv2_one: $(lv2)
-lv2_dsp: $(lv2_dsp)
-lv2_sep: $(lv2_dsp) $(lv2_ui)
+lv2: $(lv2)
 
 $(lv2): $(OBJS_DSP) $(OBJS_UI) $(DISTRHO_PLUGIN_FILES) $(DISTRHO_UI_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
-
-$(lv2_dsp): $(OBJS_DSP) $(DISTRHO_PLUGIN_FILES)
-	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
-
-$(lv2_ui): $(OBJS_UI) $(DISTRHO_UI_FILES)
-	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
+	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) -lpthread $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
 
 # --------------------------------------------------------------
 # VST
