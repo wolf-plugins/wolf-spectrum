@@ -37,12 +37,12 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(300, 200)
     const float width = getWidth();
     const float height = getHeight();
 
+    fSpectrogram = new Spectrogram(this, this, Size<uint>(width, height));
+    fSpectrogram->setSampleRate(getSampleRate());
+
     fResizeHandle = new ResizeHandle(this, Size<uint>(18, 18));
     fResizeHandle->setCallback(this);
     fResizeHandle->setMinSize(minWidth, minHeight);
-
-    fSpectrogram = new Spectrogram(this, this, Size<uint>(width, height));
-    fSpectrogram->setSampleRate(getSampleRate());
 
     positionWidgets(width, height);
 }
