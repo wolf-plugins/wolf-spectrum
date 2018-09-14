@@ -180,7 +180,7 @@ void Spectrogram::setBlockSize(int blockSize)
 
 void Spectrogram::drawLogScaleGrid()
 {
-    const int max = 22050;
+    const int max = fSampleRate / 2;
 
     translate(0.5f, 0.5f);
 
@@ -261,7 +261,7 @@ void Spectrogram::drawLogScaleGrid()
 
 void Spectrogram::drawLinearScaleGrid()
 {
-    const int max = 22000;
+    const int max = fSampleRate / 2;
 
     translate(0.5f, 0.5f);
 
