@@ -116,28 +116,34 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		break;
 	case paramBlockSize:
 		parameter.ranges.min = 0;
-		parameter.ranges.max = 5;
+		parameter.ranges.max = BlockSizeCount - 1;
 		parameter.ranges.def = BlockSize2048;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Block Size";
 		parameter.symbol = "blocksize";
-		parameter.enumValues.count = 6;
+		parameter.enumValues.count = BlockSizeCount;
 		parameter.enumValues.restrictedMode = true;
 		{
 			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
 			parameter.enumValues.values = values;
-			values[0].label = "512 samples";
-			values[0].value = BlockSize512;
-			values[1].label = "1024 samples";
-			values[1].value = BlockSize1024;
-			values[2].label = "2048 samples";
-			values[2].value = BlockSize2048;
-			values[3].label = "4096 samples";
-			values[3].value = BlockSize4096;
-			values[4].label = "8192 samples";
-			values[4].value = BlockSize8192;
-			values[5].label = "16384 samples";
-			values[5].value = BlockSize16384;
+			values[0].label = "64 samples";
+			values[0].value = BlockSize64;
+			values[1].label = "128 samples";
+			values[1].value = BlockSize128;
+			values[2].label = "256 samples";
+			values[2].value = BlockSize256;
+			values[3].label = "512 samples";
+			values[3].value = BlockSize512;
+			values[4].label = "1024 samples";
+			values[4].value = BlockSize1024;
+			values[5].label = "2048 samples";
+			values[5].value = BlockSize2048;
+			values[6].label = "4096 samples";
+			values[6].value = BlockSize4096;
+			values[7].label = "8192 samples";
+			values[7].value = BlockSize8192;
+			values[8].label = "16384 samples";
+			values[8].value = BlockSize16384;
 		}
 		break;
 	case paramShowGrid:

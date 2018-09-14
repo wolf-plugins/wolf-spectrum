@@ -54,12 +54,16 @@ class WolfSpectrumPlugin : public Plugin
 
 	enum BlockSize
 	{
-		BlockSize512 = 0,
+		BlockSize64 = 0,
+		BlockSize128,
+		BlockSize256,
+		BlockSize512,
 		BlockSize1024,
 		BlockSize2048,
 		BlockSize4096,
 		BlockSize8192,
-		BlockSize16384
+		BlockSize16384,
+		BlockSizeCount
 	};
 
   protected:
