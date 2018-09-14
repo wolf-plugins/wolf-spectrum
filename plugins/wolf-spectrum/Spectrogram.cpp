@@ -204,7 +204,7 @@ void Spectrogram::drawLogScaleGrid()
 
             const int position = wolf::invLogScale(frequency, 20, max);
             const int x = getWidth() * position / max;
-            const int y = getHeight() * position / max;
+            const int y = getHeight() - (getHeight() * position / max);
 
             if (fHorizontalScrolling)
             {
@@ -276,7 +276,7 @@ void Spectrogram::drawLinearScaleGrid()
 
         const String frequencyCaption = String(i / 1000) + String("K");
         const int x = getWidth() * i / max;
-        const int y = getHeight() * i / max;
+        const int y = getHeight() - (getHeight() * i / max);
 
         if (fHorizontalScrolling)
         {
