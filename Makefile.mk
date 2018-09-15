@@ -13,9 +13,10 @@ CXX ?= g++
 export PLUGIN_NAME ?= wolf-spectrum
 export DISTRHO_NAMESPACE ?= WOLF_SPECTRUM_DISTRHO
 export DGL_NAMESPACE ?= WOLF_SPECTRUM_DGL
+export FONS_USE_FREETYPE=true
 
 EXTRA_INCLUDES ?=
-EXTRA_LIBS ?= $(shell pkg-config --libs fftw3) -pthread
+EXTRA_LIBS ?= $(shell pkg-config --libs fftw3 freetype2) -pthread
 
 # --------------------------------------------------------------
 # Fallback to Linux if no other OS defined
