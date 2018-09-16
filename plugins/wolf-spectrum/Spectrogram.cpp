@@ -94,7 +94,35 @@ float getPowerSpectrumdB(const fftw_complex *out, const int index, const int tra
 
 Color getBinPixelColor(const float powerSpectrumdB)
 {
-    return Color::fromHSL((175 + (int)(120 * powerSpectrumdB) % 255) / 255.f, 1, 0.58, powerSpectrumdB);
+    int dB = -90 + 90 * powerSpectrumdB;
+    dB = wolf::clamp(dB, -90, 0);
+    dB = std::abs(dB);
+
+    const int colorCount = 10;
+    const Color colorRamp[colorCount] = {
+        Color(252, 243, 178),
+        Color(255, 193, 105),
+        Color(255, 114, 54),
+        Color(242, 32, 33),
+        Color(185, 10, 82),
+        Color(126, 4, 116),
+        Color(62, 2, 99),
+        Color(33, 2, 83),
+        Color(11, 1, 48),
+        Color(0, 0, 0, 0)};
+    
+    const int colorIndex = dB / 10;
+
+    Color baseColor = colorRamp[colorIndex];
+
+    if (colorIndex == 0 || colorIndex == colorCount - 1)
+        return baseColor;
+
+    Color targetColor = colorRamp[colorIndex + 1];
+
+    baseColor.interpolate(targetColor, (dB % 10) / 10.f);
+
+    return baseColor;
 }
 
 float getBinPos(const int bin, const int numBins, const double sampleRate)
@@ -143,26 +171,25 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
             Color pixelColor = getBinPixelColor(powerSpectrumdB);
 
             const int freqSize = 1;
-            float freqPosX = i * freqSize;
+            float freqPos = i * freqSize;
 
             if (fLogFrequencyScaling && i != half - 1) //must lerp to fill the gaps
             {
                 const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
-                Color nextPixelColor = getBinPixelColor(nextPowerSpectrumdB);
 
-                freqPosX = getBinPos(i, half, fSampleRate);
+                freqPos = getBinPos(i, half, fSampleRate);
                 const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
 
-                const int freqDelta = nextFreqPos - freqPosX;
+                const int freqDelta = nextFreqPos - freqPos;
 
-                for (int j = freqPosX; j < nextFreqPos; ++j)
+                for (int j = freqPos; j < nextFreqPos; ++j)
                 {
-                    Color lerpedColor = Color(pixelColor, nextPixelColor, (j - freqPosX) / freqDelta);
+                    Color lerpedColor = getBinPixelColor(wolf::lerp(powerSpectrumdB, nextPowerSpectrumdB, (j - freqPos) / (float)freqDelta));
                     fScrollingTexture.drawPixelOnCurrentLine(j, lerpedColor);
                 }
             }
 
-            fScrollingTexture.drawPixelOnCurrentLine(freqPosX, pixelColor);
+            fScrollingTexture.drawPixelOnCurrentLine(freqPos, pixelColor);
         }
 
         fScrollingTexture.scroll();
