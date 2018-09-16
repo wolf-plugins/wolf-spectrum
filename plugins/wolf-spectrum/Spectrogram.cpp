@@ -292,7 +292,7 @@ void Spectrogram::drawLinearScaleGrid()
 
     translate(0.5f, 0.5f);
 
-    for (int i = 2000; i < max; i += 2000)
+    for (int i = 2000; i < max - 2000; i += 2000)
     {
         beginPath();
 
