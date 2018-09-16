@@ -85,6 +85,7 @@ void PixelDrawingSurface::onNanoDisplay()
     }
 
     NVGpaint paint = nvgImagePattern(context, 0, 0, fBufferWidth, fBufferHeight, 0, fFileId, 1.0f);
+    translate(0.5f, 0.5f);
 
     beginPath();
 
@@ -95,6 +96,8 @@ void PixelDrawingSurface::onNanoDisplay()
     fill();
 
     closePath();
+
+    translate(-0.5f, -0.5f);
 }
 
 ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
