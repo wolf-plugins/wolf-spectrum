@@ -128,6 +128,23 @@ void WolfSpectrumUI::uiReshape(uint width, uint height)
 
 bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 {
+    if (ev.press)
+    {        
+        if (ev.key == 95) //F11
+        {
+            fprintf(stderr, "Toggling fullscreen...\n");
+            getParentWindow().toggleFullscreen();
+
+            return true;
+        }
+        else if (ev.key == 9) //escape
+        {
+            getParentWindow().close();
+
+            return true;
+        }
+    }
+
     return false;
 }
 
