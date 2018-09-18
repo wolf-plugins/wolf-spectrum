@@ -8,8 +8,25 @@
 
 START_NAMESPACE_DISTRHO
 
+class Spectrogram;
+
+class SpectrogramRulers : public NanoWidget
+{
+public:
+  SpectrogramRulers(Spectrogram *parent);
+  void drawLinearScaleGrid();
+  void drawLogScaleGrid();
+
+protected:
+  void onNanoDisplay() override;
+private:
+  Spectrogram *fParent;
+};
+
 class Spectrogram : public NanoWidget
 {
+  friend class SpectrogramRulers;
+
 public:
   Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size);
   ~Spectrogram();
@@ -24,15 +41,13 @@ public:
   void setGridVisibility(bool visible);
 
   void clear();
-  
+
 protected:
   void onResize(const ResizeEvent &ev) override;
-  void onNanoDisplay();
+  void onNanoDisplay() override;
 
-private:
-  void drawLinearScaleGrid();
-  void drawLogScaleGrid();
-  
+private:  
+
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
@@ -41,6 +56,8 @@ private:
   bool fHorizontalScrolling;
   double fSampleRate;
   bool fMustShowGrid;
+
+  SpectrogramRulers fRulers;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };

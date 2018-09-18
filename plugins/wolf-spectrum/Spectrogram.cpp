@@ -12,12 +12,38 @@
 
 START_NAMESPACE_DISTRHO
 
+SpectrogramRulers::SpectrogramRulers(Spectrogram *parent) : NanoWidget(parent),
+                                                            fParent(parent)
+{
+}
+
+void SpectrogramRulers::onNanoDisplay()
+{
+    if (fParent->fMustShowGrid)
+    {
+        if (fParent->fLogFrequencyScaling)
+        {
+            drawLogScaleGrid();
+        }
+        else
+        {
+            drawLinearScaleGrid();
+        }
+
+        /* if (fMustShowFrequencyAtMouse)
+        {
+            drawFrequencyAtMouse();
+        } */
+    }
+}
+
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
                                                                         fScrollingTexture(this, size),
                                                                         fBlockSize(512),
                                                                         fSampleRate(44100),
-                                                                        fMustShowGrid(true)
+                                                                        fMustShowGrid(true),
+                                                                        fRulers(this)
 {
     setSize(size);
 
@@ -65,6 +91,7 @@ void Spectrogram::setSampleRate(const double sampleRate)
 void Spectrogram::onResize(const ResizeEvent &ev)
 {
     fScrollingTexture.setSize(ev.size);
+    fRulers.setSize(ev.size);
 }
 
 float getPowerSpectrumdB(const fftw_complex *out, const int index, const int transformSize)
@@ -110,7 +137,7 @@ Color getBinPixelColor(const float powerSpectrumdB)
         Color(33, 2, 83),
         Color(11, 1, 48),
         Color(0, 0, 0, 0)};
-    
+
     const int colorIndex = dB / 10;
 
     Color baseColor = colorRamp[colorIndex];
@@ -205,9 +232,9 @@ void Spectrogram::setBlockSize(int blockSize)
     fScrollingTexture.setBlockSize(blockSize);
 }
 
-void Spectrogram::drawLogScaleGrid()
+void SpectrogramRulers::drawLogScaleGrid()
 {
-    const int max = fSampleRate / 2;
+    const int max = fParent->fSampleRate / 2;
 
     translate(0.5f, 0.5f);
 
@@ -233,7 +260,7 @@ void Spectrogram::drawLogScaleGrid()
             const int x = getWidth() * position / max;
             const int y = getHeight() - (getHeight() * position / max);
 
-            if (fHorizontalScrolling)
+            if (fParent->fHorizontalScrolling)
             {
                 moveTo(0, y);
                 lineTo(getWidth(), y);
@@ -264,7 +291,7 @@ void Spectrogram::drawLogScaleGrid()
 
             beginPath();
 
-            if (fHorizontalScrolling)
+            if (fParent->fHorizontalScrolling)
             {
                 textAlign(ALIGN_MIDDLE);
                 const int leftPadding = 5;
@@ -286,9 +313,9 @@ void Spectrogram::drawLogScaleGrid()
     translate(-0.5f, -0.5f);
 }
 
-void Spectrogram::drawLinearScaleGrid()
+void SpectrogramRulers::drawLinearScaleGrid()
 {
-    const int max = fSampleRate / 2;
+    const int max = fParent->fSampleRate / 2;
 
     translate(0.5f, 0.5f);
 
@@ -305,7 +332,7 @@ void Spectrogram::drawLinearScaleGrid()
         const int x = getWidth() * i / max;
         const int y = getHeight() - (getHeight() * i / max);
 
-        if (fHorizontalScrolling)
+        if (fParent->fHorizontalScrolling)
         {
             moveTo(0, y);
             lineTo(getWidth(), y);
@@ -323,7 +350,7 @@ void Spectrogram::drawLinearScaleGrid()
 
         beginPath();
 
-        if (fHorizontalScrolling)
+        if (fParent->fHorizontalScrolling)
         {
             textAlign(ALIGN_MIDDLE);
             const int leftPadding = 5;
