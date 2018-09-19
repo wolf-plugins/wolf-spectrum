@@ -21,6 +21,8 @@ void SpectrogramRulers::onNanoDisplay()
 {
     if (fParent->fMustShowGrid)
     {
+        drawBackground();
+
         if (fParent->fLogFrequencyScaling)
         {
             drawLogScaleGrid();
@@ -35,6 +37,19 @@ void SpectrogramRulers::onNanoDisplay()
             drawFrequencyAtMouse();
         } */
     }
+}
+
+void SpectrogramRulers::drawBackground()
+{
+    const int width = getWidth();
+    const int height = getHeight();
+
+    beginPath();
+    Paint gradient = linearGradient(0,0, 0, getHeight(), Color(0,0,0,200), Color(0,0,0,0));
+    fillPaint(gradient);
+    rect(0,0,width,height);
+    fill();
+    closePath();
 }
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
@@ -91,7 +106,7 @@ void Spectrogram::setSampleRate(const double sampleRate)
 void Spectrogram::onResize(const ResizeEvent &ev)
 {
     fScrollingTexture.setSize(ev.size);
-    fRulers.setSize(ev.size);
+    fRulers.setSize(ev.size.getWidth(), 32);
 }
 
 float getPowerSpectrumdB(const fftw_complex *out, const int index, const int transformSize)
@@ -236,43 +251,14 @@ void SpectrogramRulers::drawLogScaleGrid()
 {
     const int max = fParent->fSampleRate / 2;
 
-    translate(0.5f, 0.5f);
-
     for (int i = 1; i < 5; ++i)
     {
         for (int j = 1; j < 10; ++j)
         {
-            beginPath();
-
-            strokeColor(Color(25, 25, 28, 255));
-            strokeWidth(1.0f);
-            fontSize(12.0f);
-            fillColor(Color(200, 200, 200, 255));
-
             const int frequency = std::pow(10, i) * j;
 
             if (frequency > max)
                 break;
-
-            const String frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
-
-            const int position = wolf::invLogScale(frequency, 20, max);
-            const int x = getWidth() * position / max;
-            const int y = getHeight() - (getHeight() * position / max);
-
-            if (fParent->fHorizontalScrolling)
-            {
-                moveTo(0, y);
-                lineTo(getWidth(), y);
-            }
-            else
-            {
-                moveTo(x, 0);
-                lineTo(x, getHeight());
-            }
-
-            stroke();
-            closePath();
 
             // TODO: make that less ridiculous
             const bool mustShowCaption = frequency == 50 ||
@@ -287,7 +273,16 @@ void SpectrogramRulers::drawLogScaleGrid()
             if (!mustShowCaption)
                 continue;
 
-            translate(-0.5f, -0.5f);
+            strokeColor(Color(220,220,220, 255));
+            strokeWidth(2.0f);
+            fontSize(14.0f);
+            fillColor(Color(220, 220, 220, 255));
+
+            const String frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
+
+            const int position = wolf::invLogScale(frequency, 20, max);
+            const int x = getWidth() * position / max;
+            const int y = getHeight() - (getHeight() * position / max);
 
             beginPath();
 
@@ -300,17 +295,16 @@ void SpectrogramRulers::drawLogScaleGrid()
             else
             {
                 textAlign(ALIGN_CENTER | ALIGN_TOP);
-                const int topPadding = 5;
+                const int topPadding = 2;
                 text(x, topPadding, frequencyCaption, NULL);
+                moveTo(x, 14 + topPadding);
+                lineTo(x, 24);
+                stroke();
             }
 
             closePath();
-
-            translate(0.5f, 0.5f);
         }
     }
-
-    translate(-0.5f, -0.5f);
 }
 
 void SpectrogramRulers::drawLinearScaleGrid()

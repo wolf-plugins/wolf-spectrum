@@ -16,6 +16,7 @@ public:
   SpectrogramRulers(Spectrogram *parent);
   void drawLinearScaleGrid();
   void drawLogScaleGrid();
+  void drawBackground();
 
 protected:
   void onNanoDisplay() override;
