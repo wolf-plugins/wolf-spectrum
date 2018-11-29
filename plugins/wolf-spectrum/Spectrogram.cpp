@@ -3,6 +3,7 @@
 #include "DistrhoUI.hpp"
 #include "Window.hpp"
 #include "Mathf.hpp"
+#include "Config.hpp"
 
 #include <stdlib.h>
 #include <math.h>
@@ -142,16 +143,17 @@ Color getBinPixelColor(const float powerSpectrumdB)
 
     const int colorCount = 10;
     const Color colorRamp[colorCount] = {
-        Color(252, 243, 178),
-        Color(255, 193, 105),
-        Color(255, 114, 54),
-        Color(242, 32, 33),
-        Color(185, 10, 82),
-        Color(126, 4, 116),
-        Color(62, 2, 99),
-        Color(33, 2, 83),
-        Color(11, 1, 48),
-        Color(0, 0, 0, 0)};
+        WolfSpectrumConfig::color_ramp_1,
+        WolfSpectrumConfig::color_ramp_2,
+        WolfSpectrumConfig::color_ramp_3,
+        WolfSpectrumConfig::color_ramp_4,
+        WolfSpectrumConfig::color_ramp_5,
+        WolfSpectrumConfig::color_ramp_6,
+        WolfSpectrumConfig::color_ramp_7,
+        WolfSpectrumConfig::color_ramp_8,
+        WolfSpectrumConfig::color_ramp_9,
+        WolfSpectrumConfig::color_ramp_10
+    };
 
     const int colorIndex = dB / 10;
 

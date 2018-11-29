@@ -34,36 +34,16 @@ enum ColorType
 
 bool isLoaded = false;
 
-Color grid_foreground = Color(103, 98, 102, 255);
-Color grid_background = Color(25, 24, 26, 255);
-Color sub_grid = Color(27, 27, 27, 255);
-Color graph_background = Color(40, 40, 47, 255);
-Color in_out_labels = Color(255, 255, 255, 125);
-
-Color alignment_lines = Color(255, 255, 255, 180);
-Color input_volume_indicator = Color(255, 255, 255, 180);
-
-Color graph_edges_background_normal = Color(169, 29, 239, 100);
-Color graph_edges_background_focused = Color(255, 221, 76, 100);
-
-Color graph_edges_foreground_normal = Color(245, 112, 188, 255);
-Color graph_edges_foreground_focused = Color(255, 221, 76, 255);
-
-Color vertex_fill_normal = Color(255, 255, 255, 255);
-Color vertex_fill_focused = Color(255, 221, 76, 255);
-
-Color vertex_halo = Color(0, 0, 0, 255);
-
-Color vertex_stroke_normal = Color(0, 0, 0, 255);
-Color vertex_stroke_focused = Color(0, 0, 0, 255);
-
-Color tension_handle_normal = Color(228, 104, 181, 255);
-Color tension_handle_focused = Color(228, 228, 181, 255);
-
-Color plugin_background = Color(35, 36, 42, 255);
-Color graph_margin = Color(33, 32, 39, 255);
-Color top_border = Color(0, 0, 0, 255);
-Color side_borders = Color(100, 100, 100, 255);
+Color color_ramp_1 = Color(252, 243, 178);
+Color color_ramp_2 = Color(255, 193, 105);
+Color color_ramp_3 = Color(255, 114, 54);
+Color color_ramp_4 = Color(242, 32, 33);
+Color color_ramp_5 = Color(185, 10, 82);
+Color color_ramp_6 = Color(126, 4, 116);
+Color color_ramp_7 = Color(62, 2, 99);
+Color color_ramp_8 = Color(33, 2, 83);
+Color color_ramp_9 = Color(11, 1, 48);
+Color color_ramp_10 = Color(0, 0, 0, 0);
 
 static std::string getSystemWideConfigPath()
 {
@@ -183,28 +163,16 @@ void load()
         }
     }
 
-    colorFromString(reader.Get("colors", "grid_foreground", ""), &grid_foreground);
-    colorFromString(reader.Get("colors", "grid_background", ""), &grid_background);
-    colorFromString(reader.Get("colors", "sub_grid", ""), &sub_grid);
-    colorFromString(reader.Get("colors", "graph_background", ""), &graph_background);
-    colorFromString(reader.Get("colors", "in_out_labels", ""), &in_out_labels);
-    colorFromString(reader.Get("colors", "alignment_lines", ""), &alignment_lines);
-    colorFromString(reader.Get("colors", "input_volume_indicator", ""), &input_volume_indicator);
-    colorFromString(reader.Get("colors", "graph_edges_background_normal", ""), &graph_edges_background_normal);
-    colorFromString(reader.Get("colors", "graph_edges_background_focused", ""), &graph_edges_background_focused);
-    colorFromString(reader.Get("colors", "graph_edges_foreground_normal", ""), &graph_edges_foreground_normal);
-    colorFromString(reader.Get("colors", "graph_edges_foreground_focused", ""), &graph_edges_foreground_focused);
-    colorFromString(reader.Get("colors", "vertex_fill_normal", ""), &vertex_fill_normal);
-    colorFromString(reader.Get("colors", "vertex_fill_focused", ""), &vertex_fill_focused);
-    colorFromString(reader.Get("colors", "vertex_halo", ""), &vertex_halo);
-    colorFromString(reader.Get("colors", "vertex_stroke_normal", ""), &vertex_stroke_normal);
-    colorFromString(reader.Get("colors", "vertex_stroke_focused", ""), &vertex_stroke_focused);
-    colorFromString(reader.Get("colors", "tension_handle_normal", ""), &tension_handle_normal);
-    colorFromString(reader.Get("colors", "tension_handle_focused", ""), &tension_handle_focused);
-    colorFromString(reader.Get("colors", "plugin_background", ""), &plugin_background);
-    colorFromString(reader.Get("colors", "graph_margin", ""), &graph_margin);
-    colorFromString(reader.Get("colors", "top_border", ""), &top_border);
-    colorFromString(reader.Get("colors", "side_borders", ""), &side_borders);
+    colorFromString(reader.Get("colors", "color_ramp_1", ""), &color_ramp_1);
+    colorFromString(reader.Get("colors", "color_ramp_2", ""), &color_ramp_2);
+    colorFromString(reader.Get("colors", "color_ramp_3", ""), &color_ramp_3);
+    colorFromString(reader.Get("colors", "color_ramp_4", ""), &color_ramp_4);
+    colorFromString(reader.Get("colors", "color_ramp_5", ""), &color_ramp_5);
+    colorFromString(reader.Get("colors", "color_ramp_6", ""), &color_ramp_6);
+    colorFromString(reader.Get("colors", "color_ramp_7", ""), &color_ramp_7);
+    colorFromString(reader.Get("colors", "color_ramp_8", ""), &color_ramp_8);
+    colorFromString(reader.Get("colors", "color_ramp_9", ""), &color_ramp_9);
+    colorFromString(reader.Get("colors", "color_ramp_10", ""), &color_ramp_10);
 
     isLoaded = true;
     std::cout << "Config loaded from 'wolf-spectrum.conf'\n";
