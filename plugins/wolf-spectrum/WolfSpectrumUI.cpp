@@ -137,6 +137,13 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 
             return true;
         }
+        else if (ev.key == 96) //F12
+        {
+            WolfSpectrumConfig::load();
+            fSpectrogram->clear();
+
+            return true;
+        }
         else if (ev.key == 9) //escape
         {
             getParentWindow().close();
