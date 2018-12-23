@@ -20,7 +20,7 @@ protected:
   void onNanoDisplay() override;
 
 private:
-  static constexpr int INTERNAL_BUFFER_WIDTH = 1024;
+  static constexpr int INTERNAL_BUFFER_WIDTH = 2048;
   static constexpr int INTERNAL_BUFFER_HEIGHT = 2048;
 
   int fFileId;

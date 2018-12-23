@@ -17,7 +17,7 @@ START_NAMESPACE_DISTRHO
 
 WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
 {
-    const uint minWidth = 512;
+    const uint minWidth = 1024;
     const uint minHeight = 200;
 
     const uint knobsLabelBoxWidth = 66;
