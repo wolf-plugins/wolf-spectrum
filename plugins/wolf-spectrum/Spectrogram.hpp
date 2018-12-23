@@ -5,6 +5,7 @@
 #include "NanoVG.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
+#include "RightClickMenu.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -20,11 +21,13 @@ public:
 
 protected:
   void onNanoDisplay() override;
+
 private:
   Spectrogram *fParent;
 };
 
-class Spectrogram : public NanoWidget
+class Spectrogram : public NanoWidget,
+                    public RightClickMenu::Callback
 {
   friend class SpectrogramRulers;
 
@@ -44,11 +47,30 @@ public:
   void clear();
 
 protected:
+  enum class SpectrogramRightClickMenuItems
+  {
+    FrequencyScalingLogarithmic = 0,
+    FrequencyScalingLinear,
+    ScrollDirectionVertical,
+    ScrollDirectionHorizontal,
+    BlockSize64,
+    BlockSize128,
+    BlockSize256,
+    BlockSize512,
+    BlockSize1024,
+    BlockSize2048,
+    BlockSize4096,
+    BlockSize8192,
+    BlockSize16384,
+    ToggleGrid
+  };
+
   void onResize(const ResizeEvent &ev) override;
   void onNanoDisplay() override;
+  bool onMouse(const MouseEvent &ev) override;
+  void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
 
-private:  
-
+private:
   UI *fUI;
   float **fSamples;
   bool fLogFrequencyScaling;
@@ -57,6 +79,7 @@ private:
   bool fHorizontalScrolling;
   double fSampleRate;
   bool fMustShowGrid;
+  ScopedPointer<RightClickMenu> fRightClickMenu;
 
   SpectrogramRulers fRulers;
 

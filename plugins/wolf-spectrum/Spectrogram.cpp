@@ -46,9 +46,9 @@ void SpectrogramRulers::drawBackground()
     const int height = getHeight();
 
     beginPath();
-    Paint gradient = linearGradient(0,0, 0, getHeight(), Color(0,0,0,200), Color(0,0,0,0));
+    Paint gradient = linearGradient(0, 0, 0, getHeight(), Color(0, 0, 0, 200), Color(0, 0, 0, 0));
     fillPaint(gradient);
-    rect(0,0,width,height);
+    rect(0, 0, width, height);
     fill();
     closePath();
 }
@@ -67,6 +67,32 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
 
     fSamples[0] = (float *)malloc(16384 * sizeof(float));
     fSamples[1] = (float *)malloc(16384 * sizeof(float));
+
+    fRightClickMenu = new RightClickMenu(this);
+
+    fRightClickMenu->addSection("Frequency scaling");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic, "Logarithmic");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear, "Linear");
+
+    fRightClickMenu->addSection("Scrolling direction");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionVertical, "Vertical");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal");
+
+    fRightClickMenu->addSection("Block size");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize64, "64 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize128, "128 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize256, "256 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize512, "512 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize1024, "1024 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize2048, "2048 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize4096, "4096 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize8192, "8192 samples");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize16384, "16384 samples");
+
+    fRightClickMenu->addSection("Captions");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleGrid, "Toggle on/off");
+
+    fRightClickMenu->setCallback(this);
 }
 
 Spectrogram::~Spectrogram()
@@ -152,8 +178,7 @@ Color getBinPixelColor(const float powerSpectrumdB)
         WolfSpectrumConfig::color_ramp_7,
         WolfSpectrumConfig::color_ramp_8,
         WolfSpectrumConfig::color_ramp_9,
-        WolfSpectrumConfig::color_ramp_10
-    };
+        WolfSpectrumConfig::color_ramp_10};
 
     const int colorIndex = dB / 10;
 
@@ -275,7 +300,7 @@ void SpectrogramRulers::drawLogScaleGrid()
             if (!mustShowCaption)
                 continue;
 
-            strokeColor(Color(220,220,220, 255));
+            strokeColor(Color(220, 220, 220, 255));
             strokeWidth(2.0f);
             fontSize(14.0f);
             fillColor(Color(220, 220, 220, 255));
@@ -370,6 +395,95 @@ void SpectrogramRulers::drawLinearScaleGrid()
 void Spectrogram::setGridVisibility(bool visible)
 {
     fMustShowGrid = visible;
+}
+
+bool Spectrogram::onMouse(const MouseEvent &ev)
+{
+    if (ev.press && ev.button == 3) // right-click
+    {
+        fRightClickMenu->show(getAbsoluteX() + ev.pos.getX(), getAbsoluteY() + ev.pos.getY());
+
+        return true;
+    }
+
+    return false;
+}
+
+enum ScrollDirection
+{
+    ScrollDirectionVertical = 0,
+    ScrollDirectionHorizontal
+};
+
+enum FrequencyScaling
+{
+    FrequencyScalingLogarithmic = 0,
+    FrequencyScalingLinear
+};
+
+enum BlockSize
+{
+    BlockSize64 = 0,
+    BlockSize128,
+    BlockSize256,
+    BlockSize512,
+    BlockSize1024,
+    BlockSize2048,
+    BlockSize4096,
+    BlockSize8192,
+    BlockSize16384,
+    BlockSizeCount
+};
+
+void Spectrogram::rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem)
+{
+    switch ((SpectrogramRightClickMenuItems)rightClickMenuItem->getId())
+    {
+    case SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic:
+        fUI->setParameterValue(paramFrequencyScaling, FrequencyScalingLogarithmic);
+        break;
+    case SpectrogramRightClickMenuItems::FrequencyScalingLinear:
+        fUI->setParameterValue(paramFrequencyScaling, FrequencyScalingLinear);
+        break;
+    case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
+        fUI->setParameterValue(paramScrollDirection, ScrollDirectionVertical);
+        break;
+    case SpectrogramRightClickMenuItems::ScrollDirectionHorizontal:
+        fUI->setParameterValue(paramScrollDirection, ScrollDirectionHorizontal);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize64:
+        fUI->setParameterValue(paramBlockSize, BlockSize64);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize128:
+        fUI->setParameterValue(paramBlockSize, BlockSize128);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize256:
+        fUI->setParameterValue(paramBlockSize, BlockSize256);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize512:
+        fUI->setParameterValue(paramBlockSize, BlockSize512);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize1024:
+        fUI->setParameterValue(paramBlockSize, BlockSize1024);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize2048:
+        fUI->setParameterValue(paramBlockSize, BlockSize2048);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize4096:
+        fUI->setParameterValue(paramBlockSize, BlockSize4096);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize8192:
+        fUI->setParameterValue(paramBlockSize, BlockSize8192);
+        break;
+    case SpectrogramRightClickMenuItems::BlockSize16384:
+        fUI->setParameterValue(paramBlockSize, BlockSize16384);
+        break;
+    case SpectrogramRightClickMenuItems::ToggleGrid:
+        fUI->setParameterValue(paramShowGrid, (float)!fMustShowGrid);
+        break;
+    default:
+        DISTRHO_SAFE_ASSERT_BREAK(false);
+    }
 }
 
 void Spectrogram::onNanoDisplay()
