@@ -3,7 +3,8 @@
 
 START_NAMESPACE_DISTRHO
 
-namespace WolfSpectrumConfig
+#define CONFIG_NAMESPACE WolfSpectrumConfig
+namespace CONFIG_NAMESPACE
 {
 extern bool isLoaded;
 
@@ -17,6 +18,7 @@ extern Color color_ramp_7;
 extern Color color_ramp_8;
 extern Color color_ramp_9;
 extern Color color_ramp_10;
+extern Color right_click_menu_border_color;
 
 void load();
 }

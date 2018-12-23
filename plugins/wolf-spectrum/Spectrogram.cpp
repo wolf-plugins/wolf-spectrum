@@ -6,8 +6,8 @@
 #include "Config.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include <stdlib.h>
-#include <math.h>
-#include <time.h>
+#include <cmath>
+#include <ctime>
 #include <iostream>
 #include <fftw3.h>
 

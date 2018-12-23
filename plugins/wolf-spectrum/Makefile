@@ -22,7 +22,7 @@ OBJS_DSP = \
 
 OBJS_UI  = \
 	Common/Utils/src/Mathf.cpp.o \
-	Common/Structures/src/Layout.cpp.o \
+	Common/Structures/src/Margin.cpp.o \
 	Common/Structures/src/Animation.cpp.o \
 	Config/src/Config.cpp.o \
 	Libs/inih/ini.c.o \

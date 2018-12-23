@@ -19,9 +19,11 @@
 #include "INIReader.h"
 #include "StringManipulation.hpp"
 
+#include "Config.hpp"
+
 START_NAMESPACE_DISTRHO
 
-namespace WolfSpectrumConfig
+namespace CONFIG_NAMESPACE
 {
 
 enum ColorType
@@ -44,6 +46,7 @@ Color color_ramp_7 = Color(62, 2, 99);
 Color color_ramp_8 = Color(33, 2, 83);
 Color color_ramp_9 = Color(11, 1, 48);
 Color color_ramp_10 = Color(0, 0, 0, 0);
+Color right_click_menu_border_color = Color(10, 10, 10, 255);
 
 static std::string getSystemWideConfigPath()
 {
@@ -173,6 +176,7 @@ void load()
     colorFromString(reader.Get("colors", "color_ramp_8", ""), &color_ramp_8);
     colorFromString(reader.Get("colors", "color_ramp_9", ""), &color_ramp_9);
     colorFromString(reader.Get("colors", "color_ramp_10", ""), &color_ramp_10);
+    colorFromString(reader.Get("color", "right_click_menu_border_color", ""), &right_click_menu_border_color);
 
     isLoaded = true;
     std::cout << "Config loaded from 'wolf-spectrum.conf'\n";
