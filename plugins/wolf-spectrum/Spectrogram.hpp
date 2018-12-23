@@ -26,8 +26,7 @@ private:
   Spectrogram *fParent;
 };
 
-class Spectrogram : public NanoWidget,
-                    public RightClickMenu::Callback
+class Spectrogram : public NanoWidget
 {
   friend class SpectrogramRulers;
 
@@ -47,28 +46,8 @@ public:
   void clear();
 
 protected:
-  enum class SpectrogramRightClickMenuItems
-  {
-    FrequencyScalingLogarithmic = 0,
-    FrequencyScalingLinear,
-    ScrollDirectionVertical,
-    ScrollDirectionHorizontal,
-    BlockSize64,
-    BlockSize128,
-    BlockSize256,
-    BlockSize512,
-    BlockSize1024,
-    BlockSize2048,
-    BlockSize4096,
-    BlockSize8192,
-    BlockSize16384,
-    ToggleGrid
-  };
-
   void onResize(const ResizeEvent &ev) override;
   void onNanoDisplay() override;
-  bool onMouse(const MouseEvent &ev) override;
-  void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
 
 private:
   UI *fUI;
@@ -79,7 +58,6 @@ private:
   bool fHorizontalScrolling;
   double fSampleRate;
   bool fMustShowGrid;
-  ScopedPointer<RightClickMenu> fRightClickMenu;
 
   SpectrogramRulers fRulers;
 

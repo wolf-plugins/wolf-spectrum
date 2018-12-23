@@ -11,8 +11,11 @@
 
 START_NAMESPACE_DISTRHO
 
+class Spectrogram;
+
 class WolfSpectrumUI : public UI,
-                       public ResizeHandle::Callback
+                       public ResizeHandle::Callback,
+                       public RightClickMenu::Callback
 {
 public:
   WolfSpectrumUI();
@@ -21,6 +24,24 @@ public:
   float getParameterValue(uint32_t index) const;
 
 protected:
+  enum class SpectrogramRightClickMenuItems
+  {
+    FrequencyScalingLogarithmic = 0,
+    FrequencyScalingLinear,
+    ScrollDirectionVertical,
+    ScrollDirectionHorizontal,
+    BlockSize64,
+    BlockSize128,
+    BlockSize256,
+    BlockSize512,
+    BlockSize1024,
+    BlockSize2048,
+    BlockSize4096,
+    BlockSize8192,
+    BlockSize16384,
+    ToggleGrid
+  };
+
   void parameterChanged(uint32_t, float value) override;
   void tryRememberSize();
   void positionWidgets(uint width, uint height);
@@ -33,10 +54,19 @@ protected:
   bool onKeyboard(const KeyboardEvent &ev) override;
   bool onMouse(const MouseEvent &ev) override;
   void sampleRateChanged(const double sampleRate) override;
+  void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
 
 private:
+  /**
+   * Sets a parameter's value and calls parameterChanged afterwards.
+   */
+  void setParameterValueFeedback(uint32_t index, float value);
+
+  float fParameters[paramCount];
+
   ScopedPointer<ResizeHandle> fResizeHandle;
   ScopedPointer<Spectrogram> fSpectrogram;
+  ScopedPointer<RightClickMenu> fRightClickMenu;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumUI)
 };
