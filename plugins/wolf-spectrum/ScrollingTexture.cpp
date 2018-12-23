@@ -23,7 +23,7 @@ PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, in
 
     NVGcontext *context = getContext();
 
-    fImageData = (unsigned char *)malloc(fBufferWidth * fBufferHeight * 4);
+    fImageData = (unsigned char *)calloc(4, fBufferWidth * fBufferHeight);
     fFileId = nvgCreateImageRGBA(context, fBufferWidth, fBufferHeight, fImageFlags, fImageData);
 }
 
