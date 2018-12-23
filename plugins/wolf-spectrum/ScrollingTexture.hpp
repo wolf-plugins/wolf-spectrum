@@ -20,6 +20,9 @@ protected:
   void onNanoDisplay() override;
 
 private:
+  static constexpr int INTERNAL_BUFFER_WIDTH = 1024;
+  static constexpr int INTERNAL_BUFFER_HEIGHT = 2048;
+
   int fFileId;
   unsigned char *fImageData;
   bool fDirty;
@@ -35,7 +38,7 @@ public:
   ScrollingTexture(NanoWidget *widget, Size<uint> size);
   ~ScrollingTexture();
 
-  void drawPixelOnCurrentLine(float pos, Color color);
+  void drawPixelOnCurrentLine(int pos, Color color);
   void scroll();
   void setScaleX(float scale);
   void setBlockSize(int blockSize);

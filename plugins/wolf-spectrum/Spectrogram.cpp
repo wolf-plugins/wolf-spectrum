@@ -62,7 +62,6 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fRulers(this)
 {
     setSize(size);
-
     fSamples = (float **)malloc(sizeof(float *) * 2);
 
     fSamples[0] = (float *)malloc(16384 * sizeof(float));
