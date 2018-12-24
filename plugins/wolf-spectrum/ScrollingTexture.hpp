@@ -15,6 +15,7 @@ public:
   void setScaleX(float scale);
   void setBufferSize(int width, int height);
   void clear();
+  void clearLine(int posY);
 
 protected:
   void onNanoDisplay() override;
@@ -39,6 +40,8 @@ public:
   ~ScrollingTexture();
 
   void drawPixelOnCurrentLine(int pos, Color color);
+  void clearCurrentLine();
+
   void scroll();
   void setScaleX(float scale);
   void setBlockSize(int blockSize);

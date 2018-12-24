@@ -34,7 +34,7 @@ void PixelDrawingSurface::setScaleX(float scale)
 
 void PixelDrawingSurface::clear()
 {
-    memset(fImageData, 0, INTERNAL_BUFFER_HEIGHT * INTERNAL_BUFFER_HEIGHT * 4);
+    memset(fImageData, 0, INTERNAL_BUFFER_WIDTH * INTERNAL_BUFFER_HEIGHT * 4);
     fDirty = true;
 }
 
@@ -71,19 +71,19 @@ void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
             const int index = posY * (width * 4) + (x * 4);
             const float percentComplete = (posX - x) / (float)hole;
 
-            fImageData[index + 0] = (unsigned char)wolf::lerp(color.rgba[0] * 255, prevR, percentComplete);
-            fImageData[index + 1] = (unsigned char)wolf::lerp(color.rgba[1] * 255, prevG, percentComplete);
-            fImageData[index + 2] = (unsigned char)wolf::lerp(color.rgba[2] * 255, prevB, percentComplete);
-            fImageData[index + 3] = (unsigned char)wolf::lerp(color.rgba[3] * 255, prevA, percentComplete);
+            fImageData[index + 0] = std::max(wolf::lerp(color.rgba[0] * 255, prevR, percentComplete), (float)fImageData[index + 0]);
+            fImageData[index + 1] = std::max(wolf::lerp(color.rgba[1] * 255, prevG, percentComplete), (float)fImageData[index + 1]);
+            fImageData[index + 2] = std::max(wolf::lerp(color.rgba[2] * 255, prevB, percentComplete), (float)fImageData[index + 2]);
+            fImageData[index + 3] = std::max(wolf::lerp(color.rgba[3] * 255, prevA, percentComplete), (float)fImageData[index + 3]);
         }
     }
 
     const int index = posY * (width * 4) + (posX * 4);
 
-    fImageData[index + 0] = color.rgba[0] * 255;
-    fImageData[index + 1] = color.rgba[1] * 255;
-    fImageData[index + 2] = color.rgba[2] * 255;
-    fImageData[index + 3] = color.rgba[3] * 255;
+    fImageData[index + 0] = std::max(color.rgba[0] * 255, (float)fImageData[index + 0]);
+    fImageData[index + 1] = std::max(color.rgba[1] * 255, (float)fImageData[index + 1]);
+    fImageData[index + 2] = std::max(color.rgba[2] * 255, (float)fImageData[index + 2]);
+    fImageData[index + 3] = std::max(color.rgba[3] * 255, (float)fImageData[index + 3]);
 
     fDirty = true;
 }
@@ -111,10 +111,15 @@ void PixelDrawingSurface::onNanoDisplay()
     fillPaint(paint);
     rect(0, 0, width, height);
     fill();
-
     closePath();
 
     translate(-0.5f, -0.5f);
+}
+
+void PixelDrawingSurface::clearLine(int posY)
+{
+    memset(fImageData + posY * INTERNAL_BUFFER_WIDTH * 4, 1, INTERNAL_BUFFER_WIDTH * 4);
+    fDirty = true;
 }
 
 ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
@@ -144,8 +149,8 @@ void ScrollingTexture::clear()
 
 void ScrollingTexture::onResize(const ResizeEvent &ev)
 {
-    textureA.setSize(ev.size);
-    textureB.setSize(ev.size);
+    textureA.setSize(ev.size.getWidth(), ev.size.getHeight());
+    textureB.setSize(ev.size.getWidth(), ev.size.getHeight());
 
     positionTextures();
 }
@@ -208,6 +213,28 @@ void ScrollingTexture::drawPixelOnCurrentLine(int pos, Color color)
         else
         {
             textureB.drawPixel(pos, std::abs(posYB), color);
+        }
+    }
+}
+
+void ScrollingTexture::clearCurrentLine()
+{
+    if (horizontalScrolling)
+    {
+        //TODO
+    }
+    else
+    {
+        const float posYA = textureA.getAbsoluteY();
+        const float posYB = textureB.getAbsoluteY();
+
+        if (posYA <= getAbsoluteY())
+        {
+            textureA.clearLine(std::abs(posYA));
+        }
+        else
+        {
+            textureB.clearLine(std::abs(posYB));
         }
     }
 }
@@ -286,6 +313,8 @@ void ScrollingTexture::scroll()
     {
         verticalScroll();
     }
+
+    clearCurrentLine();
 }
 
 void ScrollingTexture::onNanoDisplay()
