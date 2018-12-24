@@ -136,7 +136,10 @@ float getPowerSpectrumdB(const fftw_complex *out, const int index, const int tra
 
 Color getBinPixelColor(const float powerSpectrumdB)
 {
-    int dB = -90 + 90 * powerSpectrumdB;
+    const double euler = std::exp(1.0);
+    const float scaledSpectrum = (std::exp(powerSpectrumdB) - 1) / (euler - 1);
+
+    int dB = -90 + 90 * scaledSpectrum;
     dB = wolf::clamp(dB, -90, 0);
     dB = std::abs(dB);
 
