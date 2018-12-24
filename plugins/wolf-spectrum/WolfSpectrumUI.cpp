@@ -120,19 +120,21 @@ void WolfSpectrumUI::positionWidgets(uint width, uint height)
 
 void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 {
+    value = std::round(value);
+
     switch (index)
     {
     case paramFrequencyScaling:
         fSpectrogram->setLogFrequencyScaling(value == WolfSpectrumPlugin::FrequencyScaling::FrequencyScalingLogarithmic);
         break;
     case paramBlockSize:
-        fSpectrogram->setBlockSize(std::pow(2, 6 + (int)value)); //careful, this assumes block size 64 is the minimum
+        fSpectrogram->setBlockSize(std::pow(2, 5 + (int)value)); //careful, this assumes block size 64 is the minimum
         break;
     case paramScrollDirection:
         fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
         break;
     case paramShowGrid:
-        fSpectrogram->setGridVisibility(std::round(value));
+        fSpectrogram->setGridVisibility(value);
         break;
     }
 
