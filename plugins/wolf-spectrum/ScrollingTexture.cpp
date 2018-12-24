@@ -49,9 +49,34 @@ void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
     const int width = INTERNAL_BUFFER_WIDTH;
     const int height = INTERNAL_BUFFER_HEIGHT;
 
-    posX = (float)posX / ((float)fBufferWidth / (float)INTERNAL_BUFFER_WIDTH);
+    const float realPixelSize = (float)INTERNAL_BUFFER_WIDTH / (float)fBufferWidth;
+    posX *= realPixelSize;
 
     DISTRHO_SAFE_ASSERT(!(posX < 0 || posX >= width || posY < 0 || posY >= height))
+
+    const int hole = 1.0f * realPixelSize;
+    const int prevPosX = posX - hole;
+
+    if (hole > 1.0f && prevPosX >= 0) //we lerp with the previous "pixel" to fill the gaps
+    {
+        const int prevIndex = posY * (width * 4) + (prevPosX * 4);
+
+        const float prevR = fImageData[prevIndex + 0];
+        const float prevG = fImageData[prevIndex + 1];
+        const float prevB = fImageData[prevIndex + 2];
+        const float prevA = fImageData[prevIndex + 3];
+
+        for (int x = posX - 1; x > prevPosX; --x)
+        {
+            const int index = posY * (width * 4) + (x * 4);
+            const float percentComplete = (posX - x) / (float)hole;
+
+            fImageData[index + 0] = (unsigned char)wolf::lerp(color.rgba[0] * 255, prevR, percentComplete);
+            fImageData[index + 1] = (unsigned char)wolf::lerp(color.rgba[1] * 255, prevG, percentComplete);
+            fImageData[index + 2] = (unsigned char)wolf::lerp(color.rgba[2] * 255, prevB, percentComplete);
+            fImageData[index + 3] = (unsigned char)wolf::lerp(color.rgba[3] * 255, prevA, percentComplete);
+        }
+    }
 
     const int index = posY * (width * 4) + (posX * 4);
 
