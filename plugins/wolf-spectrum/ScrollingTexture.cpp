@@ -130,7 +130,7 @@ ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWi
 {
     setSize(size);
 
-    textureA.setAbsoluteY(getAbsoluteY() - getHeight());
+    textureA.setAbsoluteY(getAbsoluteY() + getHeight());
     textureB.setAbsoluteY(getAbsoluteY());
 
     textureA.setId(0);
@@ -203,10 +203,10 @@ void ScrollingTexture::drawPixelOnCurrentLine(int pos, Color color)
     }
     else
     {
-        const float posYA = textureA.getAbsoluteY();
-        const float posYB = textureB.getAbsoluteY();
+        const float posYA = getHeight() - textureA.getAbsoluteY();
+        const float posYB = getHeight() - textureB.getAbsoluteY();
 
-        if (posYA <= getAbsoluteY())
+        if (posYA <= getAbsoluteY() + getHeight())
         {
             textureA.drawPixel(pos, std::abs(posYA), color);
         }
@@ -225,10 +225,10 @@ void ScrollingTexture::clearCurrentLine()
     }
     else
     {
-        const float posYA = textureA.getAbsoluteY();
-        const float posYB = textureB.getAbsoluteY();
+        const float posYA = getHeight() - textureA.getAbsoluteY();
+        const float posYB = getHeight() - textureB.getAbsoluteY();
 
-        if (posYA <= getAbsoluteY())
+        if (posYA <= getAbsoluteY() + getHeight())
         {
             textureA.clearLine(std::abs(posYA));
         }
@@ -279,12 +279,12 @@ void ScrollingTexture::verticalScroll()
 {
     const float posYParent = getAbsoluteY();
     const float bottomParent = posYParent + getHeight();
-    const float textureADest = posYParent - textureA.getHeight() + 1;
-    const float textureBDest = posYParent - textureB.getHeight() + 1;
-    const float posYA = textureA.getAbsoluteY() + 1;
-    const float posYB = textureB.getAbsoluteY() + 1;
+    const float textureADest = bottomParent;
+    const float textureBDest = bottomParent;
+    const float posYA = textureA.getAbsoluteY() - 1;
+    const float posYB = textureB.getAbsoluteY() - 1;
 
-    if (posYA > bottomParent)
+    if (posYA + textureA.getHeight() < posYParent)
     {
         textureA.setAbsoluteY(textureADest);
     }
@@ -293,7 +293,7 @@ void ScrollingTexture::verticalScroll()
         textureA.setAbsoluteY(posYA);
     }
 
-    if (posYB > bottomParent)
+    if (posYB + textureB.getHeight() < posYParent)
     {
         textureB.setAbsoluteY(textureBDest);
     }
