@@ -102,7 +102,6 @@ void PixelDrawingSurface::onNanoDisplay()
     }
 
     NVGpaint paint = nvgImagePattern(context, 0, 0, INTERNAL_BUFFER_WIDTH, INTERNAL_BUFFER_HEIGHT, 0, fFileId, 1.0f);
-    translate(0.5f, 0.5f);
 
     beginPath();
 
@@ -112,8 +111,6 @@ void PixelDrawingSurface::onNanoDisplay()
     rect(0, 0, width, height);
     fill();
     closePath();
-
-    translate(-0.5f, -0.5f);
 }
 
 void PixelDrawingSurface::clearLine(int posY)
@@ -149,7 +146,7 @@ void ScrollingTexture::clear()
 
 void ScrollingTexture::onResize(const ResizeEvent &ev)
 {
-    textureA.setSize(ev.size.getWidth(), ev.size.getHeight());
+    textureA.setSize(ev.size.getWidth(), ev.size.getHeight() + 1);
     textureB.setSize(ev.size.getWidth(), ev.size.getHeight());
 
     positionTextures();
@@ -170,7 +167,7 @@ void ScrollingTexture::positionTextures()
         textureA.setAbsoluteX(getAbsoluteX());
         textureB.setAbsoluteX(getAbsoluteX());
 
-        textureA.setAbsoluteY(getAbsoluteY() - getHeight());
+        textureA.setAbsoluteY(getAbsoluteY() + getHeight());
         textureB.setAbsoluteY(getAbsoluteY());
     }
 }
@@ -277,14 +274,14 @@ void ScrollingTexture::horizontalScroll()
 
 void ScrollingTexture::verticalScroll()
 {
-    const float posYParent = getAbsoluteY();
-    const float bottomParent = posYParent + getHeight();
-    const float textureADest = bottomParent;
-    const float textureBDest = bottomParent;
-    const float posYA = textureA.getAbsoluteY() - 1;
-    const float posYB = textureB.getAbsoluteY() - 1;
+    const int posYParent = getAbsoluteY();
+    const int bottomParent = posYParent + getHeight();
+    const int textureADest = bottomParent;
+    const int textureBDest = bottomParent;
+    const int posYA = textureA.getAbsoluteY() - 1;
+    const int posYB = textureB.getAbsoluteY() - 1;
 
-    if (posYA + textureA.getHeight() < posYParent)
+    if (posYA + (int)textureA.getHeight() <= posYParent)
     {
         textureA.setAbsoluteY(textureADest);
     }
@@ -293,7 +290,7 @@ void ScrollingTexture::verticalScroll()
         textureA.setAbsoluteY(posYA);
     }
 
-    if (posYB + textureB.getHeight() < posYParent)
+    if (posYB + (int)textureB.getHeight() < posYParent)
     {
         textureB.setAbsoluteY(textureBDest);
     }
