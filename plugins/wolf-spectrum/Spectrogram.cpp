@@ -317,38 +317,18 @@ void SpectrogramRulers::drawLinearScaleGrid()
 {
     const int max = fParent->fSampleRate / 2;
 
-    translate(0.5f, 0.5f);
-
     for (int i = 2000; i < max - 2000; i += 2000)
     {
         beginPath();
 
-        strokeColor(Color(25, 25, 28, 255));
-        strokeWidth(1.0f);
-        fontSize(12.0f);
-        fillColor(Color(200, 200, 200, 255));
+        strokeColor(Color(220, 220, 220, 255));
+        strokeWidth(2.0f);
+        fontSize(14.0f);
+        fillColor(Color(220, 220, 220, 255));
 
         const String frequencyCaption = String(i / 1000) + String("K");
         const int x = getWidth() * i / max;
         const int y = getHeight() - (getHeight() * i / max);
-
-        if (fParent->fHorizontalScrolling)
-        {
-            moveTo(0, y);
-            lineTo(getWidth(), y);
-        }
-        else
-        {
-            moveTo(x, 0);
-            lineTo(x, getHeight());
-        }
-
-        stroke();
-        closePath();
-
-        translate(-0.5f, -0.5f);
-
-        beginPath();
 
         if (fParent->fHorizontalScrolling)
         {
@@ -359,16 +339,15 @@ void SpectrogramRulers::drawLinearScaleGrid()
         else
         {
             textAlign(ALIGN_CENTER | ALIGN_TOP);
-            const int topPadding = 5;
+            const int topPadding = 2;
             text(x, topPadding, frequencyCaption, NULL);
+            moveTo(x, 14 + topPadding);
+            lineTo(x, 24);
+            stroke();
         }
 
         closePath();
-
-        translate(0.5f, 0.5f);
     }
-
-    translate(-0.5f, -0.5f);
 }
 
 void Spectrogram::setGridVisibility(bool visible)

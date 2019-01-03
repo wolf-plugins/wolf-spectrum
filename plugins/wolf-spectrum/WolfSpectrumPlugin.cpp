@@ -34,7 +34,6 @@ WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
 										   fRingbufferL(16384 * 2),
 										   fRingbufferR(16384 * 2)
 {
-
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
