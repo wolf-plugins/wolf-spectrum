@@ -20,3 +20,4 @@ CTestTestfile.cmake
 *.c.o
 *.so
 /bin/
+.vagrant
