@@ -39,6 +39,9 @@ protected:
     BlockSize4096,
     BlockSize8192,
     BlockSize16384,
+    ChannelMixLRMean,
+    ChannelMixL,
+    ChannelMixR,
     ToggleGrid
   };
 

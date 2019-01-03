@@ -65,6 +65,11 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize8192, "8192 samples");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize16384, "16384 samples");
 
+    fRightClickMenu->addSection("Channel mix");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixLRMean, "Left/Right (mean)");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixL, "Left");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
+
     fRightClickMenu->addSection("Captions");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleGrid, "Toggle on/off");
 
@@ -198,6 +203,15 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
         break;
     case SpectrogramRightClickMenuItems::BlockSize16384:
         setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize16384);
+        break;
+    case SpectrogramRightClickMenuItems::ChannelMixLRMean:
+        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixLRMean);
+        break;
+    case SpectrogramRightClickMenuItems::ChannelMixL:
+        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixL);
+        break;
+    case SpectrogramRightClickMenuItems::ChannelMixR:
+        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
         break;
     case SpectrogramRightClickMenuItems::ToggleGrid:
         setParameterValueFeedback(paramShowGrid, (float)!fParameters[paramShowGrid]);
