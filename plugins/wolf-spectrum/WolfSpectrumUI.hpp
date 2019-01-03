@@ -42,7 +42,8 @@ protected:
     ChannelMixLRMean,
     ChannelMixL,
     ChannelMixR,
-    ToggleCaptions
+    ToggleCaptions,
+    ToggleUIControls
   };
 
   void parameterChanged(uint32_t, float value) override;

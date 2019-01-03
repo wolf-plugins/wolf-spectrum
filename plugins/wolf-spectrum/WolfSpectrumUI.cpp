@@ -73,6 +73,9 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addSection("Captions");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle on/off");
 
+    fRightClickMenu->addSection("UI controls");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle on/off");
+
     fRightClickMenu->setCallback(this);
 
     positionWidgets(width, height);
@@ -143,6 +146,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
         break;
     case paramChannelMix:
         fSpectrogram->setChannelMix(value);
+        break;
+    case paramShowUIControls:
+        fResizeHandle->setVisible(value);
         break;
     }
 
@@ -215,6 +221,9 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
         break;
     case SpectrogramRightClickMenuItems::ToggleCaptions:
         setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);
+        break;
+    case SpectrogramRightClickMenuItems::ToggleUIControls:
+        setParameterValueFeedback(paramShowUIControls, (float)!fParameters[paramShowUIControls]);
         break;
     default:
         DISTRHO_SAFE_ASSERT_BREAK(false);

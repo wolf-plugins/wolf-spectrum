@@ -172,6 +172,14 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.name = "Show Captions";
 		parameter.symbol = "showcaptions";
 		break;
+	case paramShowUIControls:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = 1;
+		parameter.ranges.def = 1;
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+		parameter.name = "Show UI Controls";
+		parameter.symbol = "showuicontrols";
+		break;
 	}
 
 	parameters[index] = parameter.ranges.def;
