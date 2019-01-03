@@ -71,10 +71,10 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
 
     fRightClickMenu->addSection("Captions");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle on/off");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle show/hide");
 
     fRightClickMenu->addSection("UI controls");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle on/off");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle show/hide");
 
     fRightClickMenu->setCallback(this);
 
