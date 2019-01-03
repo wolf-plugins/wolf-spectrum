@@ -42,6 +42,8 @@ protected:
     ChannelMixLRMean,
     ChannelMixL,
     ChannelMixR,
+    PeakFallNormal,
+    PeakFallInstant,
     ToggleCaptions,
     ToggleUIControls
   };

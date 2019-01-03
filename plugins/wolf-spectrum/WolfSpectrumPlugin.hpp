@@ -74,6 +74,13 @@ class WolfSpectrumPlugin : public Plugin
 		ChannelMixCount
 	};
 
+	enum PeakFall
+	{
+		PeakFallNormal = 0,
+		PeakFallInstant,
+		PeakFallCount
+	};
+
   protected:
 	const char *getLabel() const noexcept override;
 

@@ -43,6 +43,7 @@ public:
   void setSampleRate(const double sampleRate);
   void setGridVisibility(bool visible);
   void setChannelMix(const int channelMix);
+  void setPeakFall(const int peakFall);
 
   void clear();
 
@@ -60,6 +61,7 @@ private:
   double fSampleRate;
   bool fMustShowGrid;
   int fChannelMix;
+  int fPeakFall;
 
   SpectrogramRulers fRulers;
 

@@ -60,7 +60,8 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
                                                                         fRulers(this),
-                                                                        fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean)
+                                                                        fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
+                                                                        fPeakFall(WolfSpectrumPlugin::PeakFallNormal)
 {
     setSize(size);
 
@@ -80,6 +81,11 @@ double windowHanning(int i, int transformSize)
 void Spectrogram::clear()
 {
     fScrollingTexture.clear();
+}
+
+void Spectrogram::setPeakFall(const int peakFall)
+{
+    fPeakFall = peakFall;
 }
 
 void Spectrogram::setLogFrequencyScaling(bool yesno)
@@ -390,17 +396,17 @@ void Spectrogram::onNanoDisplay()
 
                 switch (fChannelMix)
                 {
-                    case WolfSpectrumPlugin::ChannelMixLRMean:
-                        fSamples[i] = (sampleL + sampleR) / 2.0f;
-                        break;
-                    case WolfSpectrumPlugin::ChannelMixL:
-                        fSamples[i] = sampleL;
-                        break;
-                    case WolfSpectrumPlugin::ChannelMixR:
-                        fSamples[i] = sampleR;
-                        break;
-                    default:
-                        return; //¯\_(ツ)_/¯
+                case WolfSpectrumPlugin::ChannelMixLRMean:
+                    fSamples[i] = (sampleL + sampleR) / 2.0f;
+                    break;
+                case WolfSpectrumPlugin::ChannelMixL:
+                    fSamples[i] = sampleL;
+                    break;
+                case WolfSpectrumPlugin::ChannelMixR:
+                    fSamples[i] = sampleR;
+                    break;
+                default:
+                    return; //¯\_(ツ)_/¯
                 }
             }
 

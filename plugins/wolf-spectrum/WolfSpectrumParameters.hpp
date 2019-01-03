@@ -11,6 +11,7 @@ enum Parameters
     paramScrollDirection,
     paramBlockSize,
     paramChannelMix,
+    paramPeakFall,
     paramShowCaptions,
     paramShowUIControls,
     paramCount

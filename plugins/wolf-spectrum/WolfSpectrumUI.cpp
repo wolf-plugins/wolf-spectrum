@@ -70,6 +70,10 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixL, "Left");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
 
+    fRightClickMenu->addSection("Peak fall");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant");
+
     fRightClickMenu->addSection("Captions");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle show/hide");
 
@@ -147,6 +151,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramChannelMix:
         fSpectrogram->setChannelMix(value);
         break;
+    case paramPeakFall:
+        fSpectrogram->setPeakFall(value);
+        break;
     case paramShowUIControls:
         fResizeHandle->setVisible(value);
         break;
@@ -218,6 +225,12 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
         break;
     case SpectrogramRightClickMenuItems::ChannelMixR:
         setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
+        break;
+    case SpectrogramRightClickMenuItems::PeakFallNormal:
+        setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallNormal);
+        break;
+    case SpectrogramRightClickMenuItems::PeakFallInstant:
+        setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallInstant);
         break;
     case SpectrogramRightClickMenuItems::ToggleCaptions:
         setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);

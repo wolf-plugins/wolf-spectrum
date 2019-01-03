@@ -164,6 +164,24 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[2].value = ChannelMixR;
 		}
 		break;
+	case paramPeakFall:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = PeakFallCount - 1;
+		parameter.ranges.def = PeakFallNormal;
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Peak Fall";
+		parameter.symbol = "peakfall";
+		parameter.enumValues.count = PeakFallCount;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "Normal";
+			values[0].value = PeakFallNormal;
+			values[1].label = "Instant";
+			values[1].value = PeakFallInstant;
+		}
+		break;
 	case paramShowCaptions:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
