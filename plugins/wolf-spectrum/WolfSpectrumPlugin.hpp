@@ -66,6 +66,14 @@ class WolfSpectrumPlugin : public Plugin
 		BlockSizeCount
 	};
 
+	enum ChannelMix
+	{
+		ChannelMixLRMean = 0,
+		ChannelMixL,
+		ChannelMixR,
+		ChannelMixCount
+	};
+
   protected:
 	const char *getLabel() const noexcept override;
 
@@ -93,7 +101,8 @@ class WolfSpectrumPlugin : public Plugin
 	float parameters[paramCount];
 
 	Mutex fMutex;
-	wolf::Ringbuffer<float> fRingbuffer;
+	wolf::Ringbuffer<float> fRingbufferL;
+	wolf::Ringbuffer<float> fRingbufferR;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };

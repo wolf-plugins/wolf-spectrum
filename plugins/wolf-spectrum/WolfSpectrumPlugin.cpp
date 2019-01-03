@@ -31,12 +31,10 @@ START_NAMESPACE_DISTRHO
 // -----------------------------------------------------------------------------------------------------------
 
 WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
-										   fRingbuffer(16384 * 2)
+										   fRingbufferL(16384 * 2),
+										   fRingbufferR(16384 * 2)
 {
-	parameters[paramFrequencyScaling] = 0.0f;
-	parameters[paramScrollDirection] = 0.0f;
-	parameters[paramBlockSize] = BlockSize2048;
-	parameters[paramShowGrid] = 1.0f;
+
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -146,6 +144,26 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[8].value = BlockSize16384;
 		}
 		break;
+	case paramChannelMix:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = ChannelMixCount - 1;
+		parameter.ranges.def = ChannelMixLRMean;
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Channel Mix";
+		parameter.symbol = "channelmix";
+		parameter.enumValues.count = ChannelMixCount;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "Left/Right (mean)";
+			values[0].value = ChannelMixLRMean;
+			values[1].label = "Left";
+			values[1].value = ChannelMixL;
+			values[2].label = "Right";
+			values[2].value = ChannelMixR;
+		}
+		break;
 	case paramShowGrid:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
@@ -155,6 +173,8 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.symbol = "showgrid";
 		break;
 	}
+
+	parameters[index] = parameter.ranges.def;
 }
 
 float WolfSpectrumPlugin::getParameterValue(uint32_t index) const
@@ -173,7 +193,8 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
 
 	for (uint32_t i = 0; i < frames; ++i)
 	{
-		fRingbuffer.add(inputs[0][i]);
+		fRingbufferL.add(inputs[0][i]);
+		fRingbufferR.add(inputs[1][i]);
 
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];

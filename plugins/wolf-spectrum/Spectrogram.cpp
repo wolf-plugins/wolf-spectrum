@@ -59,19 +59,16 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fBlockSize(512),
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
-                                                                        fRulers(this)
+                                                                        fRulers(this),
+                                                                        fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean)
 {
     setSize(size);
-    fSamples = (float **)malloc(sizeof(float *) * 2);
 
-    fSamples[0] = (float *)malloc(16384 * sizeof(float));
-    fSamples[1] = (float *)malloc(16384 * sizeof(float));
+    fSamples = (float *)malloc(16384 * sizeof(float));
 }
 
 Spectrogram::~Spectrogram()
 {
-    free(fSamples[1]);
-    free(fSamples[0]);
     free(fSamples);
 }
 
@@ -181,7 +178,7 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     return numBins * scaledFreq / maxFreq;
 }
 
-void Spectrogram::process(float **samples, uint32_t numSamples)
+void Spectrogram::process(float *samples, uint32_t numSamples)
 {
     if (samples == nullptr)
         return;
@@ -204,7 +201,7 @@ void Spectrogram::process(float **samples, uint32_t numSamples)
     {
         for (uint32_t j = 0, i = x * step_size; i < x * step_size + transform_size; ++i, ++j)
         {
-            in[j] = samples[0][i] * windowHanning(j, transform_size);
+            in[j] = samples[i] * windowHanning(j, transform_size);
         }
 
         fftw_execute(p);
@@ -373,17 +370,38 @@ void Spectrogram::setGridVisibility(bool visible)
     fMustShowGrid = visible;
 }
 
+void Spectrogram::setChannelMix(const int channelMix)
+{
+    fChannelMix = channelMix;
+}
+
 void Spectrogram::onNanoDisplay()
 {
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         const MutexLocker csm(dspPtr->fMutex);
 
-        while (dspPtr->fRingbuffer.count() >= fBlockSize)
+        while (dspPtr->fRingbufferL.count() >= fBlockSize)
         {
             for (int i = 0; i < fBlockSize; ++i)
             {
-                fSamples[0][i] = dspPtr->fRingbuffer.get();
+                const float sampleL = dspPtr->fRingbufferL.get();
+                const float sampleR = dspPtr->fRingbufferR.get();
+
+                switch (fChannelMix)
+                {
+                    case WolfSpectrumPlugin::ChannelMixLRMean:
+                        fSamples[i] = (sampleL + sampleR) / 2.0f;
+                        break;
+                    case WolfSpectrumPlugin::ChannelMixL:
+                        fSamples[i] = sampleL;
+                        break;
+                    case WolfSpectrumPlugin::ChannelMixR:
+                        fSamples[i] = sampleR;
+                        break;
+                    default:
+                        return; //¯\_(ツ)_/¯
+                }
             }
 
             process(fSamples, fBlockSize / 2);

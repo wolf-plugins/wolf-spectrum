@@ -34,7 +34,7 @@ public:
   Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size);
   ~Spectrogram();
 
-  void process(float **samples, uint32_t numSamples);
+  void process(float *samples, uint32_t numSamples);
 
   void setParameterValue(uint32_t i, float v);
   void setLogFrequencyScaling(bool yesno);
@@ -42,6 +42,7 @@ public:
   void setHorizontalScrolling(bool yesno);
   void setSampleRate(const double sampleRate);
   void setGridVisibility(bool visible);
+  void setChannelMix(const int channelMix);
 
   void clear();
 
@@ -51,13 +52,14 @@ protected:
 
 private:
   UI *fUI;
-  float **fSamples;
+  float *fSamples;
   bool fLogFrequencyScaling;
   ScrollingTexture fScrollingTexture;
   int fBlockSize;
   bool fHorizontalScrolling;
   double fSampleRate;
   bool fMustShowGrid;
+  int fChannelMix;
 
   SpectrogramRulers fRulers;
 

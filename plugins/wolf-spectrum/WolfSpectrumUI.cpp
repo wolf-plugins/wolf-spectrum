@@ -136,6 +136,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramShowGrid:
         fSpectrogram->setGridVisibility(value);
         break;
+    case paramChannelMix:
+        fSpectrogram->setChannelMix(value);
+        break;
     }
 
     fParameters[index] = value;

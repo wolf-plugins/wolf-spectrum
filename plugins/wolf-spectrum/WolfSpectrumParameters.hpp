@@ -10,6 +10,7 @@ enum Parameters
     paramFrequencyScaling = 0,
     paramScrollDirection,
     paramBlockSize,
+    paramChannelMix,
     paramShowGrid,
     paramCount
 };
