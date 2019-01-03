@@ -164,13 +164,13 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[2].value = ChannelMixR;
 		}
 		break;
-	case paramShowGrid:
+	case paramShowCaptions:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
 		parameter.ranges.def = 1;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
-		parameter.name = "Show Grid";
-		parameter.symbol = "showgrid";
+		parameter.name = "Show Captions";
+		parameter.symbol = "showcaptions";
 		break;
 	}
 

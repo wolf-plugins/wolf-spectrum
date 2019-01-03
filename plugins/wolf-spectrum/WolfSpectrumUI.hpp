@@ -42,7 +42,7 @@ protected:
     ChannelMixLRMean,
     ChannelMixL,
     ChannelMixR,
-    ToggleGrid
+    ToggleCaptions
   };
 
   void parameterChanged(uint32_t, float value) override;

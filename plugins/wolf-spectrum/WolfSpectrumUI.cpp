@@ -71,7 +71,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
 
     fRightClickMenu->addSection("Captions");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleGrid, "Toggle on/off");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle on/off");
 
     fRightClickMenu->setCallback(this);
 
@@ -138,7 +138,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramScrollDirection:
         fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
         break;
-    case paramShowGrid:
+    case paramShowCaptions:
         fSpectrogram->setGridVisibility(value);
         break;
     case paramChannelMix:
@@ -213,8 +213,8 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::ChannelMixR:
         setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
         break;
-    case SpectrogramRightClickMenuItems::ToggleGrid:
-        setParameterValueFeedback(paramShowGrid, (float)!fParameters[paramShowGrid]);
+    case SpectrogramRightClickMenuItems::ToggleCaptions:
+        setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);
         break;
     default:
         DISTRHO_SAFE_ASSERT_BREAK(false);
