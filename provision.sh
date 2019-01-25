@@ -7,7 +7,7 @@ locale-gen en_US.UTF-8
 dpkg-reconfigure locales
 
 apt-get update
-apt-get install -y g++ pkg-config git libx11-dev libgl1-mesa-dev liblo-dev libjack-dev libfftw3-dev libfreetype6-dev
+apt-get install -y g++ pkg-config git libx11-dev libgl1-mesa-dev liblo-dev libjack-dev libfreetype6-dev
 
 #TODO: 
 #clone repo 
