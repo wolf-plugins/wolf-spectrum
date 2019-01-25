@@ -9,7 +9,7 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
-#include <fftw3.h>
+#include "kiss_fft.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -112,10 +112,10 @@ void Spectrogram::onResize(const ResizeEvent &ev)
     fRulers.setSize(ev.size.getWidth(), 32);
 }
 
-float getPowerSpectrumdB(const fftw_complex *out, const int index, const int transformSize)
+float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize)
 {
-    const float real = out[index][0] * (2.0 / transformSize);
-    const float complex = out[index][1] * (2.0 / transformSize);
+    const float real = out[index].r * (2.0 / transformSize);
+    const float complex = out[index].i * (2.0 / transformSize);
 
     const float powerSpectrum = real * real + complex * complex;
     float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);
@@ -195,10 +195,10 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
     int half = transform_size / 2;
     int step_size = transform_size / 2;
 
-    double in[transform_size];
+    kiss_fft_cpx cin[transform_size];
+    kiss_fft_cpx out[transform_size];
 
-    fftw_complex *out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * transform_size);
-    fftw_plan p = fftw_plan_dft_r2c_1d(transform_size, in, out, FFTW_ESTIMATE);
+    kiss_fft_cfg fftConfig = kiss_fft_alloc(transform_size, 0, NULL, NULL);
 
     const float scaleX = width / numSamples;
     fScrollingTexture.setScaleX(scaleX);
@@ -207,10 +207,11 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
     {
         for (uint32_t j = 0, i = x * step_size; i < x * step_size + transform_size; ++i, ++j)
         {
-            in[j] = samples[i] * windowHanning(j, transform_size);
+            cin[i].r = samples[i] * windowHanning(j, transform_size);
+            cin[i].i = 0;
         }
 
-        fftw_execute(p);
+        kiss_fft(fftConfig, cin, out);
 
         for (int i = 0; i < half; ++i)
         {
@@ -243,8 +244,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
         fScrollingTexture.scroll();
     }
 
-    fftw_destroy_plan(p);
-    fftw_free(out);
+    kiss_fft_free(fftConfig);
 }
 
 void Spectrogram::setBlockSize(int blockSize)

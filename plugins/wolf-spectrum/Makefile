@@ -35,6 +35,7 @@ OBJS_UI  = \
 	Common/Widgets/src/RightClickMenu.cpp.o \
 	ScrollingTexture.cpp.o \
 	Spectrogram.cpp.o \
+	Libs/kissfft/kiss_fft.c.o \
 	WolfSpectrumUI.cpp.o 
 
 # --------------------------------------------------------------
