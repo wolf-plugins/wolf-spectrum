@@ -28,6 +28,7 @@
 
 #include "WolfSpectrumParameters.hpp"
 #include "Ringbuffer.hpp"
+#include "Oversampler.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -39,6 +40,15 @@ class WolfSpectrumPlugin : public Plugin
 
   public:
 	WolfSpectrumPlugin();
+
+	enum OversamplingRatio
+	{
+		OversamplingRatioX1 = 0,
+		OversamplingRatioX2,
+		OversamplingRatioX4,
+		OversamplingRatioX8,
+		OversamplingRatioCount
+	};
 
 	enum ScrollDirection
 	{
@@ -110,6 +120,8 @@ class WolfSpectrumPlugin : public Plugin
 	Mutex fMutex;
 	wolf::Ringbuffer<float> fRingbufferL;
 	wolf::Ringbuffer<float> fRingbufferR;
+
+	Oversampler fOversampler;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };

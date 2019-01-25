@@ -43,6 +43,7 @@ public:
   void setSampleRate(const double sampleRate);
   void setGridVisibility(bool visible);
   void setChannelMix(const int channelMix);
+  void setOversamplingRatio(const int ratio);
   void setPeakFall(const int peakFall);
 
   void clear();
@@ -52,6 +53,9 @@ protected:
   void onNanoDisplay() override;
 
 private:
+  int getAjustedBlockSize();
+  double getAjustedSampleRate();
+  
   UI *fUI;
   float *fSamples;
   bool fLogFrequencyScaling;
@@ -62,6 +66,7 @@ private:
   bool fMustShowGrid;
   int fChannelMix;
   int fPeakFall;
+  int fOversamplingRatio;
 
   SpectrogramRulers fRulers;
 

@@ -61,11 +61,12 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fMustShowGrid(true),
                                                                         fRulers(this),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
-                                                                        fPeakFall(WolfSpectrumPlugin::PeakFallNormal)
+                                                                        fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
+                                                                        fOversamplingRatio(1)
 {
     setSize(size);
 
-    fSamples = (float *)malloc(16384 * sizeof(float));
+    fSamples = (float *)malloc(16384 * 8 * sizeof(float));
 }
 
 Spectrogram::~Spectrogram()
@@ -93,6 +94,11 @@ void Spectrogram::setLogFrequencyScaling(bool yesno)
     fLogFrequencyScaling = yesno;
 
     clear();
+}
+
+void Spectrogram::setOversamplingRatio(const int ratio)
+{
+    fOversamplingRatio = ratio;
 }
 
 void Spectrogram::setHorizontalScrolling(bool yesno)
@@ -184,6 +190,16 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     return numBins * scaledFreq / maxFreq;
 }
 
+int Spectrogram::getAjustedBlockSize()
+{
+    return fBlockSize * fOversamplingRatio;
+}
+
+double Spectrogram::getAjustedSampleRate()
+{
+    return fSampleRate * fOversamplingRatio;
+}
+
 void Spectrogram::process(float *samples, uint32_t numSamples)
 {
     if (samples == nullptr)
@@ -191,7 +207,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
 
     const float width = getWidth();
 
-    int transform_size = fBlockSize;
+    int transform_size = getAjustedBlockSize();
     int half = transform_size / 2;
     int step_size = transform_size / 2;
 
@@ -226,8 +242,8 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
             {
                 const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
 
-                freqPos = getBinPos(i, half, fSampleRate);
-                const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
+                freqPos = getBinPos(i, half, getAjustedSampleRate());
+                const int nextFreqPos = getBinPos(i + 1, half, getAjustedSampleRate());
 
                 const int freqDelta = nextFreqPos - freqPos;
 
@@ -366,9 +382,9 @@ void Spectrogram::onNanoDisplay()
     {
         const MutexLocker csm(dspPtr->fMutex);
 
-        while (dspPtr->fRingbufferL.count() >= fBlockSize)
+        while (dspPtr->fRingbufferL.count() >= getAjustedBlockSize())
         {
-            for (int i = 0; i < fBlockSize; ++i)
+            for (int i = 0; i < getAjustedBlockSize(); ++i)
             {
                 const float sampleL = dspPtr->fRingbufferL.get();
                 const float sampleR = dspPtr->fRingbufferR.get();
@@ -389,7 +405,7 @@ void Spectrogram::onNanoDisplay()
                 }
             }
 
-            process(fSamples, fBlockSize / 2);
+            process(fSamples, getAjustedBlockSize() / 2);
         }
     }
 }

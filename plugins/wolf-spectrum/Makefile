@@ -18,6 +18,17 @@ NAME = $(PLUGIN_NAME)
 
 OBJS_DSP = \
 	Common/Utils/src/Mathf.cpp.o \
+	Common/Structures/src/Oversampler.cpp.o \
+	Libs/DSPFilters/source/Butterworth.cpp.o \
+	Libs/DSPFilters/source/Biquad.cpp.o \
+	Libs/DSPFilters/source/Cascade.cpp.o \
+	Libs/DSPFilters/source/Filter.cpp.o \
+	Libs/DSPFilters/source/Param.cpp.o \
+	Libs/DSPFilters/source/Butterworth.cpp.o \
+	Libs/DSPFilters/source/PoleFilter.cpp.o \
+	Libs/DSPFilters/source/RBJ.cpp.o \
+	Libs/DSPFilters/source/Bessel.cpp.o \
+	Libs/DSPFilters/source/RootFinder.cpp.o \
 	WolfSpectrumPlugin.cpp.o
 
 OBJS_UI  = \

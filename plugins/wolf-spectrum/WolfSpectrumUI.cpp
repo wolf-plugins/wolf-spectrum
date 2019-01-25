@@ -142,6 +142,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramBlockSize:
         fSpectrogram->setBlockSize(std::pow(2, 5 + (int)value)); //careful, this assumes block size 64 is the minimum
         break;
+    case paramOversamplingRatio:
+        fSpectrogram->setOversamplingRatio((int)std::pow(2, value));
+        break;
     case paramScrollDirection:
         fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
         break;

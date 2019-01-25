@@ -31,8 +31,9 @@ START_NAMESPACE_DISTRHO
 // -----------------------------------------------------------------------------------------------------------
 
 WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
-										   fRingbufferL(16384 * 2),
-										   fRingbufferR(16384 * 2)
+										   fRingbufferL(16384 * 8),
+										   fRingbufferR(16384 * 8),
+										   fOversampler()
 {
 }
 
@@ -143,6 +144,28 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[8].value = BlockSize16384;
 		}
 		break;
+	case paramOversamplingRatio:
+		parameter.ranges.min = 0;
+		parameter.ranges.max = OversamplingRatioCount - 1;
+		parameter.ranges.def = OversamplingRatioX1;
+		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.name = "Oversampling Ratio";
+		parameter.symbol = "oversampling";
+		parameter.enumValues.count = OversamplingRatioCount;
+		parameter.enumValues.restrictedMode = true;
+		{
+			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
+			parameter.enumValues.values = values;
+			values[0].label = "x1";
+			values[0].value = OversamplingRatioX1;
+			values[1].label = "x2";
+			values[1].value = OversamplingRatioX2;
+			values[2].label = "x4";
+			values[2].value = OversamplingRatioX4;
+			values[3].label = "x8";
+			values[3].value = OversamplingRatioX8;
+		}
+		break;	
 	case paramChannelMix:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = ChannelMixCount - 1;
@@ -214,15 +237,23 @@ void WolfSpectrumPlugin::setParameterValue(uint32_t index, float value)
 
 void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t frames)
 {
+    if (inputs[0] != outputs[0])
+		std::memcpy(outputs[0], inputs[0], sizeof(float) * frames);
+
+    if (inputs[1] != outputs[1])
+		std::memcpy(outputs[1], inputs[1], sizeof(float) * frames);
+
 	const MutexLocker csm(fMutex);
 
-	for (uint32_t i = 0; i < frames; ++i)
-	{
-		fRingbufferL.add(inputs[0][i]);
-		fRingbufferR.add(inputs[1][i]);
+	const int oversamplingRatio = std::round(parameters[paramOversamplingRatio]);
+	const int ajustedOversamplingRatio = std::pow(2, oversamplingRatio);
 
-		outputs[0][i] = inputs[0][i];
-		outputs[1][i] = inputs[1][i];
+	float **buffer = fOversampler.upsample(ajustedOversamplingRatio, frames, getSampleRate(), inputs);
+
+	for (uint32_t i = 0; i < frames * ajustedOversamplingRatio; ++i)
+	{
+		fRingbufferL.add(buffer[0][i]);
+		fRingbufferR.add(buffer[1][i]);
 	}
 }
 
