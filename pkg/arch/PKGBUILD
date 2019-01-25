@@ -1,7 +1,7 @@
 # Maintainer: Patrick Desaulniers <desaulniers dot patrick at carrefour dot cegepvicto dot ca>
 
 pkgname=wolf-spectrum-git
-pkgver=0.1.1.r3.gddb7c66
+pkgver=0.1.1.r5.g99133c1
 pkgrel=1
 pkgdesc="Spectrogram plugin"
 arch=('i686' 'x86_64')

@@ -62,6 +62,7 @@ endif
 install:
 	install -d $(DESTDIR)$(PREFIX)/lib/lv2/
 	install -d $(DESTDIR)$(PREFIX)/lib/vst/
+	install -d $(DESTDIR)$(PREFIX)/bin/
 
 	cp bin/*-vst.*    $(DESTDIR)$(PREFIX)/lib/vst/
 	cp -r bin/*.lv2   $(DESTDIR)$(PREFIX)/lib/lv2/
