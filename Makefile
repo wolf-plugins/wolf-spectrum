@@ -60,17 +60,12 @@ endif
 # --------------------------------------------------------------
 
 install:
-	install -d $(DESTDIR)$(PREFIX)/lib/dssi/
 	install -d $(DESTDIR)$(PREFIX)/lib/lv2/
-	install -d $(DESTDIR)$(PREFIX)/lib/lxvst/
+	install -d $(DESTDIR)$(PREFIX)/lib/vst/
 
-	cp bin/*-dssi.*   $(DESTDIR)$(PREFIX)/lib/dssi/
-	cp bin/*-vst.*    $(DESTDIR)$(PREFIX)/lib/lxvst/
-
-ifeq ($(HAVE_DGL),true)
-	cp -r bin/*-dssi  $(DESTDIR)$(PREFIX)/lib/dssi/
-endif
+	cp bin/*-vst.*    $(DESTDIR)$(PREFIX)/lib/vst/
 	cp -r bin/*.lv2   $(DESTDIR)$(PREFIX)/lib/lv2/
+	cp bin/wolf-spectrum $(DESTDIR)$(PREFIX)/bin/
 
 # --------------------------------------------------------------
 
