@@ -15,6 +15,7 @@ enum Parameters
     paramShowCaptions,
     paramShowUIControls,
     paramGain,
+    paramThreshold,
     paramCount
 };
 

@@ -154,6 +154,9 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramPeakFall:
         fSpectrogram->setPeakFall(value);
         break;
+    case paramThreshold:
+        fSpectrogram->setThreshold(value);
+        break;
     case paramShowUIControls:
         fResizeHandle->setVisible(value);
         break;

@@ -9,7 +9,6 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
-#include "kiss_fft.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -61,7 +60,8 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fMustShowGrid(true),
                                                                         fRulers(this),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
-                                                                        fPeakFall(WolfSpectrumPlugin::PeakFallNormal)
+                                                                        fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
+                                                                        fThreshold(-40.f)
 {
     setSize(size);
 
@@ -112,13 +112,24 @@ void Spectrogram::onResize(const ResizeEvent &ev)
     fRulers.setSize(ev.size.getWidth(), 32);
 }
 
-float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize)
+float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize)
 {
     const float real = out[index].r * (2.0 / transformSize);
     const float complex = out[index].i * (2.0 / transformSize);
 
     const float powerSpectrum = real * real + complex * complex;
-    float powerSpectrumdB = 10.0 / log(10.0) * log(powerSpectrum + 1e-9);
+
+    float powerSpectrumdB = 10.0f / std::log(10.0f) * std::log(powerSpectrum + 1e-9);
+
+    // Threshold
+    if (powerSpectrumdB <= fThreshold)
+    {
+        powerSpectrumdB = -90.0f;
+    }
+    else
+    {
+        //powerSpectrumdB = wolf::lerp(-90.0f, 0.0f, 1.0f - (powerSpectrumdB + fThreshold) / -90.0f);
+    }
 
     // Normalize values
     powerSpectrumdB = 1.0 - powerSpectrumdB / -90.0;
@@ -127,12 +138,6 @@ float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int tra
     {
         powerSpectrumdB = 1;
     }
-
-    // Threshold
-    /* if (powerSpectrumdB < 0.5)
-            {
-                powerSpectrumdB = 0;
-            } */
 
     return powerSpectrumdB;
 }
@@ -251,6 +256,11 @@ void Spectrogram::setBlockSize(int blockSize)
 {
     fBlockSize = blockSize;
     fScrollingTexture.setBlockSize(blockSize);
+}
+
+void Spectrogram::setThreshold(const float threshold)
+{
+    fThreshold = threshold;
 }
 
 void SpectrogramRulers::drawLogScaleGrid()

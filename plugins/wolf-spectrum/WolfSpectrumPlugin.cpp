@@ -189,6 +189,14 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.name = "Gain";
 		parameter.symbol = "gain";
 		break;
+	case paramThreshold:
+		parameter.ranges.min = -90.0f;
+		parameter.ranges.max = -0.1f;
+		parameter.ranges.def = -90.0f;
+		parameter.hints = kParameterIsAutomable;
+		parameter.name = "Threshold";
+		parameter.symbol = "threshold";
+		break;
 	case paramShowCaptions:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;

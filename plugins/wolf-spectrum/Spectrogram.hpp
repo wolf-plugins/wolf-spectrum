@@ -6,6 +6,8 @@
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
 #include "RightClickMenu.hpp"
+#include "kiss_fft.h"
+
 
 START_NAMESPACE_DISTRHO
 
@@ -44,6 +46,7 @@ public:
   void setGridVisibility(bool visible);
   void setChannelMix(const int channelMix);
   void setPeakFall(const int peakFall);
+  void setThreshold(const float threshold);
 
   void clear();
 
@@ -52,6 +55,8 @@ protected:
   void onNanoDisplay() override;
 
 private:
+  float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);
+
   UI *fUI;
   float *fSamples;
   bool fLogFrequencyScaling;
@@ -62,6 +67,7 @@ private:
   bool fMustShowGrid;
   int fChannelMix;
   int fPeakFall;
+  float fThreshold;
 
   SpectrogramRulers fRulers;
 
