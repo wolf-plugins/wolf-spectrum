@@ -181,6 +181,14 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].value = PeakFallInstant;
 		}
 		break;
+	case paramGain:
+		parameter.ranges.min = -25.0f;
+		parameter.ranges.max = 25.0f;
+		parameter.ranges.def = 3.0f;
+		parameter.hints = kParameterIsAutomable;
+		parameter.name = "Gain";
+		parameter.symbol = "gain";
+		break;
 	case paramShowCaptions:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
@@ -216,10 +224,13 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
 {
 	const MutexLocker csm(fMutex);
 
+	const float gaindB = parameters[paramGain];
+	const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
+
 	for (uint32_t i = 0; i < frames; ++i)
 	{
-		fRingbufferL.add(inputs[0][i]);
-		fRingbufferR.add(inputs[1][i]);
+		fRingbufferL.add(inputs[0][i] * gainFactor);
+		fRingbufferR.add(inputs[1][i] * gainFactor);
 
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];

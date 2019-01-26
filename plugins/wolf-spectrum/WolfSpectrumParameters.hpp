@@ -14,6 +14,7 @@ enum Parameters
     paramPeakFall,
     paramShowCaptions,
     paramShowUIControls,
+    paramGain,
     paramCount
 };
 
