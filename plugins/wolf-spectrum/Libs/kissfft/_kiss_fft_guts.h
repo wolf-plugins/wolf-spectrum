@@ -13,6 +13,8 @@
 #include "kiss_fft.h"
 #include <limits.h>
 
+START_NAMESPACE_DISTRHO
+
 #define MAXFACTORS 32
 /* e.g. an fft of length 128 has 4 factors 
  as far as kissfft is concerned
@@ -156,3 +158,5 @@ struct kiss_fft_state{
 #define  KISS_FFT_TMP_ALLOC(nbytes) KISS_FFT_MALLOC(nbytes)
 #define  KISS_FFT_TMP_FREE(ptr) KISS_FFT_FREE(ptr)
 #endif
+
+END_NAMESPACE_DISTRHO

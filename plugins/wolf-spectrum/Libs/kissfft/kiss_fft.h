@@ -13,10 +13,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "src/DistrhoDefines.h"
 
 /*
  ATTENTION!
@@ -55,6 +52,8 @@ extern "C" {
 #   define kiss_fft_scalar float
 # endif
 #endif
+
+START_NAMESPACE_DISTRHO
 
 typedef struct {
     kiss_fft_scalar r;
@@ -125,8 +124,7 @@ int kiss_fft_next_fast_size(int n);
 #define kiss_fftr_next_fast_size_real(n) \
         (kiss_fft_next_fast_size( ((n)+1)>>1)<<1)
 
-#ifdef __cplusplus
-} 
-#endif
+
+END_NAMESPACE_DISTRHO
 
 #endif

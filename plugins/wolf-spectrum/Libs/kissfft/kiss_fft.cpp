@@ -12,6 +12,8 @@
  fixed or floating point complex numbers.  It also delares the kf_ internal functions.
  */
 
+START_NAMESPACE_DISTRHO
+
 static void kf_bfly2(
         kiss_fft_cpx * Fout,
         const size_t fstride,
@@ -400,3 +402,5 @@ int kiss_fft_next_fast_size(int n)
     }
     return n;
 }
+
+END_NAMESPACE_DISTRHO
