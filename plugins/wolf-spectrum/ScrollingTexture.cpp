@@ -27,6 +27,12 @@ PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, in
     fFileId = nvgCreateImageRGBA(context, INTERNAL_BUFFER_WIDTH, INTERNAL_BUFFER_HEIGHT, fImageFlags, fImageData);
 }
 
+PixelDrawingSurface::~PixelDrawingSurface()
+{
+    free(fImageData);
+    nvgDeleteImage(getContext(), fFileId);
+}
+
 void PixelDrawingSurface::setScaleX(float scale)
 {
     fScaleX = scale;

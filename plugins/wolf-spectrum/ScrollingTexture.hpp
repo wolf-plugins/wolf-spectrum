@@ -10,6 +10,7 @@ class PixelDrawingSurface : public NanoWidget
 {
 public:
   PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = 0);
+  ~PixelDrawingSurface();
 
   void drawPixel(int posX, int posY, Color pixelColor);
   void setScaleX(float scale);
