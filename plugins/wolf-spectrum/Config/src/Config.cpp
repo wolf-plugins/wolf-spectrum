@@ -48,15 +48,6 @@ Color color_ramp_9 = Color(11, 1, 48);
 Color color_ramp_10 = Color(0, 0, 0, 0);
 Color right_click_menu_border_color = Color(10, 10, 10, 255);
 
-static std::string getSystemWideConfigPath()
-{
-#if defined(DISTRHO_OS_WINDOWS)
-    return getLocalConfigPath(); //pretty sure Windows users don't care about this
-#else
-    return "/etc/wolf-spectrum.conf";
-#endif
-}
-
 static std::string getLocalConfigPath()
 {
     const std::string configName = "wolf-spectrum.conf";
@@ -85,6 +76,15 @@ static std::string getLocalConfigPath()
     fileLocation = "/.config/";
 #endif
     return homeDirectory + fileLocation + configName;
+#endif
+}
+
+static std::string getSystemWideConfigPath()
+{
+#if defined(DISTRHO_OS_WINDOWS)
+    return getLocalConfigPath();
+#else
+    return "/etc/wolf-spectrum.conf";
 #endif
 }
 

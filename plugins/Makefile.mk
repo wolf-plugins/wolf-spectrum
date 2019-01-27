@@ -87,6 +87,7 @@ clean:
 	rm -f Config/src/*.d Config/src/*.o
 	rm -f Libs/inih/*.d Libs/inih/*.o
 	rm -f Libs/DSPFilters/source/*.d Libs/DSPFilters/source/*.o
+	rm -f Libs/kissfft/*.d Libs/kissfft/*.o
 	rm -rf $(TARGET_DIR)/$(NAME) $(TARGET_DIR)/$(NAME)-* $(TARGET_DIR)/$(NAME).lv2/
 
 # --------------------------------------------------------------
