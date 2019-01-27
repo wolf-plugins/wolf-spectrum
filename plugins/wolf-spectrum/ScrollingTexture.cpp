@@ -29,8 +29,8 @@ PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, in
 
 PixelDrawingSurface::~PixelDrawingSurface()
 {
-    free(fImageData);
     nvgDeleteImage(getContext(), fFileId);
+    free(fImageData);
 }
 
 void PixelDrawingSurface::setScaleX(float scale)

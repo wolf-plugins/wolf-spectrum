@@ -59,6 +59,7 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
                                                                         fRulers(this),
+                                                                        fFFTConfig(nullptr),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
                                                                         fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
                                                                         fThreshold(-40.f)
@@ -66,11 +67,28 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
     setSize(size);
 
     fSamples = (float *)malloc(16384 * sizeof(float));
+
+    updateFFTConfig();
 }
 
 Spectrogram::~Spectrogram()
 {
     free(fSamples);
+
+    if (fFFTConfig != nullptr)
+    {
+        kiss_fft_free(fFFTConfig);
+    }
+}
+
+void Spectrogram::updateFFTConfig()
+{
+    if (fFFTConfig != nullptr)
+    {
+        kiss_fft_free(fFFTConfig);
+    }
+
+    fFFTConfig = kiss_fft_alloc(fBlockSize, 0, NULL, NULL);
 }
 
 double windowHanning(int i, int transformSize)
@@ -203,8 +221,6 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
     kiss_fft_cpx cin[transform_size];
     kiss_fft_cpx out[transform_size];
 
-    kiss_fft_cfg fftConfig = kiss_fft_alloc(transform_size, 0, NULL, NULL);
-
     const float scaleX = width / numSamples;
     fScrollingTexture.setScaleX(scaleX);
 
@@ -216,7 +232,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
             cin[i].i = 0;
         }
 
-        kiss_fft(fftConfig, cin, out);
+        kiss_fft(fFFTConfig, cin, out);
 
         for (int i = 0; i < half; ++i)
         {
@@ -248,14 +264,13 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
 
         fScrollingTexture.scroll();
     }
-
-    kiss_fft_free(fftConfig);
 }
 
 void Spectrogram::setBlockSize(int blockSize)
 {
     fBlockSize = blockSize;
     fScrollingTexture.setBlockSize(blockSize);
+    updateFFTConfig();
 }
 
 void Spectrogram::setThreshold(const float threshold)

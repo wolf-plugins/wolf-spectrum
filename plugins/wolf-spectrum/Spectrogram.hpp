@@ -57,9 +57,13 @@ protected:
 private:
   float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);
 
+  //Call this after changing the block size
+  void updateFFTConfig();
+
   UI *fUI;
   float *fSamples;
   bool fLogFrequencyScaling;
+  kiss_fft_cfg fFFTConfig;
   ScrollingTexture fScrollingTexture;
   int fBlockSize;
   bool fHorizontalScrolling;
