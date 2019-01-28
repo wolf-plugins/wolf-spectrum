@@ -30,10 +30,14 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 
-WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
-										   fRingbufferL(16384 * 2),
-										   fRingbufferR(16384 * 2)
+WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0)
 {
+	fRingbuffer = varchunk_new(16384 * 2, true);
+}
+
+WolfSpectrumPlugin::~WolfSpectrumPlugin()
+{
+	varchunk_free(fRingbuffer);
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -230,15 +234,41 @@ void WolfSpectrumPlugin::setParameterValue(uint32_t index, float value)
 
 void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t frames)
 {
-	const MutexLocker csm(fMutex);
-
 	const float gaindB = parameters[paramGain];
 	const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
 
+	void *varchunkPtr;
+
+	const size_t toWrite = sizeof(float);
+	const ChannelMix channelMix = (ChannelMix)std::round(parameters[paramChannelMix]);
+
 	for (uint32_t i = 0; i < frames; ++i)
 	{
-		fRingbufferL.add(inputs[0][i] * gainFactor);
-		fRingbufferR.add(inputs[1][i] * gainFactor);
+		const float sampleL = inputs[0][i] * gainFactor;
+		const float sampleR = inputs[1][i] * gainFactor;
+
+		float sampleOut = 0.0f;
+
+	    switch (channelMix)
+        {
+        case WolfSpectrumPlugin::ChannelMixLRMean:
+            sampleOut = (sampleL + sampleR) / 2.0f;
+            break;
+        case WolfSpectrumPlugin::ChannelMixL:
+            sampleOut = sampleL;
+            break;
+        case WolfSpectrumPlugin::ChannelMixR:
+            sampleOut = sampleR;
+            break;
+        default:
+            return; //¯\_(ツ)_/¯
+        }
+
+		if( (varchunkPtr = varchunk_write_request(fRingbuffer, toWrite)) )
+		{
+			*(float *)varchunkPtr = sampleOut;
+			varchunk_write_advance(fRingbuffer, toWrite);
+		}
 
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];

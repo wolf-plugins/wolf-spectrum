@@ -28,6 +28,7 @@
 
 #include "WolfSpectrumParameters.hpp"
 #include "Ringbuffer.hpp"
+#include "varchunk.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -39,7 +40,8 @@ class WolfSpectrumPlugin : public Plugin
 
   public:
 	WolfSpectrumPlugin();
-
+	~WolfSpectrumPlugin();
+	
 	enum ScrollDirection
 	{
 		ScrollDirectionVertical = 0,
@@ -106,10 +108,8 @@ class WolfSpectrumPlugin : public Plugin
 
   private:
 	float parameters[paramCount];
-
-	Mutex fMutex;
-	wolf::Ringbuffer<float> fRingbufferL;
-	wolf::Ringbuffer<float> fRingbufferR;
+	
+	varchunk_t *fRingbuffer;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };

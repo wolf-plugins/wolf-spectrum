@@ -5,6 +5,7 @@
 #include "Mathf.hpp"
 #include "Config.hpp"
 #include "WolfSpectrumPlugin.hpp"
+#include "varchunk.h"
 #include <stdlib.h>
 #include <cmath>
 #include <ctime>
@@ -55,6 +56,7 @@ void SpectrogramRulers::drawBackground()
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
                                                                         fScrollingTexture(this, size),
+                                                                        fSampleCount(0),
                                                                         fBlockSize(512),
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
@@ -389,32 +391,22 @@ void Spectrogram::onNanoDisplay()
 {
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
-        const MutexLocker csm(dspPtr->fMutex);
+        varchunk_t *varchunk = dspPtr->fRingbuffer;
+        const void *varchunkPtr;
+        size_t toread;
 
-        while (dspPtr->fRingbufferL.count() >= fBlockSize)
+        while ((varchunkPtr = varchunk_read_request(varchunk, &toread)))
         {
-            for (int i = 0; i < fBlockSize; ++i)
-            {
-                const float sampleL = dspPtr->fRingbufferL.get();
-                const float sampleR = dspPtr->fRingbufferR.get();
+            fSamples[fSampleCount++] = *(float *)varchunkPtr;
 
-                switch (fChannelMix)
-                {
-                case WolfSpectrumPlugin::ChannelMixLRMean:
-                    fSamples[i] = (sampleL + sampleR) / 2.0f;
-                    break;
-                case WolfSpectrumPlugin::ChannelMixL:
-                    fSamples[i] = sampleL;
-                    break;
-                case WolfSpectrumPlugin::ChannelMixR:
-                    fSamples[i] = sampleR;
-                    break;
-                default:
-                    return; //¯\_(ツ)_/¯
-                }
+            if (fSampleCount >= fBlockSize)
+            {
+                process(fSamples, fBlockSize / 2);
+
+                fSampleCount = 0;
             }
 
-            process(fSamples, fBlockSize / 2);
+            varchunk_read_advance(varchunk);
         }
     }
 }

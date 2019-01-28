@@ -62,6 +62,7 @@ private:
 
   UI *fUI;
   float *fSamples;
+  size_t fSampleCount;
   bool fLogFrequencyScaling;
   kiss_fft_cfg fFFTConfig;
   ScrollingTexture fScrollingTexture;
