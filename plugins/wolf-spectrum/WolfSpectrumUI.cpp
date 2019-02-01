@@ -268,8 +268,11 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
     {
         if (ev.key == 95) //F11
         {
-            fprintf(stderr, "Toggling fullscreen...\n");
-            getParentWindow().toggleFullscreen();
+            if (!getParentWindow().isEmbed())
+            {
+                fprintf(stderr, "Toggling fullscreen...\n");
+                getParentWindow().toggleFullscreen();
+            }
 
             return true;
         }
