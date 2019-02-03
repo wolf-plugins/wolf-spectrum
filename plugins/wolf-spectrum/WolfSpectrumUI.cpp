@@ -20,14 +20,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     const uint minWidth = 1024;
     const uint minHeight = 200;
 
-    const uint knobsLabelBoxWidth = 66;
-    const uint knobsLabelBoxHeight = 21;
-
     loadSharedResources();
-
-    using namespace WOLF_FONTS;
-    NanoVG::FontId chivoBoldId = createFontFromMemory("chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
-    NanoVG::FontId dejaVuSansId = findFont(NANOVG_DEJAVU_SANS_TTF);
 
     WolfSpectrumConfig::load();
 
@@ -248,8 +241,7 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
 
 void WolfSpectrumUI::onNanoDisplay()
 {
-    const float width = getWidth();
-    const float height = getHeight();
+
 }
 
 void WolfSpectrumUI::uiIdle()

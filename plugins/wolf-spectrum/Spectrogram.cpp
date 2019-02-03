@@ -55,16 +55,17 @@ void SpectrogramRulers::drawBackground()
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
-                                                                        fScrollingTexture(this, size),
                                                                         fSampleCount(0),
+                                                                        fLogFrequencyScaling(true),
+                                                                        fFFTConfig(nullptr),
+                                                                        fScrollingTexture(this, size),
                                                                         fBlockSize(512),
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
-                                                                        fRulers(this),
-                                                                        fFFTConfig(nullptr),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
                                                                         fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
-                                                                        fThreshold(-40.f)
+                                                                        fThreshold(-40.f),
+                                                                        fRulers(this)
 {
     setSize(size);
 
