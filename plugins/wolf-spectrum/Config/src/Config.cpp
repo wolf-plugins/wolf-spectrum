@@ -36,16 +36,17 @@ enum ColorType
 
 bool isLoaded = false;
 
-Color color_ramp_1 = Color(252, 243, 178);
-Color color_ramp_2 = Color(255, 193, 105);
-Color color_ramp_3 = Color(255, 114, 54);
-Color color_ramp_4 = Color(242, 32, 33);
-Color color_ramp_5 = Color(185, 10, 82);
-Color color_ramp_6 = Color(126, 4, 116);
+Color color_ramp_1 = Color(252, 251, 244);
+Color color_ramp_2 = Color(252, 243, 178);
+Color color_ramp_3 = Color(250, 193, 110);
+Color color_ramp_4 = Color(247, 116, 55);
+Color color_ramp_5 = Color(242, 35, 34);
+Color color_ramp_6 = Color(186, 11, 82);
 Color color_ramp_7 = Color(62, 2, 99);
 Color color_ramp_8 = Color(33, 2, 83);
 Color color_ramp_9 = Color(11, 1, 48);
-Color color_ramp_10 = Color(0, 0, 0, 0);
+Color color_ramp_10 = Color(0, 0, 0);
+
 Color right_click_menu_border_color = Color(10, 10, 10, 255);
 
 static std::string getLocalConfigPath()
