@@ -6,7 +6,7 @@
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
 #include "RightClickMenu.hpp"
-#include "ParamSmooth.hpp"
+#include "PeakFallSmooth.hpp"
 #include "kiss_fft.h"
 
 
@@ -66,7 +66,7 @@ private:
 
   UI *fUI;
   float fSamples[MAX_BLOCK_SIZE];
-  ParamSmooth fBins[MAX_BLOCK_SIZE / 2];
+  PeakFallSmooth fBins[MAX_BLOCK_SIZE / 2];
   size_t fSampleCount;
   bool fLogFrequencyScaling;
   kiss_fft_cfg fFFTConfig;

@@ -39,6 +39,7 @@ OBJS_UI  = \
 	Spectrogram.cpp.o \
 	Libs/kissfft/kiss_fft.cpp.o \
 	Common/Structures/src/ParamSmooth.cpp.o \
+	Common/Structures/src/PeakFallSmooth.cpp.o \
 	WolfSpectrumUI.cpp.o 
 
 # --------------------------------------------------------------
