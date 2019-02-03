@@ -74,8 +74,6 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
 
 Spectrogram::~Spectrogram()
 {
-    free(fSamples);
-
     if (fFFTConfig != nullptr)
     {
         kiss_fft_free(fFFTConfig);
