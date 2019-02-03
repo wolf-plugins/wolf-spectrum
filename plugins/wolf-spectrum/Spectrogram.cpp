@@ -138,7 +138,6 @@ float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, 
     const float complex = out[index].i * (2.0 / transformSize);
 
     const float powerSpectrum = real * real + complex * complex;
-
     float powerSpectrumdB = 10.0f / std::log(10.0f) * std::log(powerSpectrum + 1e-9);
 
     // Threshold
@@ -216,22 +215,24 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
 
     const float width = getWidth();
 
-    int transform_size = fBlockSize;
+    int transform_size = numSamples;
+    int step_size = transform_size / 4;
     int half = transform_size / 2;
-    int step_size = transform_size / 2;
 
     kiss_fft_cpx cin[transform_size];
     kiss_fft_cpx out[transform_size];
 
-    const float scaleX = width / numSamples;
+    const float scaleX = width / transform_size * 2;
     fScrollingTexture.setScaleX(scaleX);
 
-    for (uint32_t x = 0; x < numSamples / step_size; ++x)
+    for (uint32_t x = 0; x < transform_size / step_size; ++x)
     {
-        for (uint32_t j = 0, i = x * step_size; i < x * step_size + transform_size; ++i, ++j)
+        const uint32_t index = x * step_size;
+
+        for (uint32_t j = 0, i = index; i < index + transform_size; ++i, ++j)
         {
-            cin[i].r = samples[i] * windowHanning(j, transform_size);
-            cin[i].i = 0;
+            cin[j].r = samples[i] * windowHanning(j, transform_size);
+            cin[j].i = 0;
         }
 
         kiss_fft(fFFTConfig, cin, out);
@@ -245,7 +246,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
             const int freqSize = 1;
             float freqPos = i * freqSize;
 
-            if (fLogFrequencyScaling && i != half - 1) //must lerp to fill the gaps
+            if (fLogFrequencyScaling && i < half - 1) //must lerp to fill the gaps
             {
                 const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
 
@@ -399,9 +400,9 @@ void Spectrogram::onNanoDisplay()
         {
             fSamples[fSampleCount++] = *(float *)varchunkPtr;
 
-            if (fSampleCount >= fBlockSize)
+            if (fSampleCount >= fBlockSize * 2.0f)
             {
-                process(fSamples, fBlockSize / 2);
+                process(fSamples, fBlockSize);
 
                 fSampleCount = 0;
             }
