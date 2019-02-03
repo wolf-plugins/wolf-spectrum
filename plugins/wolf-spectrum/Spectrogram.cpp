@@ -208,30 +208,29 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     return numBins * scaledFreq / maxFreq;
 }
 
-void Spectrogram::process(float *samples, uint32_t numSamples)
+void Spectrogram::process(float *samples, uint32_t transformSize)
 {
     if (samples == nullptr)
         return;
 
     const float width = getWidth();
 
-    int transform_size = numSamples;
-    int step_size = transform_size / 4;
-    int half = transform_size / 2;
+    int stepSize = transformSize / 2;
+    int half = transformSize / 2;
 
-    kiss_fft_cpx cin[transform_size];
-    kiss_fft_cpx out[transform_size];
+    kiss_fft_cpx cin[transformSize];
+    kiss_fft_cpx out[transformSize];
 
-    const float scaleX = width / transform_size * 2;
+    const float scaleX = width / transformSize * 2;
     fScrollingTexture.setScaleX(scaleX);
 
-    for (uint32_t x = 0; x < transform_size / step_size; ++x)
+    for (uint32_t x = 0; x < transformSize / stepSize; ++x)
     {
-        const uint32_t index = x * step_size;
+        const uint32_t index = x * stepSize;
 
-        for (uint32_t j = 0, i = index; i < index + transform_size; ++i, ++j)
+        for (uint32_t j = 0, i = index; i < index + transformSize; ++i, ++j)
         {
-            cin[j].r = samples[i] * windowHanning(j, transform_size);
+            cin[j].r = samples[i] * windowHanning(j, transformSize);
             cin[j].i = 0;
         }
 
@@ -239,7 +238,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
 
         for (int i = 0; i < half; ++i)
         {
-            const float powerSpectrumdB = getPowerSpectrumdB(out, i, transform_size);
+            const float powerSpectrumdB = getPowerSpectrumdB(out, i, transformSize);
 
             Color pixelColor = getBinPixelColor(powerSpectrumdB);
 
@@ -248,7 +247,7 @@ void Spectrogram::process(float *samples, uint32_t numSamples)
 
             if (fLogFrequencyScaling && i < half - 1) //must lerp to fill the gaps
             {
-                const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transform_size);
+                const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transformSize);
 
                 freqPos = getBinPos(i, half, fSampleRate);
                 const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
