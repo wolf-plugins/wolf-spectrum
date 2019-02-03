@@ -68,8 +68,7 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
 {
     setSize(size);
 
-    fSamples = (float *)malloc(16384 * sizeof(float));
-
+    updateCoeffs();
     updateFFTConfig();
 }
 
@@ -80,6 +79,14 @@ Spectrogram::~Spectrogram()
     if (fFFTConfig != nullptr)
     {
         kiss_fft_free(fFFTConfig);
+    }
+}
+
+void Spectrogram::updateCoeffs()
+{
+    for (int i = 0; i < MAX_BLOCK_SIZE / 2; ++i)
+    {
+        fBins[i].calculateCoeff(fSampleRate / 64.0f, fSampleRate);
     }
 }
 
@@ -124,6 +131,8 @@ void Spectrogram::setHorizontalScrolling(bool yesno)
 void Spectrogram::setSampleRate(const double sampleRate)
 {
     fSampleRate = sampleRate;
+
+    updateCoeffs();
 }
 
 void Spectrogram::onResize(const ResizeEvent &ev)
@@ -208,6 +217,46 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     return numBins * scaledFreq / maxFreq;
 }
 
+void Spectrogram::draw()
+{
+    const float width = getWidth();
+    const float scaleX = width / fBlockSize * 2;
+
+    fScrollingTexture.setScaleX(scaleX);
+
+    const int half = fBlockSize / 2;
+
+    for (int i = 0; i < half; ++i)
+    {
+        const float powerSpectrumdB = fBins[i].getSmoothedValue();
+
+        Color pixelColor = getBinPixelColor(powerSpectrumdB);
+
+        const int freqSize = 1;
+        float freqPos = i * freqSize;
+
+        if (fLogFrequencyScaling && i < half - 1) //must lerp to fill the gaps
+        {
+            const float nextPowerSpectrumdB = fBins[i + 1].getSmoothedValue();
+
+            freqPos = getBinPos(i, half, fSampleRate);
+            const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
+
+            const int freqDelta = nextFreqPos - freqPos;
+
+            for (int j = freqPos; j < nextFreqPos; ++j)
+            {
+                Color lerpedColor = getBinPixelColor(wolf::lerp(powerSpectrumdB, nextPowerSpectrumdB, (j - freqPos) / (float)freqDelta));
+                fScrollingTexture.drawPixelOnCurrentLine(j, lerpedColor);
+            }
+        }
+
+        fScrollingTexture.drawPixelOnCurrentLine(freqPos, pixelColor);
+    }
+
+    fScrollingTexture.scroll();
+}
+
 void Spectrogram::process(float *samples, uint32_t transformSize)
 {
     if (samples == nullptr)
@@ -238,33 +287,8 @@ void Spectrogram::process(float *samples, uint32_t transformSize)
 
         for (int i = 0; i < half; ++i)
         {
-            const float powerSpectrumdB = getPowerSpectrumdB(out, i, transformSize);
-
-            Color pixelColor = getBinPixelColor(powerSpectrumdB);
-
-            const int freqSize = 1;
-            float freqPos = i * freqSize;
-
-            if (fLogFrequencyScaling && i < half - 1) //must lerp to fill the gaps
-            {
-                const float nextPowerSpectrumdB = getPowerSpectrumdB(out, i + 1, transformSize);
-
-                freqPos = getBinPos(i, half, fSampleRate);
-                const int nextFreqPos = getBinPos(i + 1, half, fSampleRate);
-
-                const int freqDelta = nextFreqPos - freqPos;
-
-                for (int j = freqPos; j < nextFreqPos; ++j)
-                {
-                    Color lerpedColor = getBinPixelColor(wolf::lerp(powerSpectrumdB, nextPowerSpectrumdB, (j - freqPos) / (float)freqDelta));
-                    fScrollingTexture.drawPixelOnCurrentLine(j, lerpedColor);
-                }
-            }
-
-            fScrollingTexture.drawPixelOnCurrentLine(freqPos, pixelColor);
+            fBins[i].setValue(getPowerSpectrumdB(out, i, transformSize));
         }
-
-        fScrollingTexture.scroll();
     }
 }
 
@@ -409,6 +433,8 @@ void Spectrogram::onNanoDisplay()
             varchunk_read_advance(varchunk);
         }
     }
+
+    draw();
 }
 
 END_NAMESPACE_DISTRHO

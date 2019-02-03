@@ -38,6 +38,7 @@ OBJS_UI  = \
 	ScrollingTexture.cpp.o \
 	Spectrogram.cpp.o \
 	Libs/kissfft/kiss_fft.cpp.o \
+	Common/Structures/src/ParamSmooth.cpp.o \
 	WolfSpectrumUI.cpp.o 
 
 # --------------------------------------------------------------

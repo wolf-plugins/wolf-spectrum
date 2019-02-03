@@ -6,6 +6,7 @@
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
 #include "RightClickMenu.hpp"
+#include "ParamSmooth.hpp"
 #include "kiss_fft.h"
 
 
@@ -36,8 +37,6 @@ public:
   Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size);
   ~Spectrogram();
 
-  void process(float *samples, uint32_t numSamples);
-
   void setParameterValue(uint32_t i, float v);
   void setLogFrequencyScaling(bool yesno);
   void setBlockSize(int blockSize);
@@ -55,13 +54,19 @@ protected:
   void onNanoDisplay() override;
 
 private:
+  static constexpr int MAX_BLOCK_SIZE = 16384;
+  void process(float *samples, uint32_t numSamples);
+
+  void draw();
+  void updateCoeffs();
   float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);
 
   //Call this after changing the block size
   void updateFFTConfig();
 
   UI *fUI;
-  float *fSamples;
+  float fSamples[MAX_BLOCK_SIZE];
+  ParamSmooth fBins[MAX_BLOCK_SIZE / 2];
   size_t fSampleCount;
   bool fLogFrequencyScaling;
   kiss_fft_cfg fFFTConfig;
