@@ -188,7 +188,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 	case paramGain:
 		parameter.ranges.min = -25.0f;
 		parameter.ranges.max = 25.0f;
-		parameter.ranges.def = 3.0f;
+		parameter.ranges.def = 0.0f;
 		parameter.hints = kParameterIsAutomable;
 		parameter.name = "Gain";
 		parameter.symbol = "gain";
