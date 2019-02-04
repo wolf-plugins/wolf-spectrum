@@ -30,7 +30,11 @@ cd bin
 ARCHIVE_NAME="$PLUGIN_NAME-$PLUGIN_VERSION-$PLATFORM_NAME"
 
 if [ "$BUILD_VST2" = true ]; then
-    tar -zcvf "$ARCHIVE_NAME-vst2.tar.gz" "$PLUGIN_NAME-vst.$EXTENSION"
+    if [ "$PLATFORM_NAME" = "linux" ]; then
+        tar -zcvf "$ARCHIVE_NAME-vst2.tar.gz" "$PLUGIN_NAME-vst.$EXTENSION"
+    else
+        zip -r "$ARCHIVE_NAME-vst2.zip" "$PLUGIN_NAME-vst.$EXTENSION"
+    fi
 fi
 
 if [ "$BUILD_LV2" = true ]; then
@@ -42,4 +46,9 @@ if [ "$BUILD_JACK" = true ]; then
 fi
 
 mkdir -p releases
-mv *.tar.gz releases/
+
+if [ "$PLATFORM_NAME" = "linux" ]; then
+    mv *.tar.gz releases/
+else
+    mv *.zip releases/
+fi
