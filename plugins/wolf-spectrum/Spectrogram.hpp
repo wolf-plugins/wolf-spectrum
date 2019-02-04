@@ -55,7 +55,7 @@ protected:
 
 private:
   static constexpr int MAX_BLOCK_SIZE = 16384;
-  void process(float *samples, uint32_t numSamples);
+  void process();
 
   void draw();
   void updateCoeffs();
@@ -65,9 +65,8 @@ private:
   void updateFFTConfig();
 
   UI *fUI;
-  float fSamples[MAX_BLOCK_SIZE];
+  wolf::Ringbuffer<float> fSamples;
   PeakFallSmooth fBins[MAX_BLOCK_SIZE / 2];
-  size_t fSampleCount;
   bool fLogFrequencyScaling;
   kiss_fft_cfg fFFTConfig;
   ScrollingTexture fScrollingTexture;

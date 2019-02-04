@@ -55,7 +55,7 @@ void SpectrogramRulers::drawBackground()
 
 Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
                                                                         fUI(ui),
-                                                                        fSampleCount(0),
+                                                                        fSamples(MAX_BLOCK_SIZE),
                                                                         fLogFrequencyScaling(true),
                                                                         fFFTConfig(nullptr),
                                                                         fScrollingTexture(this, size),
@@ -256,38 +256,38 @@ void Spectrogram::draw()
     fScrollingTexture.scroll();
 }
 
-void Spectrogram::process(float *samples, uint32_t transformSize)
+void Spectrogram::process()
 {
-    if (samples == nullptr)
-        return;
-
     const float width = getWidth();
 
-    int stepSize = transformSize / 2;
-    int half = transformSize / 2;
+    int stepSize = fBlockSize / 2;
+    int half = fBlockSize / 2;
 
-    kiss_fft_cpx cin[transformSize];
-    kiss_fft_cpx out[transformSize];
+    kiss_fft_cpx cin[fBlockSize];
+    kiss_fft_cpx out[fBlockSize];
 
-    const float scaleX = width / transformSize * 2;
+    const float scaleX = width / fBlockSize * 2;
     fScrollingTexture.setScaleX(scaleX);
 
-    for (uint32_t x = 0; x < transformSize / stepSize; ++x)
+    // samples to throw away
+    for (int i = 0; i < stepSize; ++i)
     {
-        const uint32_t index = x * stepSize;
+        cin[i].r = fSamples.get() * windowHanning(i, fBlockSize);
+        cin[i].i = 0;
+    }
 
-        for (uint32_t j = 0, i = index; i < index + transformSize; ++i, ++j)
-        {
-            cin[j].r = samples[i] * windowHanning(j, transformSize);
-            cin[j].i = 0;
-        }
+    // samples to keep
+    for (int i = stepSize; i < stepSize * 2; ++i)
+    {
+        cin[i].r = fSamples.peek(i - stepSize) * windowHanning(i, fBlockSize);
+        cin[i].i = 0;
+    }
 
-        kiss_fft(fFFTConfig, cin, out);
+    kiss_fft(fFFTConfig, cin, out);
 
-        for (int i = 0; i < half; ++i)
-        {
-            fBins[i].setValue(getPowerSpectrumdB(out, i, transformSize));
-        }
+    for (int i = 0; i < half; ++i)
+    {
+        fBins[i].setValue(getPowerSpectrumdB(out, i, fBlockSize));
     }
 }
 
@@ -420,13 +420,13 @@ void Spectrogram::onNanoDisplay()
 
         while ((varchunkPtr = varchunk_read_request(varchunk, &toread)))
         {
-            fSamples[fSampleCount++] = *(float *)varchunkPtr;
+            const float sample = *(float *)varchunkPtr;
 
-            if (fSampleCount >= fBlockSize * 2.0f)
+            fSamples.add(sample);
+
+            if (fSamples.count() >= fBlockSize)
             {
-                process(fSamples, fBlockSize);
-
-                fSampleCount = 0;
+                process();
             }
 
             varchunk_read_advance(varchunk);
