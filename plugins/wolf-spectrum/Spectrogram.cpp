@@ -412,6 +412,8 @@ void Spectrogram::setChannelMix(const int channelMix)
 
 void Spectrogram::onNanoDisplay()
 {
+    draw();
+
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         varchunk_t *varchunk = dspPtr->fRingbuffer;
