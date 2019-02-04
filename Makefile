@@ -54,8 +54,8 @@ ifeq ($(HAVE_DGL),true)
 	$(MAKE) clean -C dpf/dgl
 endif
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
-
 	$(MAKE) clean -C plugins/wolf-spectrum
+	rm -rf bin/*
 
 # --------------------------------------------------------------
 
