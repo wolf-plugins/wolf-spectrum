@@ -45,7 +45,8 @@ protected:
     PeakFallNormal,
     PeakFallInstant,
     ToggleCaptions,
-    ToggleUIControls
+    ToggleUIControls,
+    ToggleFullscreen
   };
 
   void parameterChanged(uint32_t, float value) override;
@@ -67,6 +68,7 @@ private:
    * Sets a parameter's value and calls parameterChanged afterwards.
    */
   void setParameterValueFeedback(uint32_t index, float value);
+  void toggleFullscreen();
 
   float fParameters[paramCount];
 

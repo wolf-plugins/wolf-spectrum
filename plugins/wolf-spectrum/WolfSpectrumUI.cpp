@@ -73,6 +73,12 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addSection("UI controls");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle show/hide");
 
+    if (!getParentWindow().isEmbed())
+    {
+        fRightClickMenu->addSection("Fullscreen");
+        fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
+    }
+
     fRightClickMenu->setCallback(this);
 
     positionWidgets(width, height);
@@ -234,6 +240,9 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::ToggleUIControls:
         setParameterValueFeedback(paramShowUIControls, (float)!fParameters[paramShowUIControls]);
         break;
+    case SpectrogramRightClickMenuItems::ToggleFullscreen:
+        toggleFullscreen();
+        break;
     default:
         DISTRHO_SAFE_ASSERT_BREAK(false);
     }
@@ -254,17 +263,22 @@ void WolfSpectrumUI::uiReshape(uint width, uint height)
     positionWidgets(width, height);
 }
 
+void WolfSpectrumUI::toggleFullscreen()
+{
+    if (!getParentWindow().isEmbed())
+    {
+        fprintf(stderr, "Toggling fullscreen...\n");
+        getParentWindow().toggleFullscreen();
+    }
+}
+
 bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 {
     if (ev.press)
     {
         if (ev.key == 95) //F11
         {
-            if (!getParentWindow().isEmbed())
-            {
-                fprintf(stderr, "Toggling fullscreen...\n");
-                getParentWindow().toggleFullscreen();
-            }
+            toggleFullscreen();
 
             return true;
         }
