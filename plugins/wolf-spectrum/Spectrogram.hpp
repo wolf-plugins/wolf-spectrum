@@ -56,7 +56,7 @@ protected:
 private:
   static constexpr int MAX_BLOCK_SIZE = 16384;
   void process();
-
+  void repositionRulers();
   void draw();
   void updateCoeffs();
   float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);

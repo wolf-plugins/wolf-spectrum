@@ -121,10 +121,26 @@ void Spectrogram::setLogFrequencyScaling(bool yesno)
     clear();
 }
 
+void Spectrogram::repositionRulers()
+{
+    fRulers.setAbsolutePos(getAbsolutePos());
+
+    if (fHorizontalScrolling)
+    {
+        fRulers.setSize(32, getHeight());
+    }
+    else
+    {
+        fRulers.setSize(getWidth(), 32);
+    }
+}
+
 void Spectrogram::setHorizontalScrolling(bool yesno)
 {
     fHorizontalScrolling = yesno;
     fScrollingTexture.setHorizontalScrolling(yesno);
+
+    repositionRulers();
 }
 
 void Spectrogram::setSampleRate(const double sampleRate)
@@ -137,7 +153,8 @@ void Spectrogram::setSampleRate(const double sampleRate)
 void Spectrogram::onResize(const ResizeEvent &ev)
 {
     fScrollingTexture.setSize(ev.size);
-    fRulers.setSize(ev.size.getWidth(), 32);
+
+    repositionRulers();
 }
 
 float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize)
@@ -344,7 +361,7 @@ void SpectrogramRulers::drawLogScaleGrid()
 
             if (fParent->fHorizontalScrolling)
             {
-                textAlign(ALIGN_MIDDLE);
+                textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
                 const int leftPadding = 5;
                 text(leftPadding, y, frequencyCaption, NULL);
             }
