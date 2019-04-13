@@ -250,7 +250,6 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
 
 void WolfSpectrumUI::onNanoDisplay()
 {
-
 }
 
 void WolfSpectrumUI::uiIdle()

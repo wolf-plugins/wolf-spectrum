@@ -280,31 +280,28 @@ void Spectrogram::process()
     int stepSize = fBlockSize / 2;
     int half = fBlockSize / 2;
 
-    kiss_fft_cpx cin[fBlockSize];
-    kiss_fft_cpx out[fBlockSize];
-
     const float scaleX = width / fBlockSize * 2;
     fScrollingTexture.setScaleX(scaleX);
 
     // samples to throw away
     for (int i = 0; i < stepSize; ++i)
     {
-        cin[i].r = fSamples.get() * windowHanning(i, fBlockSize);
-        cin[i].i = 0;
+        fFFTIn[i].r = fSamples.get() * windowHanning(i, fBlockSize);
+        fFFTIn[i].i = 0;
     }
 
     // samples to keep
     for (int i = stepSize; i < stepSize * 2; ++i)
     {
-        cin[i].r = fSamples.peek(i - stepSize) * windowHanning(i, fBlockSize);
-        cin[i].i = 0;
+        fFFTIn[i].r = fSamples.peek(i - stepSize) * windowHanning(i, fBlockSize);
+        fFFTIn[i].i = 0;
     }
 
-    kiss_fft(fFFTConfig, cin, out);
+    kiss_fft(fFFTConfig, fFFTIn, fFFTOut);
 
     for (int i = 0; i < half; ++i)
     {
-        fBins[i].setValue(getPowerSpectrumdB(out, i, fBlockSize));
+        fBins[i].setValue(getPowerSpectrumdB(fFFTOut, i, fBlockSize));
     }
 }
 

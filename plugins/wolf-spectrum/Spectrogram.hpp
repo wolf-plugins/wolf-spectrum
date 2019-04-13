@@ -77,6 +77,8 @@ private:
   int fChannelMix;
   int fPeakFall;
   float fThreshold;
+  kiss_fft_cpx fFFTIn[MAX_BLOCK_SIZE];
+  kiss_fft_cpx fFFTOut[MAX_BLOCK_SIZE];
 
   SpectrogramRulers fRulers;
 
