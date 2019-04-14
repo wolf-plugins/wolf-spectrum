@@ -67,7 +67,7 @@ const char *WolfSpectrumPlugin::getLicense() const noexcept
 
 uint32_t WolfSpectrumPlugin::getVersion() const noexcept
 {
-	return d_version(0, 2, 0);
+	return d_version(1, 0, 0);
 }
 
 int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
