@@ -118,7 +118,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 	case paramBlockSize:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = BlockSizeCount - 1;
-		parameter.ranges.def = BlockSize2048;
+		parameter.ranges.def = BlockSize4096;
 		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
 		parameter.name = "Block Size";
 		parameter.symbol = "blocksize";
