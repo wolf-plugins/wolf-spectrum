@@ -60,6 +60,7 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fFFTConfig(nullptr),
                                                                         fScrollingTexture(this, size),
                                                                         fBlockSize(512),
+                                                                        fHorizontalScrolling(false),
                                                                         fSampleRate(44100),
                                                                         fMustShowGrid(true),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
