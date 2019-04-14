@@ -15,6 +15,7 @@ START_NAMESPACE_DISTRHO
 PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags) : NanoWidget(widget),
                                                                                                 fDirty(true),
                                                                                                 fScaleX(1.0f),
+                                                                                                fScaleY(1.0f),
                                                                                                 fBufferWidth(INTERNAL_BUFFER_WIDTH),
                                                                                                 fBufferHeight(INTERNAL_BUFFER_HEIGHT),
                                                                                                 fImageFlags(imageFlags)
@@ -38,6 +39,11 @@ void PixelDrawingSurface::setScaleX(float scale)
     fScaleX = scale;
 }
 
+void PixelDrawingSurface::setScaleY(float scale)
+{
+    fScaleY = scale;
+}
+
 void PixelDrawingSurface::clear()
 {
     memset(fImageData, 0, INTERNAL_BUFFER_WIDTH * INTERNAL_BUFFER_HEIGHT * 4);
@@ -50,13 +56,23 @@ void PixelDrawingSurface::setBufferSize(int width, int height)
     fBufferHeight = height;
 }
 
-void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
+void PixelDrawingSurface::drawPixel(int posX, int posY, Color color, bool verticalInterpolation)
 {
     const int width = INTERNAL_BUFFER_WIDTH;
     const int height = INTERNAL_BUFFER_HEIGHT;
 
-    const float realPixelSize = (float)INTERNAL_BUFFER_WIDTH / (float)fBufferWidth;
-    posX *= realPixelSize;
+    float realPixelSize;
+
+    if (verticalInterpolation)
+    {
+        realPixelSize = (float)INTERNAL_BUFFER_HEIGHT / (float)fBufferHeight;
+        posY *= realPixelSize;
+    }
+    else
+    {
+        realPixelSize = (float)INTERNAL_BUFFER_WIDTH / (float)fBufferWidth;
+        posX *= realPixelSize;
+    }
 
     DISTRHO_SAFE_ASSERT(!(posX < 0 || posX >= width || posY < 0 || posY >= height))
 
@@ -111,17 +127,38 @@ void PixelDrawingSurface::onNanoDisplay()
 
     beginPath();
 
-    scale(fScaleX * ((float)fBufferWidth / (float)INTERNAL_BUFFER_WIDTH), 1);
+    scale(1, fScaleY * ((float)fBufferHeight / (float)INTERNAL_BUFFER_HEIGHT));
 
     fillPaint(paint);
     rect(0, 0, width, height);
+
+    /*
+    if (getId() == 0)
+    {
+        fillColor(Color(255,0,0));
+    }
+    else
+    {
+        fillColor(Color(0,255,0));
+    }
+    */
     fill();
     closePath();
 }
 
-void PixelDrawingSurface::clearLine(int posY)
+void PixelDrawingSurface::clearLineHorizontal(int posY)
 {
-    memset(fImageData + posY * INTERNAL_BUFFER_WIDTH * 4, 1, INTERNAL_BUFFER_WIDTH * 4);
+    memset(fImageData + posY * INTERNAL_BUFFER_WIDTH * 4, 0, INTERNAL_BUFFER_WIDTH * 4);
+    fDirty = true;
+}
+
+void PixelDrawingSurface::clearLineVertical(int posX)
+{
+    for (int i = 0; i < INTERNAL_BUFFER_HEIGHT; ++i)
+    {
+        memset(fImageData + i * INTERNAL_BUFFER_WIDTH * 4 + posX * 4, 0, 4);
+    }
+
     fDirty = true;
 }
 
@@ -181,7 +218,7 @@ void ScrollingTexture::positionTextures()
 void ScrollingTexture::setHorizontalScrolling(bool yesno)
 {
     horizontalScrolling = yesno;
-
+    clear();
     positionTextures();
 }
 
@@ -192,16 +229,16 @@ void ScrollingTexture::drawPixelOnCurrentLine(int pos, Color color)
         //flip drawing pos
         pos = getHeight() - pos;
 
-        const float posXA = textureA.getAbsoluteX();
-        const float posXB = textureB.getAbsoluteX();
+        const float posXA = getWidth() - textureA.getAbsoluteX();
+        const float posXB = getWidth() - textureB.getAbsoluteX();
 
-        if (posXA <= getAbsoluteX())
+        if (posXA <= getAbsoluteX() + getWidth())
         {
-            textureA.drawPixel(std::abs(posXA), pos, color);
+            textureA.drawPixel(std::abs(posXA), pos, color, true);
         }
         else
         {
-            textureB.drawPixel(std::abs(posXB), pos, color);
+            textureB.drawPixel(std::abs(posXB), pos, color, true);
         }
     }
     else
@@ -211,11 +248,11 @@ void ScrollingTexture::drawPixelOnCurrentLine(int pos, Color color)
 
         if (posYA <= getAbsoluteY() + getHeight())
         {
-            textureA.drawPixel(pos, std::abs(posYA), color);
+            textureA.drawPixel(pos, std::abs(posYA), color, false);
         }
         else
         {
-            textureB.drawPixel(pos, std::abs(posYB), color);
+            textureB.drawPixel(pos, std::abs(posYB), color, false);
         }
     }
 }
@@ -224,7 +261,17 @@ void ScrollingTexture::clearCurrentLine()
 {
     if (horizontalScrolling)
     {
-        //TODO
+        const float posXA = getWidth() - textureA.getAbsoluteX();
+        const float posXB = getWidth() - textureB.getAbsoluteX();
+
+        if (posXA <= getAbsoluteX() + getWidth())
+        {
+            textureA.clearLineVertical(std::abs(posXA));
+        }
+        else
+        {
+            textureB.clearLineVertical(std::abs(posXB));
+        }
     }
     else
     {
@@ -233,11 +280,11 @@ void ScrollingTexture::clearCurrentLine()
 
         if (posYA <= getAbsoluteY() + getHeight())
         {
-            textureA.clearLine(std::abs(posYA));
+            textureA.clearLineHorizontal(std::abs(posYA));
         }
         else
         {
-            textureB.clearLine(std::abs(posYB));
+            textureB.clearLineHorizontal(std::abs(posYB));
         }
     }
 }
@@ -246,20 +293,20 @@ void ScrollingTexture::setBlockSize(int blockSize)
 {
     this->blockSize = blockSize;
 
-    textureA.setBufferSize(blockSize, 3024);
-    textureB.setBufferSize(blockSize, 3024);
+    textureA.setBufferSize(3024, blockSize);
+    textureB.setBufferSize(3024, blockSize);
 }
 
 void ScrollingTexture::horizontalScroll()
 {
     const float posXParent = getAbsoluteX();
     const float rightParent = posXParent + getWidth();
-    const float textureADest = posXParent - textureA.getWidth() + 1;
-    const float textureBDest = posXParent - textureB.getWidth() + 1;
-    const float posXA = textureA.getAbsoluteX() + 1;
-    const float posXB = textureB.getAbsoluteX() + 1;
+    const float textureADest = rightParent;
+    const float textureBDest = rightParent;
+    const float posXA = textureA.getAbsoluteX() - 1;
+    const float posXB = textureB.getAbsoluteX() - 1;
 
-    if (posXA > rightParent)
+    if (posXA + (int)textureA.getWidth() <= posXParent)
     {
         textureA.setAbsoluteX(textureADest);
     }
@@ -268,7 +315,7 @@ void ScrollingTexture::horizontalScroll()
         textureA.setAbsoluteX(posXA);
     }
 
-    if (posXB > rightParent)
+    if (posXB + (int)textureB.getWidth() < posXParent)
     {
         textureB.setAbsoluteX(textureBDest);
     }
@@ -328,6 +375,12 @@ void ScrollingTexture::setScaleX(float scale)
 {
     textureA.setScaleX(scale);
     textureB.setScaleX(scale);
+}
+
+void ScrollingTexture::setScaleY(float scale)
+{
+    textureA.setScaleY(scale);
+    textureB.setScaleY(scale);
 }
 
 END_NAMESPACE_DISTRHO

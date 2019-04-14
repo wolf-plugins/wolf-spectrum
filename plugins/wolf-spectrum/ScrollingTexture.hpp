@@ -12,11 +12,13 @@ public:
   PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = 0);
   ~PixelDrawingSurface();
 
-  void drawPixel(int posX, int posY, Color pixelColor);
+  void drawPixel(int posX, int posY, Color pixelColor, bool verticalInterpolation);
   void setScaleX(float scale);
+  void setScaleY(float scale);
   void setBufferSize(int width, int height);
   void clear();
-  void clearLine(int posY);
+  void clearLineHorizontal(int posY);
+  void clearLineVertical(int posX);
 
 protected:
   void onNanoDisplay() override;
@@ -29,6 +31,7 @@ private:
   unsigned char *fImageData;
   bool fDirty;
   float fScaleX;
+  float fScaleY;
   int fBufferWidth;
   int fBufferHeight;
   int fImageFlags;
@@ -45,6 +48,7 @@ public:
 
   void scroll();
   void setScaleX(float scale);
+  void setScaleY(float scale);
   void setBlockSize(int blockSize);
   void setHorizontalScrolling(bool yesno);
   void clear();

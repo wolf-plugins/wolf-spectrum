@@ -236,9 +236,22 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
 void Spectrogram::draw()
 {
     const float width = getWidth();
-    const float scaleX = width / fBlockSize * 2;
+    const float height = getHeight();
 
-    fScrollingTexture.setScaleX(scaleX);
+    if (fHorizontalScrolling)
+    {
+        const float scaleY = height / fBlockSize * 2;
+
+        fScrollingTexture.setScaleX(1);
+        fScrollingTexture.setScaleY(scaleY);
+    }
+    else
+    {
+        const float scaleX = width / fBlockSize * 2;
+
+        fScrollingTexture.setScaleX(scaleX);
+        fScrollingTexture.setScaleY(1);
+    }
 
     const int half = fBlockSize / 2;
 
@@ -275,13 +288,8 @@ void Spectrogram::draw()
 
 void Spectrogram::process()
 {
-    const float width = getWidth();
-
     int stepSize = fBlockSize / 2;
     int half = fBlockSize / 2;
-
-    const float scaleX = width / fBlockSize * 2;
-    fScrollingTexture.setScaleX(scaleX);
 
     // samples to throw away
     for (int i = 0; i < stepSize; ++i)
