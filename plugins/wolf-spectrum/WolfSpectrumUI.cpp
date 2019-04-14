@@ -43,9 +43,9 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic, "Logarithmic");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear, "Linear");
 
-    fRightClickMenu->addSection("Scrolling direction");
+    /* fRightClickMenu->addSection("Scrolling direction");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionVertical, "Vertical");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal"); */
 
     fRightClickMenu->addSection("Block size");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize64, "64 samples");
@@ -63,9 +63,9 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixL, "Left");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
 
-    fRightClickMenu->addSection("Peak fall");
+    /* fRightClickMenu->addSection("Peak fall");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant"); */
 
     fRightClickMenu->addSection("Captions");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle show/hide");
@@ -73,11 +73,11 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addSection("UI controls");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle show/hide");
 
-    if (!getParentWindow().isEmbed())
+    /* if (!getParentWindow().isEmbed())
     {
         fRightClickMenu->addSection("Fullscreen");
         fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
-    }
+    } */
 
     fRightClickMenu->setCallback(this);
 
@@ -141,21 +141,21 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     case paramBlockSize:
         fSpectrogram->setBlockSize(std::pow(2, 5 + (int)value)); //careful, this assumes block size 64 is the minimum
         break;
-    case paramScrollDirection:
+    /* case paramScrollDirection:
         fSpectrogram->setHorizontalScrolling(value == WolfSpectrumPlugin::ScrollDirection::ScrollDirectionHorizontal);
-        break;
+        break; */
     case paramShowCaptions:
         fSpectrogram->setGridVisibility(value);
         break;
     case paramChannelMix:
         fSpectrogram->setChannelMix(value);
         break;
-    case paramPeakFall:
+    /* case paramPeakFall:
         fSpectrogram->setPeakFall(value);
-        break;
-    case paramThreshold:
+        break; */
+    /* case paramThreshold:
         fSpectrogram->setThreshold(value);
-        break;
+        break; */
     case paramShowUIControls:
         fResizeHandle->setVisible(value);
         break;
@@ -186,12 +186,12 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::FrequencyScalingLinear:
         setParameterValueFeedback(paramFrequencyScaling, WolfSpectrumPlugin::FrequencyScalingLinear);
         break;
-    case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
+    /* case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
         setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionVertical);
         break;
     case SpectrogramRightClickMenuItems::ScrollDirectionHorizontal:
         setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionHorizontal);
-        break;
+        break; */
     case SpectrogramRightClickMenuItems::BlockSize64:
         setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize64);
         break;
@@ -228,12 +228,12 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::ChannelMixR:
         setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
         break;
-    case SpectrogramRightClickMenuItems::PeakFallNormal:
+    /* case SpectrogramRightClickMenuItems::PeakFallNormal:
         setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallNormal);
         break;
     case SpectrogramRightClickMenuItems::PeakFallInstant:
         setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallInstant);
-        break;
+        break; */
     case SpectrogramRightClickMenuItems::ToggleCaptions:
         setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);
         break;
@@ -264,6 +264,8 @@ void WolfSpectrumUI::uiReshape(uint width, uint height)
 
 void WolfSpectrumUI::toggleFullscreen()
 {
+    return; //buggy, so avoided for now
+
     if (!getParentWindow().isEmbed())
     {
         fprintf(stderr, "Toggling fullscreen...\n");

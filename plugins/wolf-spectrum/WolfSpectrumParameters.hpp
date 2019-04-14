@@ -8,14 +8,11 @@ START_NAMESPACE_DISTRHO
 enum Parameters
 {
     paramFrequencyScaling = 0,
-    paramScrollDirection,
     paramBlockSize,
     paramChannelMix,
-    paramPeakFall,
     paramShowCaptions,
     paramShowUIControls,
     paramGain,
-    paramThreshold,
     paramCount
 };
 

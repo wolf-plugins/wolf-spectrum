@@ -97,7 +97,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].value = FrequencyScalingLinear;
 		}
 		break;
-	case paramScrollDirection:
+	/* case paramScrollDirection:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
 		parameter.ranges.def = 0;
@@ -114,7 +114,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].label = "Horizontal";
 			values[1].value = ScrollDirectionHorizontal;
 		}
-		break;
+		break; */
 	case paramBlockSize:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = BlockSizeCount - 1;
@@ -167,7 +167,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[2].value = ChannelMixR;
 		}
 		break;
-	case paramPeakFall:
+	/* case paramPeakFall:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = PeakFallCount - 1;
 		parameter.ranges.def = PeakFallNormal;
@@ -184,7 +184,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].label = "Instant";
 			values[1].value = PeakFallInstant;
 		}
-		break;
+		break; */
 	case paramGain:
 		parameter.ranges.min = -25.0f;
 		parameter.ranges.max = 25.0f;
@@ -193,14 +193,14 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.name = "Gain";
 		parameter.symbol = "gain";
 		break;
-	case paramThreshold:
+	/* case paramThreshold:
 		parameter.ranges.min = -90.0f;
 		parameter.ranges.max = -0.1f;
 		parameter.ranges.def = -90.0f;
 		parameter.hints = kParameterIsAutomable;
 		parameter.name = "Threshold";
 		parameter.symbol = "threshold";
-		break;
+		break; */
 	case paramShowCaptions:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;

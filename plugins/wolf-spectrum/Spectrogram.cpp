@@ -64,7 +64,7 @@ Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidg
                                                                         fMustShowGrid(true),
                                                                         fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
                                                                         fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
-                                                                        fThreshold(-40.f),
+                                                                        fThreshold(-90.f),
                                                                         fRulers(this)
 {
     setSize(size);
