@@ -62,6 +62,7 @@ protected:
   bool onMouse(const MouseEvent &ev) override;
   void sampleRateChanged(const double sampleRate) override;
   void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
+  void onFocusOut() override;
 
 private:
   /**
