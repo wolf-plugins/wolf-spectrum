@@ -12,7 +12,6 @@ Build-Depends:
  libx11-dev,
  libxext-dev,
  lv2-dev,
- libfreetype6-dev,
  pkg-config,
 Standards-Version: 3.9.8
 Homepage: https://github.com/pdesaulniers/wolf-spectrum
