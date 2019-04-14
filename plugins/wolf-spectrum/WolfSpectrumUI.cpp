@@ -67,11 +67,9 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant"); */
 
-    fRightClickMenu->addSection("Rulers");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Toggle show/hide");
-
-    fRightClickMenu->addSection("Resize handle");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Toggle show/hide");
+    fRightClickMenu->addSection("Widgets visibility");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Show rulers");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle");
 
     /* if (!getParentWindow().isEmbed())
     {
@@ -171,6 +169,8 @@ bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
         const int frequencyScaling = std::round(fParameters[paramFrequencyScaling]);
         const int blockSize = std::round(fParameters[paramBlockSize]);
         const int channelMix = std::round(fParameters[paramChannelMix]);
+        const int showUIControls = std::round(fParameters[paramShowUIControls]);
+        const int showCaptions = std::round(fParameters[paramShowCaptions]);
 
         fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
             ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLogarithmic);
@@ -213,6 +213,12 @@ bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 
         fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixR)
             ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixR);
+
+        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleCaptions)
+            ->setSelected(showCaptions == 1);
+
+        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleUIControls)
+            ->setSelected(showUIControls == 1);
 
         fRightClickMenu->show(ev.pos.getX(), ev.pos.getY());
 
