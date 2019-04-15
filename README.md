@@ -10,11 +10,19 @@ Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin a
 * Supports both log and linear frequency scaling
 * Resizable UI
 
-## Download
+## Install
 
-You can find some precompiled plugin binaries in the [Releases](https://github.com/pdesaulniers/wolf-spectrum/releases) tab. Wolf Spectrum is also available [in the AUR](https://aur.archlinux.org/packages/wolf-spectrum-git/). 
+You can find some precompiled plugin binaries in the [Releases](https://github.com/pdesaulniers/wolf-spectrum/releases) tab. Some packages are also available for Ubuntu and Arch Linux:
 
-For building the plugin manually, see the section below.
+### Ubuntu
+Download the plugin from the [pdesaulniers/wolf PPA](https://launchpad.net/~pdesaulniers/+archive/ubuntu/wolf):
+```
+sudo apt-add-repository -y ppa:pdesaulniers/wolf
+sudo apt-get update
+sudo apt-get install wolf-spectrum
+```
+### Arch Linux
+A git package is available [in the AUR](https://aur.archlinux.org/packages/wolf-spectrum-git/). 
 
 ## Build manually
 
