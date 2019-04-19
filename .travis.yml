@@ -1,7 +1,7 @@
 sudo: required
 language: cpp
 compiler: gcc
-dist: trusty
+dist: xenial
 before_install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 addons:
@@ -9,8 +9,8 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.9
-    - g++-4.9
+    - gcc
+    - g++
     - libx11-dev
     - libgl1-mesa-dev
     - liblo-dev
