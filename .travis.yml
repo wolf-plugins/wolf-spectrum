@@ -21,6 +21,7 @@ deploy:
   provider: releases
   file: ./bin/releases/*
   skip_cleanup: true
+  file_glob: true
   draft: true
   on:
     tags: true
