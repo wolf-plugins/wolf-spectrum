@@ -15,11 +15,14 @@ addons:
     - libgl1-mesa-dev
     - liblo-dev
     - libjack-dev
+    - gcc-mingw-w64-x86-64
 script:
-- ./make_release.sh
+- LINUX=true ./make_release.sh
+- WIN32=true ./make_release.sh
+- ./bundle_source.sh
 deploy:
   provider: releases
-  file: ./bin/releases/*
+  file: ./.releases/*
   skip_cleanup: true
   file_glob: true
   draft: true

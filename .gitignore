@@ -21,3 +21,4 @@ CTestTestfile.cmake
 *.so
 /bin/
 .vagrant
+.releases/

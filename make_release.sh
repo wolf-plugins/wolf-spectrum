@@ -47,10 +47,12 @@ if [ "$BUILD_JACK" = true ]; then
     tar -zcvf "$ARCHIVE_NAME-jack.tar.gz" "$PLUGIN_NAME"
 fi
 
-mkdir -p releases
+cd ..
+
+mkdir -p .releases/
 
 if [ "$PLATFORM_NAME" = "linux" ]; then
-    mv *.tar.gz releases/
+    mv bin/*.tar.gz .releases/
 else
-    mv *.zip releases/
+    mv bin/*.zip .releases/
 fi
