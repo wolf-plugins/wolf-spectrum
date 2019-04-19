@@ -1,5 +1,7 @@
+set -e
+
 PLUGIN_NAME=wolf-spectrum
-PLUGIN_VERSION=v1.0.0
+PLUGIN_VERSION=$(git describe --tags --abbrev=0)
 
 PLATFORM_NAME=linux
 

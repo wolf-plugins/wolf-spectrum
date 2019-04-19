@@ -1,19 +1,28 @@
 sudo: required
-
 language: cpp
 compiler: gcc
 dist: trusty
-
 before_install:
-        - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.9
-      - g++-4.9
-install:
-        - sudo apt-get install -y pkg-config libx11-dev
+    - gcc-4.9
+    - g++-4.9
+    - libx11-dev
+    - libgl1-mesa-dev
+    - liblo-dev
+    - libjack-dev
 script:
-        - BUILD_VST2=true BUILD_LV2=true BUILD_JACK=true make
+- ./make_release.sh
+deploy:
+  provider: releases
+  file: ./bin/releases/*
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true
+  api-key:
+    secure: yzycMTnlrCFEp10zUhySIM6gCjdvTGuc5nPrc7U9geeahn8UaSsyMwq9OlWrJGuMzTkVruJKBTyQ1m0aq691Y1ojzX3vvbE9zJq+XVAxqUDTpTTHdrnOAxsN5n/Pr5jR1rgYjIQCCpoFKMAgQ647Fafw8mmJPG8Gam4czZ2YndyR7JQ50GNhrIHM5PHs0wjeT+58kt9IctPLS1sGTBuLWYT1KI26Fi9MK5SzcnecUPuFQMHB1IXMP4/rMX4SqmZgmVds1Oo7CG7Mg22SqMIyOqPow+LNeBNY/IF6j8AWom+u0qMr2VzeyC1My7UntYJaVDxdoah4K2ESfI+n47IuCPMJfSmh95XKBW09xXem0l+1m6qAAlIConLqHzvkRSL2eWopAVQmsddzLOCHGJAwqftE1N8UoEPlDIGwgSuslILyfseBst3PQp3ILFb9suvXPSEazeqxG0gfcvgQDUObKAW5jZ8EnFxOeNnkz0yLRBgEAKfGmcF7KZj2k0HLdOcYYyDcnolmPz6VZ2MGoaJvsyLK3f5TGKgzNYq7Z78jnu6oo6JMFfY2YVhFd9oFL6RCelelgE30GDSvwP/NNE6reUtdJEN1u6K+vgKff9IkIqbo7DtnLzau5+3Gx58azq7rTA1XcLdYM5hs7cFAZ/qSQYnjzWQNYJlYAOL1JsS/ja8=
