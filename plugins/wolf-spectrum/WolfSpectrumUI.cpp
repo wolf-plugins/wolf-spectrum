@@ -164,65 +164,74 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 
 bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 {
-    if (ev.press && ev.button == 3) // right-click
+    if (ev.press)
     {
-        const int frequencyScaling = std::round(fParameters[paramFrequencyScaling]);
-        const int blockSize = std::round(fParameters[paramBlockSize]);
-        const int channelMix = std::round(fParameters[paramChannelMix]);
-        const int showUIControls = std::round(fParameters[paramShowUIControls]);
-        const int showCaptions = std::round(fParameters[paramShowCaptions]);
+        if (((Window *)fRightClickMenu)->isVisible())
+        {
+            fRightClickMenu->close();
+            
+            return true;
+        }
+        else if (ev.button == 3) // right-click
+        {
+            const int frequencyScaling = std::round(fParameters[paramFrequencyScaling]);
+            const int blockSize = std::round(fParameters[paramBlockSize]);
+            const int channelMix = std::round(fParameters[paramChannelMix]);
+            const int showUIControls = std::round(fParameters[paramShowUIControls]);
+            const int showCaptions = std::round(fParameters[paramShowCaptions]);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
-            ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLogarithmic);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
+                ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLogarithmic);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear)
-            ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLinear);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear)
+                ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLinear);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize64)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize64);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize64)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize64);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize128)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize128);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize128)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize128);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize256)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize256);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize256)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize256);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize512)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize512);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize512)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize512);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize1024)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize1024);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize1024)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize1024);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize2048)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize2048);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize2048)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize2048);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize4096)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize4096);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize4096)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize4096);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize8192)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize8192);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize8192)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize8192);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize16384)
-            ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize16384);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize16384)
+                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize16384);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixLRMean)
-            ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixLRMean);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixLRMean)
+                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixLRMean);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixL)
-            ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixL);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixL)
+                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixL);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixR)
-            ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixR);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixR)
+                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixR);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleCaptions)
-            ->setSelected(showCaptions == 1);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleCaptions)
+                ->setSelected(showCaptions == 1);
 
-        fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleUIControls)
-            ->setSelected(showUIControls == 1);
+            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleUIControls)
+                ->setSelected(showUIControls == 1);
 
-        fRightClickMenu->show(ev.pos.getX(), ev.pos.getY());
+            fRightClickMenu->show(ev.pos.getX(), ev.pos.getY());
 
-        return true;
+            return true;
+        }
     }
 
     return false;
