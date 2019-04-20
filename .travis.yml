@@ -16,11 +16,7 @@ addons:
     - gcc-mingw-w64-x86-64
     - g++-mingw-w64-x86-64
 script:
-- set -e
-- LINUX=true ./make_release.sh
-- WIN32=true ./make_release.sh
-- ./bundle_source.sh
-- set +e
+  - make release
 deploy:
   provider: releases
   file: ./.releases/*
