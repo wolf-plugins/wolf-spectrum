@@ -121,7 +121,7 @@ License: Zlib
 Files: debian/*
 Copyright:
 2019 Patrick Desaulniers <desaulniers.patrick@carrefour.cegepvicto.ca>
- 019 Olivier Humbert <trebmuh@tuxfamily.org>
+2019 Olivier Humbert <trebmuh@tuxfamily.org>
 License: GPL-3.0+
 
 License: GPL-3.0+
