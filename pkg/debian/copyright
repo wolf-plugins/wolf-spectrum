@@ -1,4 +1,4 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: wolf-spectrum
 Upstream-Contact: Patrick Desaulniers <desaulniers.patrick@carrefour.cegepvicto.ca>
 Source: https://github.com/pdesaulniers/wolf-spectrum
@@ -211,4 +211,4 @@ License: expat
  Please, see https://www.debian.org/legal/licenses/mit .
 
 License: Zlib
- Please, see http://www.gzip.org/zlib/zlib_license.html .
+ Please, see https://zlib.net/zlib_license.html .
