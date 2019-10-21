@@ -27,5 +27,5 @@ Provides:
 Description: Wolf Spectrum plugin
  Wolf Spectrum is a free, cross-platform spectrogram plugin.
  .
- Wolf Spectrum is using the DPF framework and is available as LV2, VST, and
+ Wolf Spectrum is using the DPF framework and is available as LV2, VST2, and
  standalone JACK-application.
