@@ -22,7 +22,11 @@ sudo apt-get update
 sudo apt-get install wolf-spectrum
 ```
 ### Arch Linux
-A git package is available [in the AUR](https://aur.archlinux.org/packages/wolf-spectrum-git/). 
+To install the latest release:
+```
+sudo pacman -S wolf-spectrum
+```
+A git package is also available [in the AUR](https://aur.archlinux.org/packages/wolf-spectrum-git/). 
 
 ## Build manually
 
