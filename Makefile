@@ -36,6 +36,11 @@ dpf/utils/lv2_ttl_generator.exe:
 	$(MAKE) -C dpf/utils/lv2-ttl-generator WINDOWS=true
 endif
 
+release:
+	LINUX=true ./plugins/wolf-spectrum/Common/Utils/make_release.sh
+	WIN32=true ./plugins/wolf-spectrum/Common/Utils/make_release.sh
+	./plugins/wolf-spectrum/Common/Utils/bundle_source.sh
+
 # --------------------------------------------------------------
 
 clean:
