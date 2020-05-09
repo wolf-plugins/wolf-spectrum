@@ -16,6 +16,8 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     const uint minWidth = 1024;
     const uint minHeight = 200;
 
+    setGeometryConstraints(minWidth, minHeight, false, false);
+
     loadSharedResources();
 
     WolfSpectrumConfig::load();
@@ -330,7 +332,7 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 
 void WolfSpectrumUI::resizeHandleMoved(int width, int height)
 {
-    getParentWindow().setSize(width, height);
+    setSize(width, height);
 }
 
 void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
