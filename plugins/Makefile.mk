@@ -18,7 +18,7 @@ endif
 TARGET_DIR = ../../bin
 
 BUILD_C_FLAGS   += -I.
-BUILD_CXX_FLAGS += -I. -I../../dpf/distrho -I../../dpf/dgl -I./Common/Structures -I./Common/Widgets -I./Common/Utils -I./Resources -I./Config -I./Libs/inih -I./Libs/DSPFilters/include -I./Libs/kissfft -I./Libs/kissfft/tools/ -I./Libs/varchunk/
+BUILD_CXX_FLAGS += -I. -I../../dpf/distrho -I../../dpf/dgl -I./Common/Structures -I./Common/Widgets -I./Common/Utils -I./Resources -I./Config -I./Libs/inih -I./Libs/DSPFilters/include -I./Libs/kissfft -I./Libs/kissfft/tools/ -I./Libs/readerwriterqueue/
 
 ifeq ($(HAVE_DGL),true)
 BASE_FLAGS += -DHAVE_DGL

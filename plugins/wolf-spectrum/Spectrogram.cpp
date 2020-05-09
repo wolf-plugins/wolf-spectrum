@@ -5,7 +5,7 @@
 #include "Mathf.hpp"
 #include "Config.hpp"
 #include "WolfSpectrumPlugin.hpp"
-#include "varchunk.h"
+#include "readerwriterqueue.h"
 #include <stdlib.h>
 #include <cmath>
 #include <ctime>
@@ -431,22 +431,17 @@ void Spectrogram::onNanoDisplay()
 
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
-        varchunk_t *varchunk = dspPtr->fRingbuffer;
-        const void *varchunkPtr;
-        size_t toread;
+        auto ringbuffer = &dspPtr->fRingbuffer;
 
-        while ((varchunkPtr = varchunk_read_request(varchunk, &toread)))
+        float sample;
+        while (ringbuffer->try_dequeue(sample))
         {
-            const float sample = *(float *)varchunkPtr;
-
             fSamples.add(sample);
 
             if (fSamples.count() >= fBlockSize)
             {
                 process();
             }
-
-            varchunk_read_advance(varchunk);
         }
     }
 

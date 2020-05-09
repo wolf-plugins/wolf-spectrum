@@ -30,14 +30,13 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 
-WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0)
+WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
+										   fRingbuffer(16384)
 {
-	fRingbuffer = varchunk_new(16384 * 2, true);
 }
 
 WolfSpectrumPlugin::~WolfSpectrumPlugin()
 {
-	varchunk_free(fRingbuffer);
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -237,9 +236,6 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
 	const float gaindB = parameters[paramGain];
 	const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
 
-	void *varchunkPtr;
-
-	const size_t toWrite = sizeof(float);
 	const ChannelMix channelMix = (ChannelMix)std::round(parameters[paramChannelMix]);
 
 	for (uint32_t i = 0; i < frames; ++i)
@@ -264,12 +260,8 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
             return; //¯\_(ツ)_/¯
         }
 
-		if( (varchunkPtr = varchunk_write_request(fRingbuffer, toWrite)) )
-		{
-			*(float *)varchunkPtr = sampleOut;
-			varchunk_write_advance(fRingbuffer, toWrite);
-		}
-
+		fRingbuffer.try_enqueue(sampleOut);
+		
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];
 	}

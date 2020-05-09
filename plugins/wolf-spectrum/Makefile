@@ -17,12 +17,10 @@ NAME = $(PLUGIN_NAME)
 # Files to build
 
 OBJS_DSP = \
-	Libs/varchunk/varchunk.c.o \
 	Common/Utils/src/Mathf.cpp.o \
 	WolfSpectrumPlugin.cpp.o
 
 OBJS_UI  = \
-	Libs/varchunk/varchunk.c.o \
 	Common/Utils/src/Mathf.cpp.o \
 	Common/Structures/src/Margin.cpp.o \
 	Common/Structures/src/Animation.cpp.o \
