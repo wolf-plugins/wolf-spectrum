@@ -14,7 +14,7 @@ submodules:
 	git submodule update --init --recursive
 
 libs:
-	$(MAKE) -C dpf/dgl
+	$(MAKE) -C dpf/dgl HAVE_CAIRO=false
 
 plugins: libs
 	$(MAKE) all -C plugins/wolf-spectrum
