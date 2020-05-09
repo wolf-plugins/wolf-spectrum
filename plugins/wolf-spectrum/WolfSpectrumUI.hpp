@@ -5,6 +5,8 @@
 #include "ResizeHandle.hpp"
 #include "NanoLabel.hpp"
 
+// #include "RightClickMenu.hpp"
+
 #include "WolfSpectrumPlugin.hpp"
 
 #include "Spectrogram.hpp"
@@ -14,8 +16,8 @@ START_NAMESPACE_DISTRHO
 class Spectrogram;
 
 class WolfSpectrumUI : public UI,
-                       public ResizeHandle::Callback,
-                       public RightClickMenu::Callback
+                       public ResizeHandle::Callback
+                       // public RightClickMenu::Callback
 {
 public:
   WolfSpectrumUI();
@@ -61,8 +63,8 @@ protected:
   bool onKeyboard(const KeyboardEvent &ev) override;
   bool onMouse(const MouseEvent &ev) override;
   void sampleRateChanged(const double sampleRate) override;
-  void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
-  void onFocusOut() override;
+  //void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
+  // void onFocusOut() override;
 
 private:
   /**
@@ -75,7 +77,7 @@ private:
 
   ScopedPointer<ResizeHandle> fResizeHandle;
   ScopedPointer<Spectrogram> fSpectrogram;
-  ScopedPointer<RightClickMenu> fRightClickMenu;
+  // ScopedPointer<RightClickMenu> fRightClickMenu;
 
   DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumUI)
 };

@@ -5,7 +5,6 @@
 #include "NanoVG.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
-#include "RightClickMenu.hpp"
 #include "PeakFallSmooth.hpp"
 #include "kiss_fft.h"
 

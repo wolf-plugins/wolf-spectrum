@@ -24,9 +24,6 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
 
     WolfSpectrumConfig::load();
 
-    tryRememberSize();
-    getParentWindow().saveSizeAtExit(true);
-
     const float width = getWidth();
     const float height = getHeight();
 
@@ -37,15 +34,16 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fResizeHandle->setCallback(this);
     fResizeHandle->setMinSize(minWidth, minHeight);
 
+    /*
     fRightClickMenu = new RightClickMenu(this);
 
     fRightClickMenu->addSection("Frequency scaling");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic, "Logarithmic");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear, "Linear");
 
-    /* fRightClickMenu->addSection("Scrolling direction");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionVertical, "Vertical");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal"); */
+    // fRightClickMenu->addSection("Scrolling direction");
+    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionVertical, "Vertical");
+    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal");
 
     fRightClickMenu->addSection("Block size");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize64, "64 samples");
@@ -63,13 +61,13 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixL, "Left");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
 
-    /* fRightClickMenu->addSection("Peak fall");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant"); */
+    // fRightClickMenu->addSection("Peak fall");
+    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
+    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant");
 
     fRightClickMenu->addSection("Widgets visibility");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Show rulers");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle");
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle"); */
 
     /* if (!getParentWindow().isEmbed())
     {
@@ -77,42 +75,13 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
         fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
     } */
 
-    fRightClickMenu->setCallback(this);
+    // fRightClickMenu->setCallback(this);
 
     positionWidgets(width, height);
 }
 
 WolfSpectrumUI::~WolfSpectrumUI()
 {
-}
-
-void WolfSpectrumUI::tryRememberSize()
-{
-    int width, height;
-    FILE *file;
-    std::string tmpFileName = PLUGIN_NAME ".tmp";
-
-#if defined(DISTRHO_OS_WINDOWS)
-    CHAR tempPath[MAX_PATH + 1];
-
-    GetTempPath(MAX_PATH + 1, tempPath);
-    std::string path = std::string(tempPath) + tmpFileName;
-    file = fopen(path.c_str(), "r");
-#else
-    file = fopen(("/tmp/" + tmpFileName).c_str(), "r");
-#endif
-
-    if (file == NULL)
-        return;
-
-    const int numberScanned = fscanf(file, "%d %d", &width, &height);
-
-    if (numberScanned == 2 && width && height)
-    {
-        setSize(width, height);
-    }
-
-    fclose(file);
 }
 
 void WolfSpectrumUI::setParameterValueFeedback(uint32_t index, float value)
@@ -164,6 +133,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 
 bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 {
+    /*
     if (ev.press)
     {
         if (((Window *)fRightClickMenu)->isVisible())
@@ -232,12 +202,12 @@ bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 
             return true;
         }
-    }
+    } */
 
     return false;
 }
 
-void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem)
+/* void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem)
 {
     switch ((SpectrogramRightClickMenuItems)rightClickMenuItem->getId())
     {
@@ -247,12 +217,12 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::FrequencyScalingLinear:
         setParameterValueFeedback(paramFrequencyScaling, WolfSpectrumPlugin::FrequencyScalingLinear);
         break;
-    /* case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
-        setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionVertical);
-        break;
-    case SpectrogramRightClickMenuItems::ScrollDirectionHorizontal:
-        setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionHorizontal);
-        break; */
+    // case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
+    //     setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionVertical);
+    //     break;
+    // case SpectrogramRightClickMenuItems::ScrollDirectionHorizontal:
+    //     setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionHorizontal);
+    //     break;
     case SpectrogramRightClickMenuItems::BlockSize64:
         setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize64);
         break;
@@ -289,12 +259,12 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     case SpectrogramRightClickMenuItems::ChannelMixR:
         setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
         break;
-    /* case SpectrogramRightClickMenuItems::PeakFallNormal:
-        setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallNormal);
-        break;
-    case SpectrogramRightClickMenuItems::PeakFallInstant:
-        setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallInstant);
-        break; */
+    // case SpectrogramRightClickMenuItems::PeakFallNormal:
+    //     setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallNormal);
+    //     break;
+    // case SpectrogramRightClickMenuItems::PeakFallInstant:
+    //     setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallInstant);
+    //     break;
     case SpectrogramRightClickMenuItems::ToggleCaptions:
         setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);
         break;
@@ -307,7 +277,7 @@ void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMe
     default:
         DISTRHO_SAFE_ASSERT_BREAK(false);
     }
-}
+} */
 
 void WolfSpectrumUI::onNanoDisplay()
 {
@@ -327,11 +297,11 @@ void WolfSpectrumUI::toggleFullscreen()
 {
     return; //buggy, so avoided for now
 
-    if (!getParentWindow().isEmbed())
+    /* if (!getParentWindow().isEmbed())
     {
         fprintf(stderr, "Toggling fullscreen...\n");
         getParentWindow().toggleFullscreen();
-    }
+    } */
 }
 
 bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
@@ -372,10 +342,10 @@ void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
     fSpectrogram->setSampleRate(sampleRate);
 }
 
-void WolfSpectrumUI::onFocusOut()
-{
-    fRightClickMenu->close();
-}
+// void WolfSpectrumUI::onFocusOut()
+// {
+//     fRightClickMenu->close();
+// }
 
 UI *createUI()
 {

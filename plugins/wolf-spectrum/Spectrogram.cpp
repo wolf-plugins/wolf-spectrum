@@ -13,9 +13,10 @@
 
 START_NAMESPACE_DISTRHO
 
-SpectrogramRulers::SpectrogramRulers(Spectrogram *parent) : NanoWidget(parent),
+SpectrogramRulers::SpectrogramRulers(Spectrogram *parent) : NanoWidget(parent->getParentWindow()),
                                                             fParent(parent)
 {
+    loadSharedResources();
 }
 
 void SpectrogramRulers::onNanoDisplay()
@@ -53,7 +54,7 @@ void SpectrogramRulers::drawBackground()
     closePath();
 }
 
-Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget),
+Spectrogram::Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size) : NanoWidget(widget->getParentWindow()),
                                                                         fUI(ui),
                                                                         fSamples(MAX_BLOCK_SIZE),
                                                                         fLogFrequencyScaling(true),
