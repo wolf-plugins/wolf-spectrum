@@ -1,6 +1,6 @@
 [submodule "dpf"]
 	path = dpf
-	url = https://github.com/pdesaulniers/DPF.git
+	url = https://github.com/DISTRHO/DPF
 [submodule "plugins/wolf-spectrum/Common"]
 	path = plugins/wolf-spectrum/Common
 	url = https://github.com/pdesaulniers/wolf-common.git
