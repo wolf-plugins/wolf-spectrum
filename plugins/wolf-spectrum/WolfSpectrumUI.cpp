@@ -9,10 +9,6 @@
 
 #include <string>
 
-#if defined(DISTRHO_OS_WINDOWS)
-#include "windows.h"
-#endif
-
 START_NAMESPACE_DISTRHO
 
 WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
@@ -334,7 +330,7 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 
 void WolfSpectrumUI::resizeHandleMoved(int width, int height)
 {
-    setSize(width, height);
+    getParentWindow().setSize(width, height);
 }
 
 void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
