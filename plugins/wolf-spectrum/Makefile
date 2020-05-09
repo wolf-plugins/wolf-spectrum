@@ -70,7 +70,6 @@ FILES_UI = \
 	Libs/inih/INIReader.cpp \
 	Resources/Fonts/chivo_bold.cpp \
 	Resources/Fonts/chivo_italic.cpp \
-	Common/Widgets/src/NanoLabel.cpp \
 	Common/Widgets/src/ResizeHandle.cpp \
 	ScrollingTexture.cpp \
 	Spectrogram.cpp \
