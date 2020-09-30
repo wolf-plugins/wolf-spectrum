@@ -1,6 +1,5 @@
 # Wolf Spectrum 
 [![Build Status](https://travis-ci.org/pdesaulniers/wolf-spectrum.svg?branch=master)](https://travis-ci.org/pdesaulniers/wolf-spectrum)
-[![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://riot.im/app/#/room/#wolf-plugins:matrix.org)
 
 ![Wolf Spectrum](https://raw.githubusercontent.com/pdesaulniers/wolf-spectrum/master/plugins/wolf-spectrum/Screenshot.png)
 
