@@ -5,8 +5,6 @@ dpf_add_plugin(wolf-spectrum
                 WolfSpectrumPlugin.cpp
 
         FILES_UI
-                ../libs/inih/ini.c
-                ../libs/inih/INIReader.cpp
                 ../libs/kissfft/kiss_fft.cpp
                 Utils/src/Mathf.cpp
                 Structures/src/Margin.cpp
@@ -29,7 +27,6 @@ target_include_directories(wolf-spectrum PUBLIC
 	"./Widgets"
 	"./Utils"
 	"./Resources"
-        "../libs/inih"
         "../libs/kissfft"
         "../libs/readerwriterqueue"
 )
