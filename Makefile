@@ -17,7 +17,7 @@ libs:
 	$(MAKE) -C dpf/dgl ../build/libdgl-opengl.a
 
 plugins: libs
-	$(MAKE) all -C plugins/wolf-spectrum
+	$(MAKE) all -C src
 
 ifneq ($(CROSS_COMPILING),true)
 gen: plugins dpf/utils/lv2_ttl_generator
@@ -37,23 +37,23 @@ dpf/utils/lv2_ttl_generator.exe:
 endif
 
 release:
-	LINUX=true ./plugins/wolf-spectrum/Common/Utils/make_release.sh
-	WIN32=true ./plugins/wolf-spectrum/Common/Utils/make_release.sh
-	./plugins/wolf-spectrum/Common/Utils/bundle_source.sh
+	LINUX=true ./src/Common/Utils/make_release.sh
+	WIN32=true ./src/Common/Utils/make_release.sh
+	./src/Common/Utils/bundle_source.sh
 
 # --------------------------------------------------------------
 
 clean:
 	$(MAKE) clean -C dpf/dgl
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
-	$(MAKE) clean -C plugins/wolf-spectrum
+	$(MAKE) clean -C src
 	rm -rf bin build
 
 install: all
-	$(MAKE) install -C plugins/wolf-spectrum
+	$(MAKE) install -C src
 
 install-user: all
-	$(MAKE) install-user -C plugins/wolf-spectrum
+	$(MAKE) install-user -C src
 
 # --------------------------------------------------------------
 

@@ -82,7 +82,12 @@ FILES_UI = \
 # Do some magic
 
 UI_TYPE = opengl
-include ../../dpf/Makefile.plugins.mk
+
+DPF_PATH = ../dpf
+DPF_TARGET_DIR = ../bin
+DPF_BUILD_DIR = ../build/$(NAME)
+
+include ../dpf/Makefile.plugins.mk
 
 # --------------------------------------------------------------
 # Add custom includes
