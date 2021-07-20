@@ -66,8 +66,6 @@ FILES_UI = \
 	Utils/src/Mathf.cpp \
 	Structures/src/Margin.cpp \
 	Structures/src/Animation.cpp \
-	Resources/Fonts/chivo_bold.cpp \
-	Resources/Fonts/chivo_italic.cpp \
 	Widgets/src/ResizeHandle.cpp \
 	ScrollingTexture.cpp \
 	Spectrogram.cpp \

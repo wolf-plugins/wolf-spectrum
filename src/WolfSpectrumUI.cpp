@@ -3,7 +3,6 @@
 #include "WolfSpectrumUI.hpp"
 #include "Window.hpp"
 #include "Config.hpp"
-#include "Fonts/chivo_bold.hpp"
 #include "WolfSpectrumParameters.hpp"
 
 #include <string>
