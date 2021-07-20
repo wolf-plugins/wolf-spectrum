@@ -62,18 +62,17 @@ FILES_DSP = \
 	WolfSpectrumPlugin.cpp
 
 FILES_UI = \
+        ../libs/inih/ini.c \
+        ../libs/inih/INIReader.cpp \
+        ../libs/kissfft/kiss_fft.cpp \
 	Utils/src/Mathf.cpp \
 	Structures/src/Margin.cpp \
 	Structures/src/Animation.cpp \
-	Config/src/Config.cpp \
-	Libs/inih/ini.c \
-	Libs/inih/INIReader.cpp \
 	Resources/Fonts/chivo_bold.cpp \
 	Resources/Fonts/chivo_italic.cpp \
 	Widgets/src/ResizeHandle.cpp \
 	ScrollingTexture.cpp \
 	Spectrogram.cpp \
-	Libs/kissfft/kiss_fft.cpp \
 	Structures/src/ParamSmooth.cpp \
 	Structures/src/PeakFallSmooth.cpp \
 	WolfSpectrumUI.cpp
@@ -92,7 +91,7 @@ include ../dpf/Makefile.plugins.mk
 # --------------------------------------------------------------
 # Add custom includes
 
-BASE_FLAGS += -I./Config -I./Resources -I./Structures -I./Widgets -I./Utils -I./Libs/inih -I./Libs/kissfft -I./Libs/readerwriterqueue
+BASE_FLAGS += -I./Resources -I./Structures -I./Widgets -I./Utils -I../libs/inih -I../libs/kissfft -I../libs/readerwriterqueue
 
 # --------------------------------------------------------------
 # Enable all selected plugin types

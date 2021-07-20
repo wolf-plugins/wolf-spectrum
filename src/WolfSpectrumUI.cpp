@@ -19,8 +19,6 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
 
     loadSharedResources();
 
-    WolfSpectrumConfig::load();
-
     const float width = getWidth();
     const float height = getHeight();
 
@@ -313,7 +311,6 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
         }
         else if (ev.key == 96) //F12
         {
-            WolfSpectrumConfig::load();
             fSpectrogram->clear();
 
             return true;
