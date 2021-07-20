@@ -12,7 +12,7 @@
 
 START_NAMESPACE_DISTRHO
 
-PixelDrawingSurface::PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags) : NanoWidget(widget->getParentWindow()),
+PixelDrawingSurface::PixelDrawingSurface(Widget *widget, Size<uint> size, int imageFlags) : NanoSubWidget(widget),
                                                                                                 fDirty(true),
                                                                                                 fScaleX(1.0f),
                                                                                                 fBufferWidth(INTERNAL_BUFFER_WIDTH),
@@ -125,7 +125,7 @@ void PixelDrawingSurface::clearLine(int posY)
     fDirty = true;
 }
 
-ScrollingTexture::ScrollingTexture(NanoWidget *widget, Size<uint> size) : NanoWidget(widget->getParentWindow()),
+ScrollingTexture::ScrollingTexture(Widget *widget, Size<uint> size) : NanoSubWidget(widget),
                                                                           textureA(this, size),
                                                                           textureB(this, size),
                                                                           scrollTicks(0),

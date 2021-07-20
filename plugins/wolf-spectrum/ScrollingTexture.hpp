@@ -6,10 +6,10 @@
 
 START_NAMESPACE_DISTRHO
 
-class PixelDrawingSurface : public NanoWidget
+class PixelDrawingSurface : public NanoSubWidget
 {
 public:
-  PixelDrawingSurface(NanoWidget *widget, Size<uint> size, int imageFlags = 0);
+  PixelDrawingSurface(Widget *widget, Size<uint> size, int imageFlags = 0);
   ~PixelDrawingSurface();
 
   void drawPixel(int posX, int posY, Color pixelColor);
@@ -34,10 +34,10 @@ private:
   int fImageFlags;
 };
 
-class ScrollingTexture : public NanoWidget
+class ScrollingTexture : public NanoSubWidget
 {
 public:
-  ScrollingTexture(NanoWidget *widget, Size<uint> size);
+  ScrollingTexture(Widget *widget, Size<uint> size);
   ~ScrollingTexture();
 
   void drawPixelOnCurrentLine(int pos, Color color);

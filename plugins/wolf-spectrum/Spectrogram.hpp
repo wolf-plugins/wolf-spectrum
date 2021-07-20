@@ -13,7 +13,7 @@ START_NAMESPACE_DISTRHO
 
 class Spectrogram;
 
-class SpectrogramRulers : public NanoWidget
+class SpectrogramRulers : public NanoSubWidget
 {
 public:
   SpectrogramRulers(Spectrogram *parent);
@@ -28,12 +28,12 @@ private:
   Spectrogram *fParent;
 };
 
-class Spectrogram : public NanoWidget
+class Spectrogram : public NanoSubWidget
 {
   friend class SpectrogramRulers;
 
 public:
-  Spectrogram(UI *ui, NanoWidget *widget, Size<uint> size);
+  Spectrogram(UI *ui, Widget *widget, Size<uint> size);
   ~Spectrogram();
 
   void setParameterValue(uint32_t i, float v);

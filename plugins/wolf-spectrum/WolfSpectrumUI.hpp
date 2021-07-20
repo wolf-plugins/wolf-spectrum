@@ -3,7 +3,6 @@
 
 #include "DistrhoUI.hpp"
 #include "ResizeHandle.hpp"
-#include "NanoLabel.hpp"
 
 // #include "RightClickMenu.hpp"
 
