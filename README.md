@@ -1,7 +1,7 @@
-# Wolf Spectrum 
-[![Build Status](https://travis-ci.org/pdesaulniers/wolf-spectrum.svg?branch=master)](https://travis-ci.org/pdesaulniers/wolf-spectrum)
+# Wolf Spectrum
+[![Build Status](https://img.shields.io/github/workflow/status/wolf-plugins/wolf-spectrum/Wolf%20Spectrum%20CI.svg?logo=github)](https://github.com/wolf-plugins/wolf-spectrum/actions?query=workflow%3A%22Wolf+Spectrum+CI%22)
 
-![Wolf Spectrum](https://raw.githubusercontent.com/pdesaulniers/wolf-spectrum/master/plugins/wolf-spectrum/Screenshot.png)
+![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/plugins/wolf-spectrum/Screenshot.png)
 
 Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin and as a standalone Jack application.
 
@@ -11,7 +11,7 @@ Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin a
 
 ## Install
 
-You can find some precompiled plugin binaries in the [Releases](https://github.com/pdesaulniers/wolf-spectrum/releases) tab. Some packages are also available for Ubuntu and Arch Linux:
+You can find some precompiled plugin binaries in the [Releases](https://github.com/wolf-plugins/wolf-spectrum/releases) tab. Some packages are also available for Ubuntu and Arch Linux:
 
 ### Ubuntu
 Download the plugin from the [pdesaulniers/wolf PPA](https://launchpad.net/~pdesaulniers/+archive/ubuntu/wolf):
@@ -32,7 +32,7 @@ A git package is also available [in the AUR](https://aur.archlinux.org/packages/
 First, clone the repo (note the "--recursive" argument):
 
 ```
-git clone --recursive https://github.com/pdesaulniers/wolf-spectrum.git
+git clone --recursive https://github.com/wolf-plugins/wolf-spectrum.git
 cd wolf-spectrum
 ```
 
@@ -51,6 +51,6 @@ All plugin builds will then be placed in the bin folder. Copy them to their appr
 This project uses git submodules. Thus, to update your local copy of the repo, you need to run the following commands:
 ```
 git pull
-git submodule update
+git submodule update --init --recursive
 ```
 You should then be able to build the plugin with the most recent changes.
