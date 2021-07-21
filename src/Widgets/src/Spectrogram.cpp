@@ -12,7 +12,7 @@
 
 START_NAMESPACE_DISTRHO
 
-SpectrogramRulers::SpectrogramRulers(Spectrogram* parent) : NanoWidget(parent),
+SpectrogramRulers::SpectrogramRulers(Spectrogram* parent) : NanoSubWidget(parent),
                                                             fParent(parent)
 {
     loadSharedResources();
@@ -32,11 +32,6 @@ void SpectrogramRulers::onNanoDisplay()
         {
             drawLinearScaleGrid();
         }
-
-        /* if (fMustShowFrequencyAtMouse)
-        {
-            drawFrequencyAtMouse();
-        } */
     }
 }
 
@@ -69,6 +64,8 @@ Spectrogram::Spectrogram(UI* ui, Widget* widget, Size<uint> size) : NanoSubWidge
                                                                     fRulers(this)
 {
     setSize(size);
+
+    loadSharedResources();
 
     updateCoeffs();
     updateFFTConfig();
@@ -230,7 +227,7 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     const float hzPerBin = maxFreq / numBins;
 
     const float freq = hzPerBin * bin;
-    const float scaledFreq = wolf::invLogScale(freq + 1, 20, maxFreq) - 1;
+    const float scaledFreq = wolf::invLogScale(freq + 1, SPECTROGRAM_MIN_FREQ, maxFreq) - 1;
 
     return numBins * scaledFreq / maxFreq;
 }
@@ -352,7 +349,7 @@ void SpectrogramRulers::drawLogScaleGrid()
 
             const String frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
 
-            const int position = wolf::invLogScale(frequency, 20, max);
+            const int position = wolf::invLogScale(frequency, SPECTROGRAM_MIN_FREQ, max);
             const int x = getWidth() * position / max;
             const int y = getHeight() - (getHeight() * position / max);
 
@@ -426,6 +423,43 @@ void Spectrogram::setChannelMix(const int channelMix)
     fChannelMix = channelMix;
 }
 
+void Spectrogram::drawFrequencyAtMouse()
+{
+    const float maxFreq = fSampleRate / 2.f;
+    const float marginLeft = SPECTROGRAM_MIN_FREQ / maxFreq;
+
+    const float frequency = wolf::logScale(fMousePos.getX() / getWidth(), marginLeft, 1.f) * maxFreq;
+
+    const auto frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
+
+    fillColor(Color(220, 220, 220, 255));
+    text(100, getHeight() - 16, frequencyCaption, nullptr);
+}
+
+bool Spectrogram::onMouse(const MouseEvent& ev)
+{
+    if (ev.button == 1)
+    {
+        fMouseDown = ev.press;
+        fMousePos = ev.pos;
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Spectrogram::onMotion(const MotionEvent& ev)
+{
+    if (fMouseDown)
+    {
+        fMousePos = ev.pos;
+        return true;
+    }
+
+    return false;
+}
+
 void Spectrogram::onNanoDisplay()
 {
     draw();
@@ -447,6 +481,11 @@ void Spectrogram::onNanoDisplay()
     }
 
     draw();
+
+    if (fMouseDown)
+    {
+        drawFrequencyAtMouse();
+    }
 }
 
 END_NAMESPACE_DISTRHO

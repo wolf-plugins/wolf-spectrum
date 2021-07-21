@@ -13,6 +13,8 @@ START_NAMESPACE_DISTRHO
 
 class Spectrogram;
 
+static constexpr float SPECTROGRAM_MIN_FREQ = 20.f;
+
 class SpectrogramRulers : public NanoSubWidget
 {
 public:
@@ -50,15 +52,19 @@ public:
 
 protected:
     void onResize(const ResizeEvent& ev) override;
+    bool onMouse(const MouseEvent& ev) override;
+    bool onMotion(const MotionEvent& ev) override;
     void onNanoDisplay() override;
 
 private:
     static constexpr int MAX_BLOCK_SIZE = 16384;
+
     void process();
     void repositionRulers();
     void draw();
     void updateCoeffs();
     float getPowerSpectrumdB(const kiss_fft_cpx* out, const int index, const int transformSize);
+    void drawFrequencyAtMouse();
 
     //Call this after changing the block size
     void updateFFTConfig();
@@ -76,6 +82,8 @@ private:
     int fChannelMix;
     int fPeakFall;
     float fThreshold;
+    bool fMouseDown = false;
+    Point<double> fMousePos;
     kiss_fft_cpx fFFTIn[MAX_BLOCK_SIZE];
     kiss_fft_cpx fFFTOut[MAX_BLOCK_SIZE];
 
