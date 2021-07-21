@@ -27,7 +27,6 @@
 #include <cmath>
 
 #include "WolfSpectrumParameters.hpp"
-#include "Ringbuffer.hpp"
 #include "readerwriterqueue.h"
 
 START_NAMESPACE_DISTRHO

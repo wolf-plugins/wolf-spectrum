@@ -64,13 +64,10 @@ FILES_DSP = \
 FILES_UI = \
         ../libs/kissfft/kiss_fft.cpp \
 	Utils/src/Mathf.cpp \
-	Structures/src/Margin.cpp \
-	Structures/src/Animation.cpp \
+        Structures/src/PeakFallSmooth.cpp \
 	Widgets/src/ResizeHandle.cpp \
-	ScrollingTexture.cpp \
-	Spectrogram.cpp \
-	Structures/src/ParamSmooth.cpp \
-	Structures/src/PeakFallSmooth.cpp \
+        Widgets/src/ScrollingTexture.cpp \
+        Widgets/src/Spectrogram.cpp \
 	WolfSpectrumUI.cpp
 
 # --------------------------------------------------------------

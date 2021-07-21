@@ -6,6 +6,7 @@
 #include "WolfSpectrumPlugin.hpp"
 #include "ScrollingTexture.hpp"
 #include "PeakFallSmooth.hpp"
+#include "Ringbuffer.hpp"
 #include "kiss_fft.h"
 
 
