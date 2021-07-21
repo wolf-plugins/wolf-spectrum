@@ -10,11 +10,15 @@ all: libs plugins gen
 
 # --------------------------------------------------------------
 
-submodules:
-	git submodule update --init --recursive
+DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
+DGL_NAMESPACE = WolfSpectrumDGL
+
+export CUSTOM_DEFINES = -DDGL_FILE_BROWSER_DISABLED -DDISTRHO_NAMESPACE=$(DISTRHO_NAMESPACE) -DDGL_NAMESPACE=$(DGL_NAMESPACE)
+
+# --------------------------------------------------------------
 
 libs:
-	$(MAKE) -C dpf/dgl ../build/libdgl-opengl.a
+        $(MAKE) -C dpf/dgl ../build/libdgl-opengl.a DGL_FLAGS="$(DGL_FLAGS) $(CUSTOM_DEFINES)"
 
 plugins: libs
 	$(MAKE) all -C src

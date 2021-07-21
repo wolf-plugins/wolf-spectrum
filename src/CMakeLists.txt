@@ -5,7 +5,7 @@ dpf_add_plugin(wolf-spectrum
                 WolfSpectrumPlugin.cpp
 
         FILES_UI
-                ../libs/kissfft/kiss_fft.cpp
+                ../libs/kissfft/kiss_fft.c
                 Utils/src/Mathf.cpp
                 Structures/src/PeakFallSmooth.cpp
                 Widgets/src/ResizeHandle.cpp
