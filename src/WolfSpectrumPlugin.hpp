@@ -20,12 +20,12 @@
 #include "extra/Mutex.hpp"
 #include "extra/RingBuffer.hpp"
 
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <sstream>
-#include <iostream>
 #include <iomanip>
-#include <cmath>
+#include <iostream>
+#include <sstream>
 
 #include "WolfSpectrumParameters.hpp"
 
@@ -35,82 +35,82 @@ START_NAMESPACE_DISTRHO
 
 class WolfSpectrumPlugin : public Plugin
 {
-	friend class Spectrogram;
+    friend class Spectrogram;
 
-  public:
-	WolfSpectrumPlugin();
-	~WolfSpectrumPlugin();
-	
-	enum ScrollDirection
-	{
-		ScrollDirectionVertical = 0,
-		ScrollDirectionHorizontal
-	};
+public:
+    WolfSpectrumPlugin();
+    ~WolfSpectrumPlugin();
 
-	enum FrequencyScaling
-	{
-		FrequencyScalingLogarithmic = 0,
-		FrequencyScalingLinear
-	};
+    enum ScrollDirection
+    {
+        ScrollDirectionVertical = 0,
+        ScrollDirectionHorizontal
+    };
 
-	enum BlockSize
-	{
-		BlockSize64 = 0,
-		BlockSize128,
-		BlockSize256,
-		BlockSize512,
-		BlockSize1024,
-		BlockSize2048,
-		BlockSize4096,
-		BlockSize8192,
-		BlockSize16384,
-		BlockSizeCount
-	};
+    enum FrequencyScaling
+    {
+        FrequencyScalingLogarithmic = 0,
+        FrequencyScalingLinear
+    };
 
-	enum ChannelMix
-	{
-		ChannelMixLRMean = 0,
-		ChannelMixL,
-		ChannelMixR,
-		ChannelMixCount
-	};
+    enum BlockSize
+    {
+        BlockSize64 = 0,
+        BlockSize128,
+        BlockSize256,
+        BlockSize512,
+        BlockSize1024,
+        BlockSize2048,
+        BlockSize4096,
+        BlockSize8192,
+        BlockSize16384,
+        BlockSizeCount
+    };
 
-	enum PeakFall
-	{
-		PeakFallNormal = 0,
-		PeakFallInstant,
-		PeakFallCount
-	};
+    enum ChannelMix
+    {
+        ChannelMixLRMean = 0,
+        ChannelMixL,
+        ChannelMixR,
+        ChannelMixCount
+    };
 
-  protected:
-	const char *getLabel() const noexcept override;
+    enum PeakFall
+    {
+        PeakFallNormal = 0,
+        PeakFallInstant,
+        PeakFallCount
+    };
 
-	const char *getDescription() const noexcept override;
+protected:
+    const char* getLabel() const noexcept override;
 
-	const char *getMaker() const noexcept override;
+    const char* getDescription() const noexcept override;
 
-	const char *getHomePage() const noexcept override;
+    const char* getMaker() const noexcept override;
 
-	const char *getLicense() const noexcept override;
+    const char* getHomePage() const noexcept override;
 
-	uint32_t getVersion() const noexcept override;
+    const char* getLicense() const noexcept override;
 
-	int64_t getUniqueId() const noexcept override;
+    uint32_t getVersion() const noexcept override;
 
-	void initParameter(uint32_t index, Parameter &parameter) override;
+    int64_t getUniqueId() const noexcept override;
 
-	float getParameterValue(uint32_t index) const override;
+    void initParameter(uint32_t index, Parameter& parameter) override;
 
-	void setParameterValue(uint32_t index, float value) override;
+    float getParameterValue(uint32_t index) const override;
 
-	void run(const float **inputs, float **outputs, uint32_t frames) override;
+    void setParameterValue(uint32_t index, float value) override;
 
-  private:
-	float parameters[paramCount];
-	
+    void run(const float** inputs, float** outputs, uint32_t frames) override;
+
+private:
+    float parameters[paramCount];
+
     HeapRingBuffer fRingbuffer;
 
-	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
+    DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };
 
 // -----------------------------------------------------------------------------------------------------------

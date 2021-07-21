@@ -18,7 +18,7 @@ static const Color color_ramp_9 = Color(11, 1, 48);
 static const Color color_ramp_10 = Color(0, 0, 0);
 
 static const Color right_click_menu_border_color = Color(10, 10, 10, 255);
-}
+} // namespace CONFIG_NAMESPACE
 
 END_NAMESPACE_DISTRHO
 

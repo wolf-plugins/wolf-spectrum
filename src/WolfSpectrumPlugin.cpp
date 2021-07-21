@@ -16,15 +16,15 @@
 
 #include "DistrhoPlugin.hpp"
 
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <sstream>
-#include <iostream>
 #include <iomanip>
-#include <cmath>
+#include <iostream>
+#include <sstream>
 
-#include "WolfSpectrumPlugin.hpp"
 #include "Ringbuffer.hpp"
+#include "WolfSpectrumPlugin.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -40,29 +40,29 @@ WolfSpectrumPlugin::~WolfSpectrumPlugin()
     fRingbuffer.deleteBuffer();
 }
 
-const char *WolfSpectrumPlugin::getLabel() const noexcept
+const char* WolfSpectrumPlugin::getLabel() const noexcept
 {
-	return "Wolf Spectrum";
+    return "Wolf Spectrum";
 }
 
-const char *WolfSpectrumPlugin::getDescription() const noexcept
+const char* WolfSpectrumPlugin::getDescription() const noexcept
 {
     return "Spectrogram plugin.";
 }
 
-const char *WolfSpectrumPlugin::getMaker() const noexcept
+const char* WolfSpectrumPlugin::getMaker() const noexcept
 {
     return "Patrick Desaulniers";
 }
 
-const char *WolfSpectrumPlugin::getHomePage() const noexcept
+const char* WolfSpectrumPlugin::getHomePage() const noexcept
 {
     return "https://github.com/pdesaulniers/wolf-spectrum";
 }
 
-const char *WolfSpectrumPlugin::getLicense() const noexcept
+const char* WolfSpectrumPlugin::getLicense() const noexcept
 {
-	return "GPL v3+";
+    return "GPL v3+";
 }
 
 uint32_t WolfSpectrumPlugin::getVersion() const noexcept
@@ -72,32 +72,32 @@ uint32_t WolfSpectrumPlugin::getVersion() const noexcept
 
 int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
 {
-	return d_cconst('W', 'S', 'p', 't');
+    return d_cconst('W', 'S', 'p', 't');
 }
 
-void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
+void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter& parameter)
 {
-	switch (index)
-	{
-	case paramFrequencyScaling:
-		parameter.ranges.min = 0;
-		parameter.ranges.max = 1;
-		parameter.ranges.def = 0;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
-		parameter.name = "Frequency Scaling";
-		parameter.symbol = "frequencyscaling";
-		parameter.enumValues.count = 2;
-		parameter.enumValues.restrictedMode = true;
-		{
-			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
-			parameter.enumValues.values = values;
-			values[0].label = "Logarithmic";
-			values[0].value = FrequencyScalingLogarithmic;
-			values[1].label = "Linear";
-			values[1].value = FrequencyScalingLinear;
-		}
-		break;
-	/* case paramScrollDirection:
+    switch (index)
+    {
+    case paramFrequencyScaling:
+        parameter.ranges.min = 0;
+        parameter.ranges.max = 1;
+        parameter.ranges.def = 0;
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.name = "Frequency Scaling";
+        parameter.symbol = "frequencyscaling";
+        parameter.enumValues.count = 2;
+        parameter.enumValues.restrictedMode = true;
+        {
+            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            parameter.enumValues.values = values;
+            values[0].label = "Logarithmic";
+            values[0].value = FrequencyScalingLogarithmic;
+            values[1].label = "Linear";
+            values[1].value = FrequencyScalingLinear;
+        }
+        break;
+    /* case paramScrollDirection:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
 		parameter.ranges.def = 0;
@@ -115,59 +115,59 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].value = ScrollDirectionHorizontal;
 		}
 		break; */
-	case paramBlockSize:
-		parameter.ranges.min = 0;
-		parameter.ranges.max = BlockSizeCount - 1;
-		parameter.ranges.def = BlockSize4096;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
-		parameter.name = "Block Size";
-		parameter.symbol = "blocksize";
-		parameter.enumValues.count = BlockSizeCount;
-		parameter.enumValues.restrictedMode = true;
-		{
-			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
-			parameter.enumValues.values = values;
-			values[0].label = "64 samples";
-			values[0].value = BlockSize64;
-			values[1].label = "128 samples";
-			values[1].value = BlockSize128;
-			values[2].label = "256 samples";
-			values[2].value = BlockSize256;
-			values[3].label = "512 samples";
-			values[3].value = BlockSize512;
-			values[4].label = "1024 samples";
-			values[4].value = BlockSize1024;
-			values[5].label = "2048 samples";
-			values[5].value = BlockSize2048;
-			values[6].label = "4096 samples";
-			values[6].value = BlockSize4096;
-			values[7].label = "8192 samples";
-			values[7].value = BlockSize8192;
-			values[8].label = "16384 samples";
-			values[8].value = BlockSize16384;
-		}
-		break;
-	case paramChannelMix:
-		parameter.ranges.min = 0;
-		parameter.ranges.max = ChannelMixCount - 1;
-		parameter.ranges.def = ChannelMixLRMean;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
-		parameter.name = "Channel Mix";
-		parameter.symbol = "channelmix";
-		parameter.enumValues.count = ChannelMixCount;
-		parameter.enumValues.restrictedMode = true;
-		{
-			ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
-			parameter.enumValues.values = values;
-			values[0].label = "Left/Right (mean)";
-			values[0].value = ChannelMixLRMean;
-			values[1].label = "Left";
-			values[1].value = ChannelMixL;
-			values[2].label = "Right";
-			values[2].value = ChannelMixR;
-		}
-		break;
-	/* case paramPeakFall:
+    case paramBlockSize:
+        parameter.ranges.min = 0;
+        parameter.ranges.max = BlockSizeCount - 1;
+        parameter.ranges.def = BlockSize4096;
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.name = "Block Size";
+        parameter.symbol = "blocksize";
+        parameter.enumValues.count = BlockSizeCount;
+        parameter.enumValues.restrictedMode = true;
+        {
+            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            parameter.enumValues.values = values;
+            values[0].label = "64 samples";
+            values[0].value = BlockSize64;
+            values[1].label = "128 samples";
+            values[1].value = BlockSize128;
+            values[2].label = "256 samples";
+            values[2].value = BlockSize256;
+            values[3].label = "512 samples";
+            values[3].value = BlockSize512;
+            values[4].label = "1024 samples";
+            values[4].value = BlockSize1024;
+            values[5].label = "2048 samples";
+            values[5].value = BlockSize2048;
+            values[6].label = "4096 samples";
+            values[6].value = BlockSize4096;
+            values[7].label = "8192 samples";
+            values[7].value = BlockSize8192;
+            values[8].label = "16384 samples";
+            values[8].value = BlockSize16384;
+        }
+        break;
+    case paramChannelMix:
+        parameter.ranges.min = 0;
+        parameter.ranges.max = ChannelMixCount - 1;
+        parameter.ranges.def = ChannelMixLRMean;
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.name = "Channel Mix";
+        parameter.symbol = "channelmix";
+        parameter.enumValues.count = ChannelMixCount;
+        parameter.enumValues.restrictedMode = true;
+        {
+            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            parameter.enumValues.values = values;
+            values[0].label = "Left/Right (mean)";
+            values[0].value = ChannelMixLRMean;
+            values[1].label = "Left";
+            values[1].value = ChannelMixL;
+            values[2].label = "Right";
+            values[2].value = ChannelMixR;
+        }
+        break;
+    /* case paramPeakFall:
 		parameter.ranges.min = 0;
 		parameter.ranges.max = PeakFallCount - 1;
 		parameter.ranges.def = PeakFallNormal;
@@ -185,15 +185,15 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 			values[1].value = PeakFallInstant;
 		}
 		break; */
-	case paramGain:
-		parameter.ranges.min = -25.0f;
-		parameter.ranges.max = 25.0f;
-		parameter.ranges.def = 0.0f;
-		parameter.hints = kParameterIsAutomable;
-		parameter.name = "Gain";
-		parameter.symbol = "gain";
-		break;
-	/* case paramThreshold:
+    case paramGain:
+        parameter.ranges.min = -25.0f;
+        parameter.ranges.max = 25.0f;
+        parameter.ranges.def = 0.0f;
+        parameter.hints = kParameterIsAutomable;
+        parameter.name = "Gain";
+        parameter.symbol = "gain";
+        break;
+    /* case paramThreshold:
 		parameter.ranges.min = -90.0f;
 		parameter.ranges.max = -0.1f;
 		parameter.ranges.def = -90.0f;
@@ -201,52 +201,52 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.name = "Threshold";
 		parameter.symbol = "threshold";
 		break; */
-	case paramShowCaptions:
-		parameter.ranges.min = 0;
-		parameter.ranges.max = 1;
-		parameter.ranges.def = 1;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
-		parameter.name = "Show Captions";
-		parameter.symbol = "showcaptions";
-		break;
-	case paramShowUIControls:
-		parameter.ranges.min = 0;
-		parameter.ranges.max = 1;
-		parameter.ranges.def = 1;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
-		parameter.name = "Show UI Controls";
-		parameter.symbol = "showuicontrols";
-		break;
-	}
+    case paramShowCaptions:
+        parameter.ranges.min = 0;
+        parameter.ranges.max = 1;
+        parameter.ranges.def = 1;
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+        parameter.name = "Show Captions";
+        parameter.symbol = "showcaptions";
+        break;
+    case paramShowUIControls:
+        parameter.ranges.min = 0;
+        parameter.ranges.max = 1;
+        parameter.ranges.def = 1;
+        parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+        parameter.name = "Show UI Controls";
+        parameter.symbol = "showuicontrols";
+        break;
+    }
 
-	parameters[index] = parameter.ranges.def;
+    parameters[index] = parameter.ranges.def;
 }
 
 float WolfSpectrumPlugin::getParameterValue(uint32_t index) const
 {
-	return parameters[index];
+    return parameters[index];
 }
 
 void WolfSpectrumPlugin::setParameterValue(uint32_t index, float value)
 {
-	parameters[index] = value;
+    parameters[index] = value;
 }
 
-void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t frames)
+void WolfSpectrumPlugin::run(const float** inputs, float** outputs, uint32_t frames)
 {
-	const float gaindB = parameters[paramGain];
-	const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
+    const float gaindB = parameters[paramGain];
+    const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
 
-	const ChannelMix channelMix = (ChannelMix)std::round(parameters[paramChannelMix]);
+    const ChannelMix channelMix = (ChannelMix)std::round(parameters[paramChannelMix]);
 
-	for (uint32_t i = 0; i < frames; ++i)
-	{
-		const float sampleL = inputs[0][i] * gainFactor;
-		const float sampleR = inputs[1][i] * gainFactor;
+    for (uint32_t i = 0; i < frames; ++i)
+    {
+        const float sampleL = inputs[0][i] * gainFactor;
+        const float sampleR = inputs[1][i] * gainFactor;
 
-		float sampleOut = 0.0f;
+        float sampleOut = 0.0f;
 
-	    switch (channelMix)
+        switch (channelMix)
         {
         case WolfSpectrumPlugin::ChannelMixLRMean:
             sampleOut = (sampleL + sampleR) / 2.0f;
@@ -262,15 +262,15 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
         }
 
         fRingbuffer.writeFloat(sampleOut);
-		
-		outputs[0][i] = inputs[0][i];
-		outputs[1][i] = inputs[1][i];
-	}
+
+        outputs[0][i] = inputs[0][i];
+        outputs[1][i] = inputs[1][i];
+    }
 }
 
-Plugin *createPlugin()
+Plugin* createPlugin()
 {
-	return new WolfSpectrumPlugin();
+    return new WolfSpectrumPlugin();
 }
 
 // -----------------------------------------------------------------------------------------------------------

@@ -18,20 +18,20 @@ public:
         virtual void resizeHandleMoved(const int width, const int height) = 0;
     };
 
-    explicit ResizeHandle(Widget *widget, Size<uint> size) noexcept;
+    explicit ResizeHandle(Widget* widget, Size<uint> size) noexcept;
 
-    void setCallback(Callback *callback) noexcept;
+    void setCallback(Callback* callback) noexcept;
     void setMinSize(int minX, int minY);
 
 protected:
     void onNanoDisplay() override;
 
-    bool onMouse(const MouseEvent &) override;
-    bool onMotion(const MotionEvent &) override;
+    bool onMouse(const MouseEvent&) override;
+    bool onMotion(const MotionEvent&) override;
 
 private:
     bool fHasFocus;
-    Callback *fCallback;
+    Callback* fCallback;
 
     bool fIsHovered;
 

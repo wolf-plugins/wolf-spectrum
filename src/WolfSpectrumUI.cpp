@@ -1,9 +1,9 @@
 #include "DistrhoUI.hpp"
 
-#include "WolfSpectrumUI.hpp"
-#include "Window.hpp"
 #include "Config.hpp"
+#include "Window.hpp"
 #include "WolfSpectrumParameters.hpp"
+#include "WolfSpectrumUI.hpp"
 
 #include <string>
 
@@ -125,7 +125,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     fParameters[index] = value;
 }
 
-bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
+bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
 {
     /*
     if (ev.press)
@@ -298,7 +298,7 @@ void WolfSpectrumUI::toggleFullscreen()
     } */
 }
 
-bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
+bool WolfSpectrumUI::onKeyboard(const KeyboardEvent& ev)
 {
     if (ev.press)
     {
@@ -340,7 +340,7 @@ void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
 //     fRightClickMenu->close();
 // }
 
-UI *createUI()
+UI* createUI()
 {
     return new WolfSpectrumUI();
 }

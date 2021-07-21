@@ -16,69 +16,69 @@ class Spectrogram;
 
 class WolfSpectrumUI : public UI,
                        public ResizeHandle::Callback
-                       // public RightClickMenu::Callback
+// public RightClickMenu::Callback
 {
 public:
-  WolfSpectrumUI();
-  ~WolfSpectrumUI();
+    WolfSpectrumUI();
+    ~WolfSpectrumUI();
 
-  float getParameterValue(uint32_t index) const;
+    float getParameterValue(uint32_t index) const;
 
 protected:
-  enum class SpectrogramRightClickMenuItems
-  {
-    FrequencyScalingLogarithmic = 0,
-    FrequencyScalingLinear,
-    ScrollDirectionVertical,
-    ScrollDirectionHorizontal,
-    BlockSize64,
-    BlockSize128,
-    BlockSize256,
-    BlockSize512,
-    BlockSize1024,
-    BlockSize2048,
-    BlockSize4096,
-    BlockSize8192,
-    BlockSize16384,
-    ChannelMixLRMean,
-    ChannelMixL,
-    ChannelMixR,
-    PeakFallNormal,
-    PeakFallInstant,
-    ToggleCaptions,
-    ToggleUIControls,
-    ToggleFullscreen
-  };
+    enum class SpectrogramRightClickMenuItems
+    {
+        FrequencyScalingLogarithmic = 0,
+        FrequencyScalingLinear,
+        ScrollDirectionVertical,
+        ScrollDirectionHorizontal,
+        BlockSize64,
+        BlockSize128,
+        BlockSize256,
+        BlockSize512,
+        BlockSize1024,
+        BlockSize2048,
+        BlockSize4096,
+        BlockSize8192,
+        BlockSize16384,
+        ChannelMixLRMean,
+        ChannelMixL,
+        ChannelMixR,
+        PeakFallNormal,
+        PeakFallInstant,
+        ToggleCaptions,
+        ToggleUIControls,
+        ToggleFullscreen
+    };
 
-  void parameterChanged(uint32_t, float value) override;
-  void tryRememberSize();
-  void positionWidgets(uint width, uint height);
+    void parameterChanged(uint32_t, float value) override;
+    void tryRememberSize();
+    void positionWidgets(uint width, uint height);
 
-  void resizeHandleMoved(int width, int height);
+    void resizeHandleMoved(int width, int height);
 
-  void onNanoDisplay() override;
-  void uiIdle() override;
-  void uiReshape(uint width, uint height) override;
-  bool onKeyboard(const KeyboardEvent &ev) override;
-  bool onMouse(const MouseEvent &ev) override;
-  void sampleRateChanged(const double sampleRate) override;
-  //void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
-  // void onFocusOut() override;
+    void onNanoDisplay() override;
+    void uiIdle() override;
+    void uiReshape(uint width, uint height) override;
+    bool onKeyboard(const KeyboardEvent& ev) override;
+    bool onMouse(const MouseEvent& ev) override;
+    void sampleRateChanged(const double sampleRate) override;
+    //void rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem);
+    // void onFocusOut() override;
 
 private:
-  /**
+    /**
    * Sets a parameter's value and calls parameterChanged afterwards.
    */
-  void setParameterValueFeedback(uint32_t index, float value);
-  void toggleFullscreen();
+    void setParameterValueFeedback(uint32_t index, float value);
+    void toggleFullscreen();
 
-  float fParameters[paramCount];
+    float fParameters[paramCount];
 
-  ScopedPointer<ResizeHandle> fResizeHandle;
-  ScopedPointer<Spectrogram> fSpectrogram;
-  // ScopedPointer<RightClickMenu> fRightClickMenu;
+    ScopedPointer<ResizeHandle> fResizeHandle;
+    ScopedPointer<Spectrogram> fSpectrogram;
+    // ScopedPointer<RightClickMenu> fRightClickMenu;
 
-  DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumUI)
+    DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumUI)
 };
 
 END_NAMESPACE_DISTRHO
