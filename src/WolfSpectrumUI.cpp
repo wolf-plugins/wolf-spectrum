@@ -63,7 +63,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Show rulers");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle"); */
 
-    /* if (!getParentWindow().isEmbed())
+    /* if (!getWindow().isEmbed())
     {
         fRightClickMenu->addSection("Fullscreen");
         fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
@@ -127,6 +127,8 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 
 bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
 {
+    (void)ev;
+
     /*
     if (ev.press)
     {
@@ -291,10 +293,10 @@ void WolfSpectrumUI::toggleFullscreen()
 {
     return; //buggy, so avoided for now
 
-    /* if (!getParentWindow().isEmbed())
+    /* if (!getWindow().isEmbed())
     {
         fprintf(stderr, "Toggling fullscreen...\n");
-        getParentWindow().toggleFullscreen();
+        getWindow().toggleFullscreen();
     } */
 }
 
@@ -316,7 +318,7 @@ bool WolfSpectrumUI::onKeyboard(const KeyboardEvent& ev)
         }
         else if (ev.key == 9) //escape
         {
-            getParentWindow().close();
+            getWindow().close();
 
             return true;
         }
