@@ -1,7 +1,7 @@
 # Wolf Spectrum
 [![Build Status](https://img.shields.io/github/workflow/status/wolf-plugins/wolf-spectrum/Wolf%20Spectrum%20CI.svg?logo=github)](https://github.com/wolf-plugins/wolf-spectrum/actions?query=workflow%3A%22Wolf+Spectrum+CI%22)
 
-![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/plugins/wolf-spectrum/Screenshot.png)
+![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/src/Screenshot.png)
 
 Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin and as a standalone Jack application.
 
