@@ -6,6 +6,7 @@
 #include "PeakFallSmooth.hpp"
 #include "Ringbuffer.hpp"
 #include "ScrollingTexture.hpp"
+#include "StatusBar.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include "kiss_fft.h"
 
@@ -88,6 +89,7 @@ private:
     kiss_fft_cpx fFFTOut[MAX_BLOCK_SIZE];
 
     SpectrogramRulers fRulers;
+    StatusBar fStatusBar;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectrogram)
 };

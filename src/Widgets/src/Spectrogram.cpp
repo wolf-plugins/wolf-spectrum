@@ -8,7 +8,9 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
+#include <sstream>
+#include "MIDIUtils.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -61,11 +63,13 @@ Spectrogram::Spectrogram(UI* ui, Widget* widget, Size<uint> size) : NanoSubWidge
                                                                     fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
                                                                     fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
                                                                     fThreshold(-90.f),
-                                                                    fRulers(this)
+                                                                    fRulers(this),
+                                                                    fStatusBar(this, Size<uint>(size.getWidth(), 24))
 {
     setSize(size);
 
-    loadSharedResources();
+    fStatusBar.setAbsolutePos(0, getHeight() - StatusBar::DEFAULT_HEIGHT);
+    fStatusBar.setLeftText("Wolf Spectrum v1.1.0");
 
     updateCoeffs();
     updateFFTConfig();
@@ -151,6 +155,9 @@ void Spectrogram::setSampleRate(const double sampleRate)
 void Spectrogram::onResize(const ResizeEvent& ev)
 {
     fScrollingTexture.setSize(ev.size);
+
+    fStatusBar.setWidth(ev.size.getWidth());
+    fStatusBar.setAbsolutePos(0, getHeight() - StatusBar::DEFAULT_HEIGHT);
 
     repositionRulers();
 }
@@ -430,10 +437,22 @@ void Spectrogram::drawFrequencyAtMouse()
 
     const float frequency = wolf::logScale(fMousePos.getX() / getWidth(), marginLeft, 1.f) * maxFreq;
 
-    const auto frequencyCaption = frequency >= 1000 ? String(frequency / 1000) + String("K") : String(frequency);
+    std::ostringstream frequencyLabel;
+    frequencyLabel.precision(3);
+    frequencyLabel << std::fixed << frequency << " Hz";
 
-    fillColor(Color(220, 220, 220, 255));
-    text(100, getHeight() - 16, frequencyCaption, nullptr);
+    fStatusBar.setFrequencyText(frequencyLabel.str());
+
+    const auto noteName = wolf::frequencyToNoteName(frequency);
+
+    if (!noteName.empty())
+    {
+        fStatusBar.setNoteText("(" + noteName + ")");
+    }
+    else
+    {
+        fStatusBar.setNoteText("");
+    }
 }
 
 bool Spectrogram::onMouse(const MouseEvent& ev)
@@ -484,7 +503,12 @@ void Spectrogram::onNanoDisplay()
 
     if (fMouseDown)
     {
+        fStatusBar.show();
         drawFrequencyAtMouse();
+    }
+    else
+    {
+        fStatusBar.hide();
     }
 }
 

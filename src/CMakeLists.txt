@@ -1,5 +1,6 @@
 dpf_add_plugin(wolf-spectrum
         TARGETS jack lv2 vst2
+        MONOLITHIC
         FILES_DSP
                 Utils/src/Mathf.cpp
                 WolfSpectrumPlugin.cpp
@@ -10,6 +11,7 @@ dpf_add_plugin(wolf-spectrum
                 Structures/src/PeakFallSmooth.cpp
                 Widgets/src/ResizeHandle.cpp
                 Widgets/src/ScrollingTexture.cpp
+                Widgets/src/StatusBar.cpp
                 Widgets/src/Spectrogram.cpp
                 WolfSpectrumUI.cpp
 )
