@@ -22,3 +22,6 @@ CTestTestfile.cmake
 /bin/
 .vagrant
 .releases/
+/build/
+CMakeLists.txt.user
+
