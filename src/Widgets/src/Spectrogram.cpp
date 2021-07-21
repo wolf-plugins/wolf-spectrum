@@ -5,7 +5,6 @@
 #include "Mathf.hpp"
 #include "Config.hpp"
 #include "WolfSpectrumPlugin.hpp"
-#include "readerwriterqueue.h"
 #include <stdlib.h>
 #include <cmath>
 #include <ctime>
@@ -434,9 +433,9 @@ void Spectrogram::onNanoDisplay()
     {
         auto ringbuffer = &dspPtr->fRingbuffer;
 
-        float sample;
-        while (ringbuffer->try_dequeue(sample))
+        while (ringbuffer->isDataAvailableForReading())
         {
+            const float sample = ringbuffer->readFloat();
             fSamples.add(sample);
 
             if (fSamples.count() >= fBlockSize)

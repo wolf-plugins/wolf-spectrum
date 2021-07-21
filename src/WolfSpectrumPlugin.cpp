@@ -30,13 +30,14 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 
-WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0),
-										   fRingbuffer(16384)
+WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0)
 {
+    fRingbuffer.createBuffer(16384);
 }
 
 WolfSpectrumPlugin::~WolfSpectrumPlugin()
 {
+    fRingbuffer.deleteBuffer();
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -46,17 +47,17 @@ const char *WolfSpectrumPlugin::getLabel() const noexcept
 
 const char *WolfSpectrumPlugin::getDescription() const noexcept
 {
-	return "Spectrogram plugin.";
+    return "Spectrogram plugin.";
 }
 
 const char *WolfSpectrumPlugin::getMaker() const noexcept
 {
-	return "Patrick Desaulniers";
+    return "Patrick Desaulniers";
 }
 
 const char *WolfSpectrumPlugin::getHomePage() const noexcept
 {
-	return "https://github.com/pdesaulniers/wolf-spectrum";
+    return "https://github.com/pdesaulniers/wolf-spectrum";
 }
 
 const char *WolfSpectrumPlugin::getLicense() const noexcept
@@ -66,7 +67,7 @@ const char *WolfSpectrumPlugin::getLicense() const noexcept
 
 uint32_t WolfSpectrumPlugin::getVersion() const noexcept
 {
-	return d_version(1, 0, 0);
+    return d_version(1, 0, 0);
 }
 
 int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
@@ -260,7 +261,7 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
             return; //¯\_(ツ)_/¯
         }
 
-		fRingbuffer.try_enqueue(sampleOut);
+        fRingbuffer.writeFloat(sampleOut);
 		
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];

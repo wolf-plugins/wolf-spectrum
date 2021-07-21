@@ -1,6 +1,4 @@
 [submodule "dpf"]
 	path = dpf
 	url = https://github.com/DISTRHO/DPF
-[submodule "plugins/wolf-spectrum/Libs/readerwriterqueue"]
-	path = src/Libs/readerwriterqueue
-	url = https://github.com/cameron314/readerwriterqueue.git
+

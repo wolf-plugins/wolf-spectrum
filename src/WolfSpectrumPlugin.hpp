@@ -18,6 +18,7 @@
 
 #include "DistrhoPlugin.hpp"
 #include "extra/Mutex.hpp"
+#include "extra/RingBuffer.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -27,7 +28,6 @@
 #include <cmath>
 
 #include "WolfSpectrumParameters.hpp"
-#include "readerwriterqueue.h"
 
 START_NAMESPACE_DISTRHO
 
@@ -108,7 +108,7 @@ class WolfSpectrumPlugin : public Plugin
   private:
 	float parameters[paramCount];
 	
-	moodycamel::ReaderWriterQueue<float> fRingbuffer;
+    HeapRingBuffer fRingbuffer;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };
