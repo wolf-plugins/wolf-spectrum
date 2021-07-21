@@ -37,9 +37,9 @@ dpf/utils/lv2_ttl_generator.exe:
 endif
 
 release:
-	LINUX=true ./tools/make_release.sh
-	WIN32=true ./tools/make_release.sh
-	./tools/bundle_source.sh
+        LINUX=true ./tools/make-release.sh
+        WIN32=true ./tools/make-release.sh
+        ./tools/bundle-source.sh
 
 # --------------------------------------------------------------
 

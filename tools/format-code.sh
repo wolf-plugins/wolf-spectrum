@@ -7,7 +7,7 @@ shopt -s globstar
 
 if [ $# -ne 1 ]; then
 	echo "Invalid number of arguments."
-	echo "Usage: format_code.sh <dir>"
+        echo "Usage: format-code.sh <dir>"
 	exit 1
 fi
 
