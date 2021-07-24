@@ -17,7 +17,6 @@
 #pragma once
 
 #include "DistrhoPlugin.hpp"
-#include "extra/Mutex.hpp"
 #include "extra/RingBuffer.hpp"
 
 #include <cmath>
