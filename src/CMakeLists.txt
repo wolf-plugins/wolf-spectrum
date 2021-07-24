@@ -9,9 +9,11 @@ dpf_add_plugin(wolf-spectrum
                 ../libs/kissfft/kiss_fft.c
                 Utils/src/Mathf.cpp
                 Structures/src/PeakFallSmooth.cpp
+                Structures/src/Margin.cpp
                 Widgets/src/ResizeHandle.cpp
                 Widgets/src/ScrollingTexture.cpp
                 Widgets/src/StatusBar.cpp
+                Widgets/src/MenuWidget.cpp
                 Widgets/src/Spectrogram.cpp
                 WolfSpectrumUI.cpp
 )

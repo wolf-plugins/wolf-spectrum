@@ -28,8 +28,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
     fResizeHandle->setCallback(this);
     fResizeHandle->setMinSize(minWidth, minHeight);
 
-    /*
-    fRightClickMenu = new RightClickMenu(this);
+    fRightClickMenu = new MenuWidget(this);
 
     fRightClickMenu->addSection("Frequency scaling");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic, "Logarithmic");
@@ -61,7 +60,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
 
     fRightClickMenu->addSection("Widgets visibility");
     fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Show rulers");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle"); */
+    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle");
 
     /* if (!getWindow().isEmbed())
     {
@@ -69,7 +68,7 @@ WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
         fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
     } */
 
-    // fRightClickMenu->setCallback(this);
+    fRightClickMenu->setCallback(this);
 
     positionWidgets(width, height);
 }
@@ -127,15 +126,10 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 
 bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
 {
-    (void)ev;
-
-    /*
     if (ev.press)
     {
-        if (((Window *)fRightClickMenu)->isVisible())
+        if (fRightClickMenu->hideOnMouseOutOfBounds(ev.pos))
         {
-            fRightClickMenu->close();
-            
             return true;
         }
         else if (ev.button == 3) // right-click
@@ -146,7 +140,7 @@ bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
             const int showUIControls = std::round(fParameters[paramShowUIControls]);
             const int showCaptions = std::round(fParameters[paramShowCaptions]);
 
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
+            /* fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
                 ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLogarithmic);
 
             fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear)
@@ -192,20 +186,20 @@ bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
                 ->setSelected(showCaptions == 1);
 
             fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleUIControls)
-                ->setSelected(showUIControls == 1);
+                ->setSelected(showUIControls == 1); */
 
-            fRightClickMenu->show(ev.pos.getX(), ev.pos.getY());
+            fRightClickMenu->show(Point<int>(0, 0), ev.pos, Rectangle<int>(0, 0, getWidth(), getHeight()));
 
             return true;
         }
-    } */
+    }
 
     return false;
 }
 
-/* void WolfSpectrumUI::rightClickMenuItemSelected(RightClickMenuItem *rightClickMenuItem)
+void WolfSpectrumUI::menuItemSelected(const int id)
 {
-    switch ((SpectrogramRightClickMenuItems)rightClickMenuItem->getId())
+    switch ((SpectrogramRightClickMenuItems)id)
     {
     case SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic:
         setParameterValueFeedback(paramFrequencyScaling, WolfSpectrumPlugin::FrequencyScalingLogarithmic);
@@ -273,7 +267,7 @@ bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
     default:
         DISTRHO_SAFE_ASSERT_BREAK(false);
     }
-} */
+}
 
 void WolfSpectrumUI::onNanoDisplay()
 {
@@ -336,11 +330,6 @@ void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
 {
     fSpectrogram->setSampleRate(sampleRate);
 }
-
-// void WolfSpectrumUI::onFocusOut()
-// {
-//     fRightClickMenu->close();
-// }
 
 UI* createUI()
 {

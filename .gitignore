@@ -24,4 +24,4 @@ CTestTestfile.cmake
 .releases/
 /build/
 CMakeLists.txt.user
-
+vgcore.*

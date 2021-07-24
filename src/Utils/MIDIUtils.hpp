@@ -4,13 +4,14 @@
 #include "src/DistrhoDefines.h"
 #include <string>
 #include <cmath>
+#include <array>
 
 START_NAMESPACE_DISTRHO
 
 namespace wolf
 {
 
-static constexpr auto kNoteLabels = std::array{
+static constexpr std::array<const char*, 168> kNoteLabels = {
     "C-0",
     "C#0",
     "D-0",
