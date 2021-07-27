@@ -30,7 +30,8 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------------------------------------------
 
-WolfSpectrumPlugin::WolfSpectrumPlugin() : Plugin(paramCount, 0, 0)
+WolfSpectrumPlugin::WolfSpectrumPlugin()
+    : Plugin(paramCount, 0, 0)
 {
     if (!fRingbuffer.createBuffer(16384))
     {
@@ -43,27 +44,27 @@ WolfSpectrumPlugin::~WolfSpectrumPlugin()
     fRingbuffer.deleteBuffer();
 }
 
-const char* WolfSpectrumPlugin::getLabel() const noexcept
+const char *WolfSpectrumPlugin::getLabel() const noexcept
 {
     return "Wolf Spectrum";
 }
 
-const char* WolfSpectrumPlugin::getDescription() const noexcept
+const char *WolfSpectrumPlugin::getDescription() const noexcept
 {
     return "Spectrogram plugin.";
 }
 
-const char* WolfSpectrumPlugin::getMaker() const noexcept
+const char *WolfSpectrumPlugin::getMaker() const noexcept
 {
     return "Patrick Desaulniers";
 }
 
-const char* WolfSpectrumPlugin::getHomePage() const noexcept
+const char *WolfSpectrumPlugin::getHomePage() const noexcept
 {
     return "https://github.com/pdesaulniers/wolf-spectrum";
 }
 
-const char* WolfSpectrumPlugin::getLicense() const noexcept
+const char *WolfSpectrumPlugin::getLicense() const noexcept
 {
     return "GPL v3+";
 }
@@ -78,7 +79,7 @@ int64_t WolfSpectrumPlugin::getUniqueId() const noexcept
     return d_cconst('W', 'S', 'p', 't');
 }
 
-void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter& parameter)
+void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 {
     switch (index)
     {
@@ -92,7 +93,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter& parameter)
         parameter.enumValues.count = 2;
         parameter.enumValues.restrictedMode = true;
         {
-            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
             parameter.enumValues.values = values;
             values[0].label = "Logarithmic";
             values[0].value = FrequencyScalingLogarithmic;
@@ -128,7 +129,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter& parameter)
         parameter.enumValues.count = BlockSizeCount;
         parameter.enumValues.restrictedMode = true;
         {
-            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
             parameter.enumValues.values = values;
             values[0].label = "64 samples";
             values[0].value = BlockSize64;
@@ -160,7 +161,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter& parameter)
         parameter.enumValues.count = ChannelMixCount;
         parameter.enumValues.restrictedMode = true;
         {
-            ParameterEnumerationValue* const values = new ParameterEnumerationValue[parameter.enumValues.count];
+            ParameterEnumerationValue *const values = new ParameterEnumerationValue[parameter.enumValues.count];
             parameter.enumValues.values = values;
             values[0].label = "Left/Right (mean)";
             values[0].value = ChannelMixLRMean;
@@ -235,7 +236,7 @@ void WolfSpectrumPlugin::setParameterValue(uint32_t index, float value)
     parameters[index] = value;
 }
 
-void WolfSpectrumPlugin::run(const float** inputs, float** outputs, uint32_t frames)
+void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t frames)
 {
     const float gaindB = parameters[paramGain];
     const float gainFactor = std::pow(10.0f, gaindB / 20.0f);
@@ -272,7 +273,7 @@ void WolfSpectrumPlugin::run(const float** inputs, float** outputs, uint32_t fra
     }
 }
 
-Plugin* createPlugin()
+Plugin *createPlugin()
 {
     return new WolfSpectrumPlugin();
 }

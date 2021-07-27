@@ -6,24 +6,24 @@ namespace wolf
 {
 template <typename T,
           typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-T clamp(const T& value, const T& min, const T& max)
+T clamp(const T &value, const T &min, const T &max)
 {
     return std::max(min, std::min(value, max));
 }
 
 template <typename T>
-T mirror(const T& value, const T& max)
+T mirror(const T &value, const T &max)
 {
     return max - value;
 }
 
 template <typename T>
-T mirror(const T& value, const T& min, const T& max)
+T mirror(const T &value, const T &min, const T &max)
 {
     return max - value + min;
 }
 
-float normalize(const float& value, const float& max)
+float normalize(const float &value, const float &max)
 {
     return value / max;
 }
@@ -97,7 +97,7 @@ float lerp(float a, float b, float f)
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-int doubleToRadixCString(char* buf, double value, int radix)
+int doubleToRadixCString(char *buf, double value, int radix)
 {
     const char chars[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
@@ -225,7 +225,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-int toHexFloat(char* buffer, const double value)
+int toHexFloat(char *buffer, const double value)
 {
     if (value == +0.0)
     {
@@ -334,7 +334,7 @@ double ipow2(int exponent)
 /* 
  * Parse a hexadecimal-formatted floating-point number (C99 hex float constant-style). 
  */
-double parseHexFloat(char const* ptr, char** endPointer)
+double parseHexFloat(char const *ptr, char **endPointer)
 {
     DISTRHO_SAFE_ASSERT_RETURN(ptr != NULL, 0);
     DISTRHO_SAFE_ASSERT_RETURN((ptr[0] == '0' && ptr[1] == 'x') || (ptr[0] == '-' && ptr[1] == '0' && ptr[2] == 'x'), 0);

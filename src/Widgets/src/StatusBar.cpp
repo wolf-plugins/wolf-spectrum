@@ -2,7 +2,7 @@
 
 START_NAMESPACE_DISTRHO
 
-StatusBar::StatusBar(Widget* parent, Size<uint> size)
+StatusBar::StatusBar(Widget *parent, Size<uint> size)
     : NanoSubWidget(parent)
 {
     setSize(size);
@@ -10,21 +10,21 @@ StatusBar::StatusBar(Widget* parent, Size<uint> size)
     loadSharedResources();
 }
 
-void StatusBar::setLeftText(const std::string& text)
+void StatusBar::setLeftText(const std::string &text)
 {
     fLeftText = text;
 
     repaint();
 }
 
-void StatusBar::setFrequencyText(const std::string& text)
+void StatusBar::setFrequencyText(const std::string &text)
 {
     fFrequencyText = text;
 
     repaint();
 }
 
-void StatusBar::setNoteText(const std::string& text)
+void StatusBar::setNoteText(const std::string &text)
 {
     fNoteText = text;
 

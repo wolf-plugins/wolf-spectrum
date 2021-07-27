@@ -9,7 +9,7 @@ START_NAMESPACE_DISTRHO
 class PixelDrawingSurface : public NanoSubWidget
 {
 public:
-    PixelDrawingSurface(Widget* widget, Size<uint> size, int imageFlags = 0);
+    PixelDrawingSurface(Widget *widget, Size<uint> size, int imageFlags = 0);
     ~PixelDrawingSurface();
 
     void drawPixel(int posX, int posY, Color pixelColor);
@@ -26,7 +26,7 @@ private:
     static constexpr int INTERNAL_BUFFER_HEIGHT = 2048;
 
     int fFileId;
-    unsigned char* fImageData;
+    unsigned char *fImageData;
     bool fDirty;
     float fScaleX;
     int fBufferWidth;
@@ -37,7 +37,7 @@ private:
 class ScrollingTexture : public NanoSubWidget
 {
 public:
-    ScrollingTexture(Widget* widget, Size<uint> size);
+    ScrollingTexture(Widget *widget, Size<uint> size);
     ~ScrollingTexture();
 
     void drawPixelOnCurrentLine(int pos, Color color);
@@ -51,7 +51,7 @@ public:
 
 protected:
     void onNanoDisplay() override;
-    void onResize(const ResizeEvent& ev) override;
+    void onResize(const ResizeEvent &ev) override;
 
 private:
     void verticalScroll();

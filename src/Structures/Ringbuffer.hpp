@@ -27,18 +27,19 @@ public:
 
 private:
     int fCount;
-    T* fItems;
+    T *fItems;
     const int fCapacity;
     int fStart;
     int fEnd;
 };
 
 template <class T>
-Ringbuffer<T>::Ringbuffer(const int capacity) : fCount(0),
-                                                fItems(new T[capacity]),
-                                                fCapacity(capacity),
-                                                fStart(0),
-                                                fEnd(-1)
+Ringbuffer<T>::Ringbuffer(const int capacity)
+    : fCount(0),
+      fItems(new T[capacity]),
+      fCapacity(capacity),
+      fStart(0),
+      fEnd(-1)
 {
 }
 

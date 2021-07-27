@@ -2,20 +2,21 @@
 #include "Spectrogram.hpp"
 #include "Config.hpp"
 #include "DistrhoUI.hpp"
+#include "MIDIUtils.hpp"
 #include "Mathf.hpp"
 #include "Window.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include <cmath>
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include <cstdlib>
 #include <sstream>
-#include "MIDIUtils.hpp"
 
 START_NAMESPACE_DISTRHO
 
-SpectrogramRulers::SpectrogramRulers(Spectrogram* parent) : NanoSubWidget(parent),
-                                                            fParent(parent)
+SpectrogramRulers::SpectrogramRulers(Spectrogram *parent)
+    : NanoSubWidget(parent),
+      fParent(parent)
 {
     loadSharedResources();
 }
@@ -50,21 +51,22 @@ void SpectrogramRulers::drawBackground()
     closePath();
 }
 
-Spectrogram::Spectrogram(UI* ui, Widget* widget, Size<uint> size) : NanoSubWidget(widget),
-                                                                    fUI(ui),
-                                                                    fSamples(MAX_BLOCK_SIZE),
-                                                                    fLogFrequencyScaling(true),
-                                                                    fFFTConfig(nullptr),
-                                                                    fScrollingTexture(this, size),
-                                                                    fBlockSize(512),
-                                                                    fHorizontalScrolling(false),
-                                                                    fSampleRate(44100),
-                                                                    fMustShowGrid(true),
-                                                                    fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
-                                                                    fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
-                                                                    fThreshold(-90.f),
-                                                                    fRulers(this),
-                                                                    fStatusBar(this, Size<uint>(size.getWidth(), 24))
+Spectrogram::Spectrogram(UI *ui, Widget *widget, Size<uint> size)
+    : NanoSubWidget(widget),
+      fUI(ui),
+      fSamples(MAX_BLOCK_SIZE),
+      fLogFrequencyScaling(true),
+      fFFTConfig(nullptr),
+      fScrollingTexture(this, size),
+      fBlockSize(512),
+      fHorizontalScrolling(false),
+      fSampleRate(44100),
+      fMustShowGrid(true),
+      fChannelMix(WolfSpectrumPlugin::ChannelMixLRMean),
+      fPeakFall(WolfSpectrumPlugin::PeakFallNormal),
+      fThreshold(-90.f),
+      fRulers(this),
+      fStatusBar(this, Size<uint>(size.getWidth(), 24))
 {
     setSize(size);
 
@@ -152,7 +154,7 @@ void Spectrogram::setSampleRate(const double sampleRate)
     updateCoeffs();
 }
 
-void Spectrogram::onResize(const ResizeEvent& ev)
+void Spectrogram::onResize(const ResizeEvent &ev)
 {
     fScrollingTexture.setSize(ev.size);
 
@@ -162,7 +164,7 @@ void Spectrogram::onResize(const ResizeEvent& ev)
     repositionRulers();
 }
 
-float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx* out, const int index, const int transformSize)
+float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize)
 {
     const float real = out[index].r * (2.0 / transformSize);
     const float complex = out[index].i * (2.0 / transformSize);
@@ -211,8 +213,7 @@ Color getBinPixelColor(const float powerSpectrumdB)
         WolfSpectrumConfig::color_ramp_7,
         WolfSpectrumConfig::color_ramp_8,
         WolfSpectrumConfig::color_ramp_9,
-        WolfSpectrumConfig::color_ramp_10
-    };
+        WolfSpectrumConfig::color_ramp_10};
 
     const int colorIndex = dB / 10;
 
@@ -257,7 +258,7 @@ void Spectrogram::draw()
         const int freqSize = 1;
         float freqPos = i * freqSize;
 
-        if (fLogFrequencyScaling && i < half - 1) //must lerp to fill the gaps
+        if (fLogFrequencyScaling && i < half - 1) // must interpolate to fill the gaps
         {
             const float nextPowerSpectrumdB = fBins[i + 1].getSmoothedValue();
 
@@ -336,7 +337,7 @@ void SpectrogramRulers::drawLogScaleGrid()
             if (frequency > max)
                 break;
 
-            // TODO: make that less ridiculous
+            // TODO: adaptive frequency grid
             const bool mustShowCaption = frequency == 50 ||
                                          frequency == 100 ||
                                          frequency == 200 ||
@@ -455,7 +456,7 @@ void Spectrogram::drawFrequencyAtMouse()
     }
 }
 
-bool Spectrogram::onMouse(const MouseEvent& ev)
+bool Spectrogram::onMouse(const MouseEvent &ev)
 {
     if (ev.button == 1)
     {
@@ -468,7 +469,7 @@ bool Spectrogram::onMouse(const MouseEvent& ev)
     return false;
 }
 
-bool Spectrogram::onMotion(const MotionEvent& ev)
+bool Spectrogram::onMotion(const MotionEvent &ev)
 {
     if (fMouseDown)
     {
@@ -483,7 +484,7 @@ void Spectrogram::onNanoDisplay()
 {
     draw();
 
-    if (WolfSpectrumPlugin* const dspPtr = (WolfSpectrumPlugin*)fUI->getPluginInstancePointer())
+    if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
         auto ringbuffer = &dspPtr->fRingbuffer;
 

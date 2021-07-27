@@ -288,7 +288,7 @@ bool MenuWidget::onMouse(const MouseEvent &ev)
                 if (item_bounds.contains(ev.pos))
                 {
                     if (callback != nullptr)
-                    callback->menuItemSelected(items[i].id);
+                        callback->menuItemSelected(items[i].id);
                     selected_i = i;
                     hide();
                     return true;

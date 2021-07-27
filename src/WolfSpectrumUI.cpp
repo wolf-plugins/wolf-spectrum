@@ -9,7 +9,8 @@
 
 START_NAMESPACE_DISTRHO
 
-WolfSpectrumUI::WolfSpectrumUI() : UI(1200, 200)
+WolfSpectrumUI::WolfSpectrumUI()
+    : UI(1200, 200)
 {
     const uint minWidth = 1024;
     const uint minHeight = 200;
@@ -124,7 +125,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
     fParameters[index] = value;
 }
 
-bool WolfSpectrumUI::onMouse(const MouseEvent& ev)
+bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 {
     if (ev.press)
     {
@@ -294,7 +295,7 @@ void WolfSpectrumUI::toggleFullscreen()
     } */
 }
 
-bool WolfSpectrumUI::onKeyboard(const KeyboardEvent& ev)
+bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 {
     if (ev.press)
     {
@@ -331,7 +332,7 @@ void WolfSpectrumUI::sampleRateChanged(const double sampleRate)
     fSpectrogram->setSampleRate(sampleRate);
 }
 
-UI* createUI()
+UI *createUI()
 {
     return new WolfSpectrumUI();
 }

@@ -19,7 +19,7 @@ static constexpr float SPECTROGRAM_MIN_FREQ = 20.f;
 class SpectrogramRulers : public NanoSubWidget
 {
 public:
-    SpectrogramRulers(Spectrogram* parent);
+    SpectrogramRulers(Spectrogram *parent);
     void drawLinearScaleGrid();
     void drawLogScaleGrid();
     void drawBackground();
@@ -28,7 +28,7 @@ protected:
     void onNanoDisplay() override;
 
 private:
-    Spectrogram* fParent;
+    Spectrogram *fParent;
 };
 
 class Spectrogram : public NanoSubWidget
@@ -36,7 +36,7 @@ class Spectrogram : public NanoSubWidget
     friend class SpectrogramRulers;
 
 public:
-    Spectrogram(UI* ui, Widget* widget, Size<uint> size);
+    Spectrogram(UI *ui, Widget *widget, Size<uint> size);
     ~Spectrogram();
 
     void setParameterValue(uint32_t i, float v);
@@ -52,9 +52,9 @@ public:
     void clear();
 
 protected:
-    void onResize(const ResizeEvent& ev) override;
-    bool onMouse(const MouseEvent& ev) override;
-    bool onMotion(const MotionEvent& ev) override;
+    void onResize(const ResizeEvent &ev) override;
+    bool onMouse(const MouseEvent &ev) override;
+    bool onMotion(const MotionEvent &ev) override;
     void onNanoDisplay() override;
 
 private:
@@ -64,13 +64,13 @@ private:
     void repositionRulers();
     void draw();
     void updateCoeffs();
-    float getPowerSpectrumdB(const kiss_fft_cpx* out, const int index, const int transformSize);
+    float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);
     void drawFrequencyAtMouse();
 
     //Call this after changing the block size
     void updateFFTConfig();
 
-    UI* fUI;
+    UI *fUI;
     wolf::Ringbuffer<float> fSamples;
     PeakFallSmooth fBins[MAX_BLOCK_SIZE / 2];
     bool fLogFrequencyScaling;

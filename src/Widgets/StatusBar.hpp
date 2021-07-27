@@ -11,11 +11,11 @@ class StatusBar : public NanoSubWidget
 {
 
 public:
-    StatusBar(Widget* parent, Size<uint> size);
+    StatusBar(Widget *parent, Size<uint> size);
 
-    void setLeftText(const std::string& text);
-    void setFrequencyText(const std::string& text);
-    void setNoteText(const std::string& text);
+    void setLeftText(const std::string &text);
+    void setFrequencyText(const std::string &text);
+    void setNoteText(const std::string &text);
 
     static constexpr uint DEFAULT_HEIGHT = 18;
 

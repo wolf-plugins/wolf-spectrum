@@ -5,7 +5,7 @@
 
 START_NAMESPACE_DISTRHO
 
-ResizeHandle::ResizeHandle(Widget* parent, Size<uint> size) noexcept
+ResizeHandle::ResizeHandle(Widget *parent, Size<uint> size) noexcept
     : NanoSubWidget(parent),
       fHasFocus(false),
       fIsHovered(false),
@@ -15,7 +15,7 @@ ResizeHandle::ResizeHandle(Widget* parent, Size<uint> size) noexcept
     setSize(size);
 }
 
-void ResizeHandle::setCallback(Callback* callback) noexcept
+void ResizeHandle::setCallback(Callback *callback) noexcept
 {
     fCallback = callback;
 }
@@ -53,7 +53,7 @@ void ResizeHandle::onNanoDisplay()
     closePath();
 }
 
-bool ResizeHandle::onMouse(const MouseEvent& ev)
+bool ResizeHandle::onMouse(const MouseEvent &ev)
 {
     if (fHasFocus)
     {
@@ -75,7 +75,7 @@ bool ResizeHandle::onMouse(const MouseEvent& ev)
     return false;
 }
 
-bool ResizeHandle::onMotion(const MotionEvent& ev)
+bool ResizeHandle::onMotion(const MotionEvent &ev)
 {
     if (fHasFocus)
     {

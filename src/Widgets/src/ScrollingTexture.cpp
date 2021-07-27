@@ -12,18 +12,19 @@
 
 START_NAMESPACE_DISTRHO
 
-PixelDrawingSurface::PixelDrawingSurface(Widget* widget, Size<uint> size, int imageFlags) : NanoSubWidget(widget),
-                                                                                            fDirty(true),
-                                                                                            fScaleX(1.0f),
-                                                                                            fBufferWidth(INTERNAL_BUFFER_WIDTH),
-                                                                                            fBufferHeight(INTERNAL_BUFFER_HEIGHT),
-                                                                                            fImageFlags(imageFlags)
+PixelDrawingSurface::PixelDrawingSurface(Widget *widget, Size<uint> size, int imageFlags)
+    : NanoSubWidget(widget),
+      fDirty(true),
+      fScaleX(1.0f),
+      fBufferWidth(INTERNAL_BUFFER_WIDTH),
+      fBufferHeight(INTERNAL_BUFFER_HEIGHT),
+      fImageFlags(imageFlags)
 {
     setSize(size);
 
-    NVGcontext* context = getContext();
+    NVGcontext *context = getContext();
 
-    fImageData = (unsigned char*)calloc(4, INTERNAL_BUFFER_WIDTH * INTERNAL_BUFFER_HEIGHT * 4);
+    fImageData = (unsigned char *)calloc(4, INTERNAL_BUFFER_WIDTH * INTERNAL_BUFFER_HEIGHT * 4);
     fFileId = nvgCreateImageRGBA(context, INTERNAL_BUFFER_WIDTH, INTERNAL_BUFFER_HEIGHT, fImageFlags, fImageData);
 }
 
@@ -63,7 +64,7 @@ void PixelDrawingSurface::drawPixel(int posX, int posY, Color color)
     const int hole = 1.0f * realPixelSize;
     const int prevPosX = posX - hole;
 
-    if (hole > 1.0f && prevPosX >= 0) //we lerp with the previous "pixel" to fill the gaps
+    if (hole > 1.0f && prevPosX >= 0) // we lerp with the previous "pixel" to fill the gaps
     {
         const int prevIndex = posY * (width * 4) + (prevPosX * 4);
 
@@ -99,7 +100,7 @@ void PixelDrawingSurface::onNanoDisplay()
     const float width = getWidth();
     const float height = getHeight();
 
-    NVGcontext* context = getContext();
+    NVGcontext *context = getContext();
 
     if (fDirty)
     {
@@ -125,11 +126,12 @@ void PixelDrawingSurface::clearLine(int posY)
     fDirty = true;
 }
 
-ScrollingTexture::ScrollingTexture(Widget* widget, Size<uint> size) : NanoSubWidget(widget),
-                                                                      textureA(this, size),
-                                                                      textureB(this, size),
-                                                                      scrollTicks(0),
-                                                                      horizontalScrolling(false)
+ScrollingTexture::ScrollingTexture(Widget *widget, Size<uint> size)
+    : NanoSubWidget(widget),
+      textureA(this, size),
+      textureB(this, size),
+      scrollTicks(0),
+      horizontalScrolling(false)
 {
     setSize(size);
 
@@ -150,7 +152,7 @@ void ScrollingTexture::clear()
     textureB.clear();
 }
 
-void ScrollingTexture::onResize(const ResizeEvent& ev)
+void ScrollingTexture::onResize(const ResizeEvent &ev)
 {
     textureA.setSize(ev.size.getWidth(), ev.size.getHeight() + 1);
     textureB.setSize(ev.size.getWidth(), ev.size.getHeight());

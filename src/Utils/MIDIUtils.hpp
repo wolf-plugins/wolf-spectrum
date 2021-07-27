@@ -2,16 +2,16 @@
 #define MIDIUTILS_HPP
 
 #include "src/DistrhoDefines.h"
-#include <string>
-#include <cmath>
 #include <array>
+#include <cmath>
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
 namespace wolf
 {
 
-static constexpr std::array<const char*, 168> kNoteLabels = {
+static constexpr std::array<const char *, 168> kNoteLabels = {
     "C-0",
     "C#0",
     "D-0",

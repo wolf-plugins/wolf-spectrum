@@ -61,8 +61,8 @@ protected:
     void onNanoDisplay() override;
     void uiIdle() override;
     void uiReshape(uint width, uint height) override;
-    bool onKeyboard(const KeyboardEvent& ev) override;
-    bool onMouse(const MouseEvent& ev) override;
+    bool onKeyboard(const KeyboardEvent &ev) override;
+    bool onMouse(const MouseEvent &ev) override;
     void sampleRateChanged(const double sampleRate) override;
     void menuItemSelected(const int id) override;
     // void onFocusOut() override;

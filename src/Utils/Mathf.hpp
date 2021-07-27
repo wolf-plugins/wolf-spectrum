@@ -14,33 +14,33 @@ namespace wolf
 {
 template <typename T,
           typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-T clamp(const T& value, const T& min, const T& max)
+T clamp(const T &value, const T &min, const T &max)
 {
     return std::max(min, std::min(value, max));
 }
 
 template <typename T>
-T mirror(const T& value, const T& max)
+T mirror(const T &value, const T &max)
 {
     return max - value;
 }
 
 template <typename T>
-T mirror(const T& value, const T& min, const T& max)
+T mirror(const T &value, const T &min, const T &max)
 {
     return max - value + min;
 }
 
-float normalize(const float& value, const float& max);
+float normalize(const float &value, const float &max);
 
 template <typename T>
-T normalize(const T& value, const T& min, const T& max)
+T normalize(const T &value, const T &min, const T &max)
 {
     return (value - min) / (max - min);
 }
 
 template <typename T>
-T normalizeBipolar(const T& value, const T& min, const T& max)
+T normalizeBipolar(const T &value, const T &min, const T &max)
 {
     return 2 * normalize(value, min, max) - 1;
 }
@@ -97,13 +97,13 @@ float randomNumber(const float min, const float max);
 
 float lerp(float a, float b, float f);
 
-int doubleToRadixCString(char* buf, double value, int radix);
+int doubleToRadixCString(char *buf, double value, int radix);
 
-int toHexFloat(char* buffer, const double value);
+int toHexFloat(char *buffer, const double value);
 
 double ipow2(int exponent);
 
-double parseHexFloat(char const* ptr, char** endPointer);
+double parseHexFloat(char const *ptr, char **endPointer);
 } // namespace wolf
 
 END_NAMESPACE_DISTRHO
