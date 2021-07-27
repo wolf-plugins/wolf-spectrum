@@ -17,7 +17,7 @@
 #pragma once
 
 #include "DistrhoPlugin.hpp"
-#include "extra/RingBuffer.hpp"
+#include "readerwriterqueue.h"
 
 #include <cmath>
 #include <cstdio>
@@ -107,7 +107,7 @@ protected:
 private:
     float parameters[paramCount];
 
-    HeapRingBuffer fRingbuffer;
+    moodycamel::ReaderWriterQueue<float> fRingbuffer;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WolfSpectrumPlugin)
 };

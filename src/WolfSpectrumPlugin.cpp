@@ -31,17 +31,13 @@ START_NAMESPACE_DISTRHO
 // -----------------------------------------------------------------------------------------------------------
 
 WolfSpectrumPlugin::WolfSpectrumPlugin()
-    : Plugin(paramCount, 0, 0)
+    : Plugin(paramCount, 0, 0),
+      fRingbuffer(16384)
 {
-    if (!fRingbuffer.createBuffer(16384))
-    {
-        fprintf(stderr, "RingBuffer allocation failed\n");
-    }
 }
 
 WolfSpectrumPlugin::~WolfSpectrumPlugin()
 {
-    fRingbuffer.deleteBuffer();
 }
 
 const char *WolfSpectrumPlugin::getLabel() const noexcept
@@ -265,8 +261,7 @@ void WolfSpectrumPlugin::run(const float **inputs, float **outputs, uint32_t fra
             return; //¯\_(ツ)_/¯
         }
 
-        fRingbuffer.writeFloat(sampleOut);
-        fRingbuffer.commitWrite();
+        fRingbuffer.try_enqueue(sampleOut);
 
         outputs[0][i] = inputs[0][i];
         outputs[1][i] = inputs[1][i];

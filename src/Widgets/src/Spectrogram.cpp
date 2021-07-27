@@ -487,9 +487,9 @@ void Spectrogram::onNanoDisplay()
     {
         auto ringbuffer = &dspPtr->fRingbuffer;
 
-        while (ringbuffer->isDataAvailableForReading())
+        float sample;
+        while (ringbuffer->try_dequeue(sample))
         {
-            const float sample = ringbuffer->readFloat();
             fSamples.add(sample);
 
             if (fSamples.count() >= fBlockSize)

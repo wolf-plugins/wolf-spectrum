@@ -5,3 +5,6 @@
 [submodule "libs/kissfft"]
 	path = libs/kissfft
 	url = https://github.com/mborgerding/kissfft.git
+[submodule "libs/readerwriterqueue"]
+	path = libs/readerwriterqueue
+	url = https://github.com/cameron314/readerwriterqueue.git
