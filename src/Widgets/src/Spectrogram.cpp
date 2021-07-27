@@ -172,7 +172,6 @@ float Spectrogram::getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, 
     const float powerSpectrum = real * real + complex * complex;
     float powerSpectrumdB = 10.0f / std::log(10.0f) * std::log(powerSpectrum + 1e-9);
 
-    // Threshold
     if (powerSpectrumdB <= fThreshold)
     {
         powerSpectrumdB = -90.0f;

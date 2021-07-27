@@ -186,7 +186,7 @@ std::string frequencyToNoteName(const float frequency)
 {
     const auto midiNote = std::log(frequency / 440.f) / std::log(2) * 12 + 69;
 
-    const uint noteIndex = std::round(midiNote);
+    const uint noteIndex = std::round(midiNote - 12);
 
     if (noteIndex < 0 || noteIndex >= kNoteLabels.size())
     {
