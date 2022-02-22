@@ -276,7 +276,8 @@ void WolfSpectrumUI::onNanoDisplay()
 
 void WolfSpectrumUI::uiIdle()
 {
-    repaint();
+    fSpectrogram->update();
+    // repaint(); // not currently needed
 }
 
 void WolfSpectrumUI::uiReshape(uint width, uint height)

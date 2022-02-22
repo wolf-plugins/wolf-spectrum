@@ -239,7 +239,7 @@ float getBinPos(const int bin, const int numBins, const double sampleRate)
     return numBins * scaledFreq / maxFreq;
 }
 
-void Spectrogram::draw()
+void Spectrogram::render()
 {
     const float width = getWidth();
     const float scaleX = width / fBlockSize * 2;
@@ -430,7 +430,7 @@ void Spectrogram::setChannelMix(const int channelMix)
     fChannelMix = channelMix;
 }
 
-void Spectrogram::drawFrequencyAtMouse()
+void Spectrogram::updateFrequencyText()
 {
     const float maxFreq = fSampleRate / 2.f;
     const float marginLeft = SPECTROGRAM_MIN_FREQ / maxFreq;
@@ -479,9 +479,9 @@ bool Spectrogram::onMotion(const MotionEvent &ev)
     return false;
 }
 
-void Spectrogram::onNanoDisplay()
+void Spectrogram::update()
 {
-    draw();
+    render();
 
     if (WolfSpectrumPlugin *const dspPtr = (WolfSpectrumPlugin *)fUI->getPluginInstancePointer())
     {
@@ -499,17 +499,22 @@ void Spectrogram::onNanoDisplay()
         }
     }
 
-    draw();
+    render();
 
     if (fMouseDown)
     {
         fStatusBar.show();
-        drawFrequencyAtMouse();
+        updateFrequencyText();
     }
     else
     {
         fStatusBar.hide();
     }
+}
+
+void Spectrogram::onNanoDisplay()
+{
+
 }
 
 END_NAMESPACE_DISTRHO

@@ -49,6 +49,8 @@ public:
     void setPeakFall(const int peakFall);
     void setThreshold(const float threshold);
 
+    void update();
+
     void clear();
 
 protected:
@@ -62,10 +64,10 @@ private:
 
     void process();
     void repositionRulers();
-    void draw();
+    void render();
     void updateCoeffs();
     float getPowerSpectrumdB(const kiss_fft_cpx *out, const int index, const int transformSize);
-    void drawFrequencyAtMouse();
+    void updateFrequencyText();
 
     //Call this after changing the block size
     void updateFFTConfig();
