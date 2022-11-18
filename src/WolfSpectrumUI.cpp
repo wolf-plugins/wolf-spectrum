@@ -133,7 +133,7 @@ bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
         {
             return true;
         }
-        else if (ev.button == 3) // right-click
+        else if (ev.button == kMouseButtonRight)
         {
             const int frequencyScaling = std::round(fParameters[paramFrequencyScaling]);
             const int blockSize = std::round(fParameters[paramBlockSize]);
@@ -195,7 +195,7 @@ bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
         }
     }
 
-    return false;
+    return UI::onMouse(ev);
 }
 
 void WolfSpectrumUI::menuItemSelected(const int id)
