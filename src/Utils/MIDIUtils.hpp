@@ -188,7 +188,7 @@ std::string frequencyToNoteName(const float frequency)
 
     const uint noteIndex = std::round(midiNote - 12);
 
-    if (noteIndex < 0 || noteIndex >= kNoteLabels.size())
+    if (noteIndex >= kNoteLabels.size())
     {
         return "";
     }

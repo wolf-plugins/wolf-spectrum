@@ -83,7 +83,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = 0;
         parameter.ranges.max = 1;
         parameter.ranges.def = 0;
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.name = "Frequency Scaling";
         parameter.symbol = "frequencyscaling";
         parameter.enumValues.count = 2;
@@ -101,7 +101,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.ranges.min = 0;
 		parameter.ranges.max = 1;
 		parameter.ranges.def = 0;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
 		parameter.name = "Scroll Direction";
 		parameter.symbol = "scrolldirection";
 		parameter.enumValues.count = 2;
@@ -119,7 +119,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = 0;
         parameter.ranges.max = BlockSizeCount - 1;
         parameter.ranges.def = BlockSize4096;
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.name = "Block Size";
         parameter.symbol = "blocksize";
         parameter.enumValues.count = BlockSizeCount;
@@ -151,7 +151,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = 0;
         parameter.ranges.max = ChannelMixCount - 1;
         parameter.ranges.def = ChannelMixLRMean;
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
         parameter.name = "Channel Mix";
         parameter.symbol = "channelmix";
         parameter.enumValues.count = ChannelMixCount;
@@ -171,7 +171,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.ranges.min = 0;
 		parameter.ranges.max = PeakFallCount - 1;
 		parameter.ranges.def = PeakFallNormal;
-		parameter.hints = kParameterIsAutomable | kParameterIsInteger;
+		parameter.hints = kParameterIsAutomatable | kParameterIsInteger;
 		parameter.name = "Peak Fall";
 		parameter.symbol = "peakfall";
 		parameter.enumValues.count = PeakFallCount;
@@ -189,7 +189,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = -25.0f;
         parameter.ranges.max = 25.0f;
         parameter.ranges.def = 0.0f;
-        parameter.hints = kParameterIsAutomable;
+        parameter.hints = kParameterIsAutomatable;
         parameter.name = "Gain";
         parameter.symbol = "gain";
         break;
@@ -197,7 +197,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
 		parameter.ranges.min = -90.0f;
 		parameter.ranges.max = -0.1f;
 		parameter.ranges.def = -90.0f;
-		parameter.hints = kParameterIsAutomable;
+		parameter.hints = kParameterIsAutomatable;
 		parameter.name = "Threshold";
 		parameter.symbol = "threshold";
 		break; */
@@ -205,7 +205,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = 0;
         parameter.ranges.max = 1;
         parameter.ranges.def = 1;
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger | kParameterIsBoolean;
         parameter.name = "Show Captions";
         parameter.symbol = "showcaptions";
         break;
@@ -213,7 +213,7 @@ void WolfSpectrumPlugin::initParameter(uint32_t index, Parameter &parameter)
         parameter.ranges.min = 0;
         parameter.ranges.max = 1;
         parameter.ranges.def = 1;
-        parameter.hints = kParameterIsAutomable | kParameterIsInteger | kParameterIsBoolean;
+        parameter.hints = kParameterIsAutomatable | kParameterIsInteger | kParameterIsBoolean;
         parameter.name = "Show UI Controls";
         parameter.symbol = "showuicontrols";
         break;
