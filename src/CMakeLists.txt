@@ -1,5 +1,5 @@
 dpf_add_plugin(wolf-spectrum
-        TARGETS jack lv2 vst2
+        TARGETS jack lv2 vst2 vst3 clap
         MONOLITHIC
         FILES_DSP
                 Utils/src/Mathf.cpp

@@ -4,6 +4,7 @@
 #define DISTRHO_PLUGIN_NAME "Wolf Spectrum"
 #define DISTRHO_PLUGIN_BRAND "Wolf Plugins"
 #define DISTRHO_PLUGIN_URI "https://github.com/pdesaulniers/wolf-spectrum"
+#define DISTRHO_PLUGIN_CLAP_ID "com.github.wolf-plugins.wolf-spectrum"
 
 #define DISTRHO_PLUGIN_HAS_UI 1
 #define DISTRHO_PLUGIN_IS_RT_SAFE 1

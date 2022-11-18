@@ -4,6 +4,8 @@
 # Created by falkTX, Christopher Arndt, and Patrick Desaulniers
 #
 
+include ../dpf/Makefile.base.mk
+
 # --------------------------------------------------------------
 # Installation directories
 
@@ -50,6 +52,8 @@ NAME = wolf-spectrum
 
 BUILD_LV2 ?= true
 BUILD_VST2 ?= true
+BUILD_VST3 ?= true
+BUILD_CLAP ?= true
 BUILD_JACK ?= true
 BUILD_DSSI ?= false
 BUILD_LADSPA ?= false
@@ -62,15 +66,15 @@ FILES_DSP = \
 	WolfSpectrumPlugin.cpp
 
 FILES_UI = \
-        ../libs/kissfft/kiss_fft.c \
+	../libs/kissfft/kiss_fft.c \
 	Utils/src/Mathf.cpp \
-        Structures/src/PeakFallSmooth.cpp \
+	Structures/src/PeakFallSmooth.cpp \
 	Structures/src/Margin.cpp \
 	Widgets/src/ResizeHandle.cpp \
-        Widgets/src/ScrollingTexture.cpp \
+	Widgets/src/ScrollingTexture.cpp \
 	Widgets/src/StatusBar.cpp \
 	Widgets/src/MenuWidget.cpp \
-        Widgets/src/Spectrogram.cpp \
+	Widgets/src/Spectrogram.cpp \
 	WolfSpectrumUI.cpp
 
 # --------------------------------------------------------------
@@ -91,8 +95,8 @@ BASE_FLAGS += -I./Resources -I./Structures -I./Widgets -I./Utils -I../libs/kissf
 
 BASE_FLAGS += $(CUSTOM_DEFINES)
 
-# Fix missing GL/gl.h include on FreeBSD
-BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags-only-I gl)
+# Fix missing GL/gl.h include on FreeBSD (commented out for now since it breaks CI)
+# BASE_FLAGS += $(shell $(PKG_CONFIG) --cflags-only-I gl)
 
 LINK_FLAGS += -lpthread
 
@@ -108,7 +112,15 @@ TARGETS += lv2
 endif
 
 ifeq ($(BUILD_VST2),true)
-TARGETS += vst
+TARGETS += vst2
+endif
+
+ifeq ($(BUILD_VST3),true)
+TARGETS += vst3
+endif
+
+ifeq ($(BUILD_CLAP),true)
+TARGETS += clap
 endif
 
 ifeq ($(BUILD_JACK),true)
