@@ -1,5 +1,5 @@
 # Wolf Spectrum
-[![Build Status](https://img.shields.io/github/workflow/status/wolf-plugins/wolf-spectrum/Wolf%20Spectrum%20CI.svg?logo=github)](https://github.com/wolf-plugins/wolf-spectrum/actions?query=workflow%3A%22Wolf+Spectrum+CI%22)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/wolf-plugins/wolf-spectrum/dpf-makefile-action.yml?branch=master)](https://github.com/wolf-plugins/wolf-shaper/actions/workflows/dpf-makefile-action.yml)
 
 ![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/src/Screenshot.png)
 
