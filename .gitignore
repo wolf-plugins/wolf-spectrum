@@ -26,3 +26,4 @@ CTestTestfile.cmake
 CMakeLists.txt.user
 vgcore.*
 wolf-spectrum.carxp
+/.cache/
