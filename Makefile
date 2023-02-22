@@ -4,21 +4,18 @@
 # Created by falkTX, Christopher Arndt, and Patrick Desaulniers
 #
 
+export DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
+export DGL_NAMESPACE = WolfSpectrumDGL
+export FILE_BROWSER_DISABLED = true
+
 include dpf/Makefile.base.mk
 
 all: libs plugins gen
 
 # --------------------------------------------------------------
 
-DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
-DGL_NAMESPACE = WolfSpectrumDGL
-
-export CUSTOM_DEFINES = -DDGL_FILE_BROWSER_DISABLED -DDISTRHO_NAMESPACE=$(DISTRHO_NAMESPACE) -DDGL_NAMESPACE=$(DGL_NAMESPACE)
-
-# --------------------------------------------------------------
-
 libs:
-	$(MAKE) -C dpf/dgl ../build/libdgl-opengl.a DGL_FLAGS="$(DGL_FLAGS) $(CUSTOM_DEFINES)"
+	$(MAKE) -C dpf/dgl opengl
 
 plugins: libs
 	$(MAKE) all -C src
@@ -40,11 +37,6 @@ dpf/utils/lv2_ttl_generator.exe:
 	$(MAKE) -C dpf/utils/lv2-ttl-generator WINDOWS=true
 endif
 
-release:
-	LINUX=true ./tools/make-release.sh
-	WIN32=true ./tools/make-release.sh
-	./tools/bundle-source.sh
-
 # --------------------------------------------------------------
 
 clean:
@@ -61,4 +53,4 @@ install-user: all
 
 # --------------------------------------------------------------
 
-.PHONY: all clean install install-user submodule libs plugins gen
+.PHONY: all clean install install-user libs plugins gen
