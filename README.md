@@ -54,3 +54,7 @@ git pull
 git submodule update --init --recursive
 ```
 You should then be able to build the plugin with the most recent changes.
+
+## Licensing
+
+Wolf Spectrum's source code is licensed under the GNU General Public License v3.0 or later.
