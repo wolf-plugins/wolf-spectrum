@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "StatusBar.hpp"
 
 START_NAMESPACE_DISTRHO

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef SPECTROGRAM_HPP_INCLUDED
 #define SPECTROGRAM_HPP_INCLUDED
 

@@ -1,10 +1,4 @@
-/*
- * Wolf Spectrum audio plugin, based on DISTRHO Plugin Framework (DPF)
- *
- * SPDX-License-Identifier: GPL v3+
- *
- * Copyright (C) 2023 Patrick Desaulniers
- */
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED

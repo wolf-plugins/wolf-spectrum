@@ -1,8 +1,5 @@
 #!/usr/bin/make -f
-# Makefile for DISTRHO Plugins #
-# ---------------------------- #
-# Created by falkTX, Christopher Arndt, and Patrick Desaulniers
-#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 export DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
 export DGL_NAMESPACE = WolfSpectrumDGL

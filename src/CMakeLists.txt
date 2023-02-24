@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 dpf_add_plugin(wolf-spectrum
         TARGETS jack lv2 vst2 vst3 clap
         MONOLITHIC
