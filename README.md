@@ -1,5 +1,4 @@
-# Wolf Spectrum
-[![Build Status](https://img.shields.io/github/actions/workflow/status/wolf-plugins/wolf-spectrum/dpf-makefile-action.yml?branch=master)](https://github.com/wolf-plugins/wolf-spectrum/actions/workflows/dpf-makefile-action.yml)
+# Wolf Spectrum [![Build Status](https://img.shields.io/github/actions/workflow/status/wolf-plugins/wolf-spectrum/dpf-makefile-action.yml?branch=master)](https://github.com/wolf-plugins/wolf-spectrum/actions/workflows/dpf-makefile-action.yml)
 
 ![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/src/Screenshot.png)
 
@@ -55,6 +54,6 @@ git submodule update --init --recursive
 ```
 You should then be able to build the plugin with the most recent changes.
 
-## Licensing
+## License
 
-Wolf Spectrum's source code is licensed under the GNU General Public License v3.0 or later.
+Wolf Spectrum is licensed under the GNU General Public License v3.0 or later.
