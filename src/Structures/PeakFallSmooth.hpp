@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifndef WOLF_PEAK_FALL_SMOOTH_INCLUDED
 #define WOLF_PEAK_FALL_SMOOTH_INCLUDED
 
