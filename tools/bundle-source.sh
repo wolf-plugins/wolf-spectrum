@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 set -e
 
 PLUGIN_NAME="$(basename -s .git $(git config --get remote.origin.url))"

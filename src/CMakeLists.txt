@@ -15,7 +15,6 @@ dpf_add_plugin(wolf-spectrum
                 Widgets/src/ResizeHandle.cpp
                 Widgets/src/ScrollingTexture.cpp
                 Widgets/src/StatusBar.cpp
-                Widgets/src/MenuWidget.cpp
                 Widgets/src/Spectrogram.cpp
                 WolfSpectrumUI.cpp
 )

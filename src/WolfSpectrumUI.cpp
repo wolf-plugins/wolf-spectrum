@@ -31,48 +31,6 @@ WolfSpectrumUI::WolfSpectrumUI()
     fResizeHandle->setCallback(this);
     fResizeHandle->setMinSize(minWidth, minHeight);
 
-    fRightClickMenu = new MenuWidget(this);
-
-    fRightClickMenu->addSection("Frequency scaling");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic, "Logarithmic");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear, "Linear");
-
-    // fRightClickMenu->addSection("Scrolling direction");
-    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionVertical, "Vertical");
-    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ScrollDirectionHorizontal, "Horizontal");
-
-    fRightClickMenu->addSection("Block size");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize64, "64 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize128, "128 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize256, "256 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize512, "512 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize1024, "1024 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize2048, "2048 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize4096, "4096 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize8192, "8192 samples");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::BlockSize16384, "16384 samples");
-
-    fRightClickMenu->addSection("Channel mix");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixLRMean, "Left/Right (mean)");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixL, "Left");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ChannelMixR, "Right");
-
-    // fRightClickMenu->addSection("Peak fall");
-    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallNormal, "Normal");
-    // fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::PeakFallInstant, "Instant");
-
-    fRightClickMenu->addSection("Widgets visibility");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleCaptions, "Show rulers");
-    fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleUIControls, "Show resize handle");
-
-    /* if (!getWindow().isEmbed())
-    {
-        fRightClickMenu->addSection("Fullscreen");
-        fRightClickMenu->addItem((int)SpectrogramRightClickMenuItems::ToggleFullscreen, "Toggle fullscreen");
-    } */
-
-    fRightClickMenu->setCallback(this);
-
     positionWidgets(width, height);
 }
 
@@ -129,147 +87,7 @@ void WolfSpectrumUI::parameterChanged(uint32_t index, float value)
 
 bool WolfSpectrumUI::onMouse(const MouseEvent &ev)
 {
-    if (ev.press)
-    {
-        if (fRightClickMenu->hideOnMouseOutOfBounds(ev.pos))
-        {
-            return true;
-        }
-        else if (ev.button == kMouseButtonRight)
-        {
-            const int frequencyScaling = std::round(fParameters[paramFrequencyScaling]);
-            const int blockSize = std::round(fParameters[paramBlockSize]);
-            const int channelMix = std::round(fParameters[paramChannelMix]);
-            const int showUIControls = std::round(fParameters[paramShowUIControls]);
-            const int showCaptions = std::round(fParameters[paramShowCaptions]);
-
-            /* fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic)
-                ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLogarithmic);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::FrequencyScalingLinear)
-                ->setSelected(frequencyScaling == (int)WolfSpectrumPlugin::FrequencyScalingLinear);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize64)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize64);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize128)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize128);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize256)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize256);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize512)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize512);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize1024)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize1024);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize2048)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize2048);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize4096)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize4096);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize8192)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize8192);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::BlockSize16384)
-                ->setSelected(blockSize == (int)WolfSpectrumPlugin::BlockSize16384);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixLRMean)
-                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixLRMean);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixL)
-                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixL);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ChannelMixR)
-                ->setSelected(channelMix == (int)WolfSpectrumPlugin::ChannelMixR);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleCaptions)
-                ->setSelected(showCaptions == 1);
-
-            fRightClickMenu->getItemById((int)SpectrogramRightClickMenuItems::ToggleUIControls)
-                ->setSelected(showUIControls == 1); */
-
-            fRightClickMenu->show(Point<int>(0, 0), ev.pos, Rectangle<int>(0, 0, getWidth(), getHeight()));
-
-            return true;
-        }
-    }
-
     return UI::onMouse(ev);
-}
-
-void WolfSpectrumUI::menuItemSelected(const int id)
-{
-    switch ((SpectrogramRightClickMenuItems)id)
-    {
-    case SpectrogramRightClickMenuItems::FrequencyScalingLogarithmic:
-        setParameterValueFeedback(paramFrequencyScaling, WolfSpectrumPlugin::FrequencyScalingLogarithmic);
-        break;
-    case SpectrogramRightClickMenuItems::FrequencyScalingLinear:
-        setParameterValueFeedback(paramFrequencyScaling, WolfSpectrumPlugin::FrequencyScalingLinear);
-        break;
-    // case SpectrogramRightClickMenuItems::ScrollDirectionVertical:
-    //     setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionVertical);
-    //     break;
-    // case SpectrogramRightClickMenuItems::ScrollDirectionHorizontal:
-    //     setParameterValueFeedback(paramScrollDirection, WolfSpectrumPlugin::ScrollDirectionHorizontal);
-    //     break;
-    case SpectrogramRightClickMenuItems::BlockSize64:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize64);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize128:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize128);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize256:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize256);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize512:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize512);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize1024:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize1024);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize2048:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize2048);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize4096:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize4096);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize8192:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize8192);
-        break;
-    case SpectrogramRightClickMenuItems::BlockSize16384:
-        setParameterValueFeedback(paramBlockSize, WolfSpectrumPlugin::BlockSize16384);
-        break;
-    case SpectrogramRightClickMenuItems::ChannelMixLRMean:
-        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixLRMean);
-        break;
-    case SpectrogramRightClickMenuItems::ChannelMixL:
-        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixL);
-        break;
-    case SpectrogramRightClickMenuItems::ChannelMixR:
-        setParameterValueFeedback(paramChannelMix, WolfSpectrumPlugin::ChannelMixR);
-        break;
-    // case SpectrogramRightClickMenuItems::PeakFallNormal:
-    //     setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallNormal);
-    //     break;
-    // case SpectrogramRightClickMenuItems::PeakFallInstant:
-    //     setParameterValueFeedback(paramPeakFall, WolfSpectrumPlugin::PeakFallInstant);
-    //     break;
-    case SpectrogramRightClickMenuItems::ToggleCaptions:
-        setParameterValueFeedback(paramShowCaptions, (float)!fParameters[paramShowCaptions]);
-        break;
-    case SpectrogramRightClickMenuItems::ToggleUIControls:
-        setParameterValueFeedback(paramShowUIControls, (float)!fParameters[paramShowUIControls]);
-        break;
-    case SpectrogramRightClickMenuItems::ToggleFullscreen:
-        toggleFullscreen();
-        break;
-    default:
-        DISTRHO_SAFE_ASSERT_BREAK(false);
-    }
 }
 
 void WolfSpectrumUI::onNanoDisplay()
@@ -279,7 +97,7 @@ void WolfSpectrumUI::onNanoDisplay()
 void WolfSpectrumUI::uiIdle()
 {
     fSpectrogram->update();
-    // repaint(); // not currently needed
+    repaint();
 }
 
 void WolfSpectrumUI::uiReshape(uint width, uint height)
@@ -289,34 +107,16 @@ void WolfSpectrumUI::uiReshape(uint width, uint height)
 
 void WolfSpectrumUI::toggleFullscreen()
 {
-    return; //buggy, so avoided for now
-
-    /* if (!getWindow().isEmbed())
-    {
-        fprintf(stderr, "Toggling fullscreen...\n");
-        getWindow().toggleFullscreen();
-    } */
+    return;
 }
 
 bool WolfSpectrumUI::onKeyboard(const KeyboardEvent &ev)
 {
     if (ev.press)
     {
-        if (ev.key == 95) //F11
-        {
-            toggleFullscreen();
-
-            return true;
-        }
-        else if (ev.key == 96) //F12
+        if (ev.key == 96) //F12
         {
             fSpectrogram->clear();
-
-            return true;
-        }
-        else if (ev.key == 9) //escape
-        {
-            getWindow().close();
 
             return true;
         }
