@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: © Patrick Desaulniers
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # This script formats all the cpp/hpp files in a specific directory using clang-format.

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © Patrick Desaulniers
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # Wolf Spectrum [![Build Status](https://img.shields.io/github/actions/workflow/status/wolf-plugins/wolf-spectrum/dpf-makefile-action.yml?branch=master)](https://github.com/wolf-plugins/wolf-spectrum/actions/workflows/dpf-makefile-action.yml)
 
 ![Wolf Spectrum](https://raw.githubusercontent.com/wolf-plugins/wolf-spectrum/master/src/Screenshot.png)

@@ -1,3 +1,4 @@
+// SPDX-FileCopyrightText: © Patrick Desaulniers
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #ifndef WOLF_MATHF_DEFINED_H

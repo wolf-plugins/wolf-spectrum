@@ -1,3 +1,4 @@
+// SPDX-FileCopyrightText: © Patrick Desaulniers
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #ifndef TEXTURE_ROLL_HPP_INCLUDED

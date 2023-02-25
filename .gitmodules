@@ -1,7 +1,6 @@
 [submodule "dpf"]
 	path = dpf
 	url = https://github.com/DISTRHO/DPF
-
 [submodule "libs/kissfft"]
 	path = libs/kissfft
 	url = https://github.com/mborgerding/kissfft.git

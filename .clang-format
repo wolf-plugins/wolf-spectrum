@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © Patrick Desaulniers
+# SPDX-License-Identifier: CC0-1.0
+
 Language: Cpp
 BasedOnStyle: Microsoft
 ColumnLimit: 0

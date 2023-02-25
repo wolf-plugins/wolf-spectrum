@@ -1,4 +1,6 @@
 #!/usr/bin/make -f
+
+# SPDX-FileCopyrightText: © Patrick Desaulniers
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 export DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
