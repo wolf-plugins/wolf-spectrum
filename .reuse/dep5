@@ -4,9 +4,9 @@ Upstream-Contact: Patrick Desaulniers
 Source: https://github.com/wolf-plugins/wolf-spectrum
 
 Files: .gitmodules
-Copyright: © Patrick Desaulniers
+Copyright: © 2023 Patrick Desaulniers
 License: CC0-1.0
 
 Files: src/Screenshot.png
-Copyright: © Patrick Desaulniers
+Copyright: © 2023 Patrick Desaulniers
 License: CC0-1.0

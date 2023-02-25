@@ -7,7 +7,7 @@
 
 # SPDX-FileCopyrightText: © 2012-2021 Filipe Coelho <falktx@falktx.com>
 # SPDX-FileCopyrightText: © 2016 Christopher Arndt
-# SPDX-FileCopyrightText: © Patrick Desaulniers
+# SPDX-FileCopyrightText: © 2023 Patrick Desaulniers
 # SPDX-License-Identifier: ISC
 
 export DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
