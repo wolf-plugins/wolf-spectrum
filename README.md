@@ -10,6 +10,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin and as a standalone Jack application.
 
 #### Features:
+
 * Supports both log and linear frequency scaling
 * Resizable UI
 
@@ -18,17 +19,23 @@ Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin a
 You can find some precompiled plugin binaries in the [Releases](https://github.com/wolf-plugins/wolf-spectrum/releases) tab. Some packages are also available for Ubuntu and Arch Linux:
 
 ### Ubuntu
+
 Download the plugin from the [pdesaulniers/wolf PPA](https://launchpad.net/~pdesaulniers/+archive/ubuntu/wolf):
+
 ```
 sudo apt-add-repository -y ppa:pdesaulniers/wolf
 sudo apt-get update
 sudo apt-get install wolf-spectrum
 ```
+
 ### Arch Linux
+
 To install the latest release:
+
 ```
 sudo pacman -S wolf-spectrum
 ```
+
 A git package is also available [in the AUR](https://aur.archlinux.org/packages/wolf-spectrum-git/). 
 
 ## Build manually
@@ -53,12 +60,30 @@ All plugin builds will then be placed in the bin folder. Copy them to their appr
 ## Updating
 
 This project uses git submodules. Thus, to update your local copy of the repo, you need to run the following commands:
+
 ```
 git pull
 git submodule update --init --recursive
 ```
+
 You should then be able to build the plugin with the most recent changes.
 
 ## License
 
-Wolf Spectrum is licensed under the GNU General Public License v3.0 or later.
+Wolf Spectrum is licensed under GPL-3.0-or-later.
+
+Some files in this repository are licensed under different terms:
+
+- Some code borrowed from DPF and DISTRHO plugins is licensed under ISC.
+- Some configuration files are licensed under CC0-1.0.
+- This README is licensed under CC-BY-SA-4.0.
+
+See the individual files for their copyright status.
+
+This program also makes use of the following third-party code:
+
+- [DPF](https://github.com/DISTRHO/DPF)
+- [KISS FFT](https://github.com/mborgerding/kissfft)
+- [readerwriterqueue](https://github.com/cameron314/readerwriterqueue)
+
+Please refer to each individual project for their copyright status.

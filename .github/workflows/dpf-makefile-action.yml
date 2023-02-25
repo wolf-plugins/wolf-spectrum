@@ -1,5 +1,6 @@
-# SPDX-FileCopyrightText: © Patrick Desaulniers
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: © 2022 Filipe Coelho <falktx@falktx.com>
+# SPDX-FileCopyrightText: © 2022 Patrick Desaulniers
+# SPDX-License-Identifier: ISC
 
 name: dpf-makefile-action
 

@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: wolf-spectrum
+Upstream-Contact: Patrick Desaulniers
+Source: https://github.com/wolf-plugins/wolf-spectrum
+
+Files: .gitmodules
+Copyright: © Patrick Desaulniers
+License: CC0-1.0
+
+Files: src/Screenshot.png
+Copyright: © Patrick Desaulniers
+License: CC0-1.0
