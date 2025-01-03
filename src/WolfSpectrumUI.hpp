@@ -29,7 +29,7 @@ protected:
     void tryRememberSize();
     void positionWidgets(uint width, uint height);
 
-    void resizeHandleMoved(int width, int height);
+    void resizeHandleMoved(int width, int height) override;
 
     void onNanoDisplay() override;
     void uiIdle() override;

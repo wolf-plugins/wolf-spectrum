@@ -4,7 +4,6 @@
 #ifndef SPECTROGRAM_HPP_INCLUDED
 #define SPECTROGRAM_HPP_INCLUDED
 
-#include "DistrhoPluginInfo.h"
 #include "NanoVG.hpp"
 #include "PeakFallSmooth.hpp"
 #include "Ringbuffer.hpp"

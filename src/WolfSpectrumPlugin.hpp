@@ -9,9 +9,6 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 
 #include "WolfSpectrumParameters.hpp"
 

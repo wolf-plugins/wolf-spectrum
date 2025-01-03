@@ -7,3 +7,4 @@ ColumnLimit: 0
 AccessModifierOffset: -4
 DeriveLineEnding: false
 UseCRLF: false
+FixNamespaceComments: false

@@ -5,7 +5,6 @@
 #define TEXTURE_ROLL_HPP_INCLUDED
 
 #include "NanoVG.hpp"
-#include "src/nanovg/nanovg.h"
 
 START_NAMESPACE_DISTRHO
 

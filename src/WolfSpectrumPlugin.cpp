@@ -6,11 +6,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 
-#include "Ringbuffer.hpp"
 #include "WolfSpectrumPlugin.hpp"
 
 START_NAMESPACE_DISTRHO

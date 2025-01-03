@@ -3,12 +3,9 @@
 
 #include "DistrhoUI.hpp"
 
-#include "Config.hpp"
-#include "Window.hpp"
 #include "WolfSpectrumParameters.hpp"
 #include "WolfSpectrumUI.hpp"
 
-#include <string>
 
 START_NAMESPACE_DISTRHO
 

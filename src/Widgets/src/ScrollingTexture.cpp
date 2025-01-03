@@ -1,16 +1,13 @@
 // SPDX-FileCopyrightText: © 2023 Patrick Desaulniers
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "DistrhoUI.hpp"
-#include "Spectrogram.hpp"
-
 #include "Mathf.hpp"
-#include "Window.hpp"
 
-#include <iostream>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cmath>
+#include <cstdlib>
+
+#include "ScrollingTexture.hpp"
+#include "src/nanovg/nanovg.h"
 
 START_NAMESPACE_DISTRHO
 

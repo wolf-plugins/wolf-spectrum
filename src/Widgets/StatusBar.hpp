@@ -4,7 +4,6 @@
 #ifndef STATUSBAR_HPP
 #define STATUSBAR_HPP
 
-#include "DistrhoPluginInfo.h"
 #include "NanoVG.hpp"
 #include <string>
 
