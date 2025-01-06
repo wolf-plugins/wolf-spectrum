@@ -6,7 +6,6 @@
 #include "DistrhoUI.hpp"
 #include "MIDIUtils.hpp"
 #include "Mathf.hpp"
-#include "Window.hpp"
 #include "WolfSpectrumPlugin.hpp"
 #include <cmath>
 #include <cstdlib>
@@ -17,7 +16,7 @@
 START_NAMESPACE_DISTRHO
 
 SpectrogramRulers::SpectrogramRulers(Spectrogram *parent)
-    : NanoSubWidget(parent),
+    : NanoSubWidget((Widget*)parent),
       fParent(parent)
 {
     loadSharedResources();
