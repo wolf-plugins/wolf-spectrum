@@ -14,6 +14,12 @@ Wolf Spectrum is a spectrogram plugin. It can be built as an LV2 or VST plugin a
 * Supports both log and linear frequency scaling
 * Resizable UI
 
+## How to use
+
+Simply load one of the plugin builds into your plugin host.
+
+Alternatively, you can run the JACK standalone build and connect the audio source by using a JACK GUI such as [QJackCtl](https://qjackctl.sourceforge.io/) or [qpwgraph](https://github.com/rncbc/qpwgraph) (if your system uses PipeWire for audio)
+
 ## Install
 
 You can find some precompiled plugin binaries in the [Releases](https://github.com/wolf-plugins/wolf-spectrum/releases) tab. Some packages are also available for Ubuntu and Arch Linux:
