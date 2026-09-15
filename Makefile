@@ -12,7 +12,6 @@
 
 export DISTRHO_NAMESPACE = WolfSpectrumDISTRHO
 export DGL_NAMESPACE = WolfSpectrumDGL
-export FILE_BROWSER_DISABLED = true
 
 include dpf/Makefile.base.mk
 
